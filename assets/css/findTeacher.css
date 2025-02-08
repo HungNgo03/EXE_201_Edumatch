@@ -52,6 +52,12 @@ h1, h5, p {
   margin-bottom: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+.tutor-card img {
+  width: 120px; /* Điều chỉnh kích thước ảnh */
+  height: 120px; /* Làm ảnh thành hình vuông */
+  object-fit: cover; /* Cắt ảnh vừa với kích thước khung mà không bị méo */
+  border-radius: 8px; /* Bo góc nhẹ, nếu muốn hình tròn hãy để 50% */
+}
 .filter-section {
   background: #ffffff;
   padding: 15px;
