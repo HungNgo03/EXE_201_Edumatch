@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDUMATCH Forum</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
+    <style>
+        .post-container {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 53rem;
+        }
+        .post-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .post-content {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .post-actions {
+            margin-top: 10px;
+        }
+        .post-actions button {
+            background-color: #ff6347;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .post-actions button:hover {
+            background-color: #e5533d;
+        }
+        .sidebar {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-right: 20px;
+        }
+        .sidebar h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .sidebar input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .sidebar select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body class="index-page">
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+          <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+            <img src="assets/img/EDUMATCH.jpg" alt="">
+            <h1 class="sitename">EDUMATCH</h1>
+            <span>.</span>
+          </a>
+          <nav id="navmenu" class="navmenu">
+            <ul>
+              <li><a href="#hero" class="active">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="forum.html">Diễn đàn</a></li>
+              <!-- <li><a href="#events">Events</a></li>
+              <li><a href="#chefs">Chefs</a></li>
+              <li><a href="#gallery">Gallery</a></li> -->
+              <!-- <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="#">Dropdown 1</a></li>
+                  <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="#">Deep Dropdown 1</a></li>
+                      <li><a href="#">Deep Dropdown 2</a></li>
+                      <li><a href="#">Deep Dropdown 3</a></li>
+                      <li><a href="#">Deep Dropdown 4</a></li>
+                      <li><a href="#">Deep Dropdown 5</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#">Dropdown 2</a></li>
+                  <li><a href="#">Dropdown 3</a></li>
+                  <li><a href="#">Dropdown 4</a></li>
+                </ul>
+              </li> -->
+              <li><a href="#contact">Liên hệ</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+          </nav>
+          <a class="btn-getstarted" href="index.html#book-a-table">Đăng nhập</a>
+        </div>
+    </header>
+
+    <div class="container mt-5 d-flex">
+        <div class="sidebar">
+            <h3>Bộ lọc bài viết</h3>
+            <input type="text" placeholder="Tìm kiếm...">
+            <select>
+                <option value="newest">Mới nhất</option>
+                <option value="oldest">Cũ nhất</option>
+                <option value="most_liked">Nhiều Like nhất</option>
+            </select>
+        </div>
+        <div class="content">
+            <div class="post-container">
+                <div class="post-title">Cảm nhận về môn Triết học</div>
+                <img src="assets/img/triethoc.jpg" alt="">
+                <div class="post-content">Môn Triết học giúp tôi mở rộng tư duy, 
+                    rèn luyện khả năng lập luận và phân tích các vấn đề sâu sắc trong cuộc sống. 
+                    Dù ban đầu có phần trừu tượng và khó hiểu, nhưng khi nắm bắt được các khái niệm cốt lõi, 
+                    tôi thấy nó rất thú vị và có giá trị thực tiễn. Học Triết học không chỉ giúp tôi hiểu về các 
+                    hệ tư tưởng mà còn giúp tôi có cái nhìn đa chiều, phản biện và sâu sắc hơn về thế giới.</div>
+                <div class="post-actions">
+                    <button><i class="fas fa-thumbs-up"></i> Like</button>
+                    <button><i class="fas fa-comment"></i> Comment</button>
+                </div>
+            </div>
+            <div class="post-container">
+                <div class="post-title">Cảm nhận về thầy Hùng</div>
+                <img style="width: 100%;" src="assets/img/thayhung.jpg" alt="">
+                <div class="post-content">Là một người dạy cực kì tâm huyết. Luôn ở lại đến cuối cùng chăm sóc tận tình học sinh.
+                     Nếu không hiểu thầy vẫn sẽ kiên trì dạy tiếp mà không cáu gắt gì</div>
+                <div class="post-actions">
+                    <button><i class="fas fa-thumbs-up"></i> Like</button>
+                    <button><i class="fas fa-comment"></i> Comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
