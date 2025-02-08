@@ -624,44 +624,44 @@
   <script src="assets/js/main.js"></script>
 
   <!-- Login/Register Modal -->
-  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content shadow-lg border-0 rounded-4">
+    <div class="modal-content shadow-lg border-0 rounded-4">
       <div class="modal-header border-0 bg-danger text-white text-center">
         <h2 class="modal-title w-100 fw-bold display-5" id="loginModalLabel">🎉 Chào mừng bạn! 🎉</h2>
         <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+      </div>
       <div class="modal-body p-5">
-          <!-- Tabs for Login & Register -->
-          <ul class="nav nav-pills nav-justified mb-3" id="loginRegisterTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Đăng nhập</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link fw-bold" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Đăng ký</button>
-            </li>
-          </ul>
+        <!-- Tabs for Login & Register -->
+        <ul class="nav nav-pills nav-justified mb-3" id="loginRegisterTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Đăng nhập</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Đăng ký</button>
+          </li>
+        </ul>
 
-          <div class="tab-content mt-3">
-            <!-- Login Form -->
-            <div class="tab-pane fade show active" id="login" role="tabpanel">
+        <div class="tab-content mt-3">
+          <!-- Login Form -->
+          <div class="tab-pane fade show active" id="login" role="tabpanel">
             <form class="d-flex flex-column align-items-center">
               <div class="mb-3 w-50 text-start">
-                  <label for="loginEmail" class="form-label fw-semibold">Email</label>
-                  <input type="email" class="form-control rounded-3 p-2" id="loginEmail" placeholder="Nhập email" required>
-                </div>
+                <label for="loginEmail" class="form-label fw-semibold">Email</label>
+                <input type="email" class="form-control rounded-3 p-2" id="loginEmail" placeholder="Nhập email" required>
+              </div>
               <div class="mb-3 w-50 text-start">
-                  <label for="loginPassword" class="form-label fw-semibold">Mật khẩu</label>
-                  <input type="password" class="form-control rounded-3 p-2" id="loginPassword" placeholder="Nhập mật khẩu" required>
-                </div>
+                <label for="loginPassword" class="form-label fw-semibold">Mật khẩu</label>
+                <input type="password" class="form-control rounded-3 p-2" id="loginPassword" placeholder="Nhập mật khẩu" required>
+              </div>
               <button type="submit" class="btn text-white rounded-3 mt-2 px-4 py-2" style="background-color: #CE1212;">Đăng nhập</button>
               <p class="mt-2"><a href="#" class="text-decoration-none">Quên mật khẩu?</a></p>
-              </form>
-            </div>
+            </form>
+          </div>
 
-            <!-- Register Form -->
-            <div class="tab-pane fade" id="register" role="tabpanel">
-              <form>
+          <!-- Register Form -->
+          <div class="tab-pane fade" id="register" role="tabpanel">
+            <form>
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">
@@ -672,17 +672,17 @@
                     <label for="registerPhone" class="form-label fw-semibold">Số điện thoại</label>
                     <input type="tel" class="form-control rounded-3 p-2" id="registerPhone" placeholder="Nhập số điện thoại" required>
                   </div>
-                <div class="mb-3">
-                  <label for="registerEmail" class="form-label fw-semibold">Email</label>
-                  <input type="email" class="form-control rounded-3 p-2" id="registerEmail" placeholder="Nhập email" required>
-                </div>
+                  <div class="mb-3">
+                    <label for="registerEmail" class="form-label fw-semibold">Email</label>
+                    <input type="email" class="form-control rounded-3 p-2" id="registerEmail" placeholder="Nhập email" required>
+                  </div>
                 </div>
                 
                 <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="registerPassword" class="form-label fw-semibold">Mật khẩu</label>
-                  <input type="password" class="form-control rounded-3 p-2" id="registerPassword" placeholder="Tạo mật khẩu" required>
-                </div>
+                  <div class="mb-3">
+                    <label for="registerPassword" class="form-label fw-semibold">Mật khẩu</label>
+                    <input type="password" class="form-control rounded-3 p-2" id="registerPassword" placeholder="Tạo mật khẩu" required>
+                  </div>
                   <div class="mb-3">
                     <label for="confirmPassword" class="form-label fw-semibold">Xác nhận mật khẩu</label>
                     <input type="password" class="form-control rounded-3 p-2" id="confirmPassword" placeholder="Nhập lại mật khẩu" required>
@@ -691,13 +691,13 @@
               </div>
               
               <button type="submit" class="btn w-100 py-2 rounded-3 text-white" style="background-color: #CE1212;">Đăng ký</button>
-              </form>
-            </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </div>	
+  </div>
+</div>	
 
 </body>
 
