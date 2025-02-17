@@ -71,5 +71,38 @@ CREATE TABLE Schedules (
     EndTime TIME NOT NULL,
     FOREIGN KEY (ClassID) REFERENCES Classes(ID) ON DELETE CASCADE
 );
+CREATE TABLE Reviews (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    StudentID INT NOT NULL,
+    TutorID INT NOT NULL,
+    Rating INT CHECK (Rating BETWEEN 1 AND 5) NOT NULL,
+    Comment NVARCHAR(MAX),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (StudentID) REFERENCES Students(ID) ,
+    FOREIGN KEY (TutorID) REFERENCES Tutors(ID) 
+);
+CREATE TABLE Messages (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    SenderID INT NOT NULL,
+    ReceiverID INT NOT NULL,
+    Message NVARCHAR(MAX) NOT NULL,
+    SentAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (SenderID) REFERENCES Users(ID) ,
+    FOREIGN KEY (ReceiverID) REFERENCES Users(ID) 
+);
+CREATE TABLE Post (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID INT NOT NULL,  -- Người đăng bài
+    SubjectID INT NOT NULL,  -- Môn học cần review
+    Title NVARCHAR(255) NOT NULL,  -- Tiêu đề bài đăng
+    Content NVARCHAR(MAX) NOT NULL,  -- Nội dung bài viết
+    Rating INT CHECK (Rating BETWEEN 1 AND 5),  -- Đánh giá từ 1-5 sao
+    CreatedAt DATETIME DEFAULT GETDATE(),  -- Ngày đăng bài
+    UpdatedAt DATETIME DEFAULT GETDATE(),  -- Ngày cập nhật bài
+
+    FOREIGN KEY (UserID) REFERENCES Users(ID) ,
+    FOREIGN KEY (SubjectID) REFERENCES Subjects(ID) 
+);
+
 
 
