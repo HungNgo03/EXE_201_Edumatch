@@ -69,6 +69,18 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+        .sidebar button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .sidebar button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body class="index-page">
@@ -109,39 +121,127 @@
     <div class="container mt-5 d-flex">
         <div class="sidebar">
             <h3>Bộ lọc bài viết</h3>
-            <input type="text" placeholder="Tìm kiếm...">
-            <select>
-                <option value="newest">Mới nhất</option>
-                <option value="oldest">Cũ nhất</option>
-                <option value="most_liked">Nhiều Like nhất</option>
+            <input type="text" placeholder="Tìm kiếm..." id="search-input">
+            <select id="subject-select">
+              <option value="">Chọn môn học</option>
             </select>
+            <button id="search-button">Tìm kiếm</button>
         </div>
-        <div class="content">
-            <div class="post-container">
-                <div class="post-title">Cảm nhận về môn Triết học</div>
-                <img src="assets/img/triethoc.jpg" alt="">
-                <div class="post-content">Môn Triết học giúp tôi mở rộng tư duy, 
-                    rèn luyện khả năng lập luận và phân tích các vấn đề sâu sắc trong cuộc sống. 
-                    Dù ban đầu có phần trừu tượng và khó hiểu, nhưng khi nắm bắt được các khái niệm cốt lõi, 
-                    tôi thấy nó rất thú vị và có giá trị thực tiễn. Học Triết học không chỉ giúp tôi hiểu về các 
-                    hệ tư tưởng mà còn giúp tôi có cái nhìn đa chiều, phản biện và sâu sắc hơn về thế giới.</div>
-                <div class="post-actions">
-                    <button><i class="fas fa-thumbs-up"></i> Like</button>
-                    <button><i class="fas fa-comment"></i> Comment</button>
-                </div>
-            </div>
-            
+        <div class="content" id="post-container">
+          <!-- Posts will be dynamically inserted here -->
         </div>
-    </div>
+      </div>
+      
+      <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <script src="assets/vendor/aos/aos.js"></script>
+      <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+      <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+      <script src="assets/js/main.js"></script>
+      <script type="module">
+        import Post from './Post.js';
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            const postContainer = document.getElementById('post-container');
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            const subjectSelect = document.getElementById('subject-select');
+    
+            function fetchPosts(url) {
+                console.log("Fetching posts from URL:", url); // Debugging URL
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("API Response:", data); // Kiểm tra dữ liệu trả về
+                        postContainer.innerHTML = ''; // Clear existing posts
+    
+                        // Kiểm tra nếu data có thuộc tính result và nó là một mảng
+                        if (data.result && Array.isArray(data.result) && data.result.length > 0) {
+                            data.result.forEach(postData => {
+                                console.log("Post Data:", postData); // Debugging postData
+                                const post = new Post(
+                                    postData.id,
+                                    postData.UserID, // Sửa lại từ userID -> UserID
+                                    postData.fullname,
+                                    postData.SubjectID, // Sửa lại từ subjectID -> SubjectID
+                                    postData.subjectname,
+                                    postData.title,
+                                    postData.content,
+                                    postData.rating,
+                                    postData.createdAt,
+                                    postData.updatedAt
+                                );
+                                console.log("Post Object:", post); // Debugging post object
+                                const postElement = document.createElement('div');
+                                postElement.classList.add('post-container');
+                                postElement.innerHTML = `
+                                    <div class="post-user">Người tạo bài viết: ${post.fullname}</div>
+                                    <div class="post-subject">Môn học: ${post.subjectname}</div>
+                                    <div class="post-title">Tiêu đề bài viết: ${post.title}</div>
+                                    <div class="post-content">${post.content}</div>
+                                    <div class="post-rating">Số sao đánh giá: ${post.rating}</div>
+                                    <div class="post-created-at">Ngày tạo bài viết: ${post.createdAt}</div>
+                                    <div class="post-updated-at">Ngày cập nhật bài viết: ${post.updatedAt}</div>
+                                    <div class="post-actions">
+                                        <button><i class="fas fa-thumbs-up"></i> Like</button>
+                                        <button><i class="fas fa-comment"></i> Comment</button>
+                                    </div>
+                                `;
+                                postContainer.appendChild(postElement);
+                            });
+                        } else {
+                          postContainer.innerHTML = '<p>Không có kết quả nào được hiển thị</p>';
+                            console.error("Data.result is not an array or is empty:", data.result);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching posts:', error));
+            }
 
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
+            function fetchSubjects() {
+                fetch('http://localhost:8080/Post/getAllSubject')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Subjects API Response:", data); // Debugging subjects data
+                        if (data.result && Array.isArray(data.result)) {
+                            data.result.forEach(subject => {
+                                const option = document.createElement('option');
+                                option.value = subject;
+                                option.textContent = subject;
+                                subjectSelect.appendChild(option);
+                            });
+                        } else {
+                          postContainer.innerHTML = '<p>Không có kết quả nào được hiển thị</p>';
+                            console.error("Data.result is not an array:", data.result);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching subjects:', error));
+            }
+    
+            // Fetch all posts on page load
+            fetchPosts('http://localhost:8080/Post/getAllPost');
+            // Fetch all subjects on page load
+            fetchSubjects();
+    
+            // Search by username and subject when button is clicked
+            searchButton.addEventListener('click', function() {
+                const username = searchInput.value;
+                const subjectname = subjectSelect.value;
+                console.log("Searching by username:", username); // Debugging username
+                console.log("Filtering by subject:", subjectname); // Debugging subjectname
+                let url = 'http://localhost:8080/Post/getAllPost';
+                if (username && subjectname) {
+                    url = `http://localhost:8080/Post/findPostsBySubjectAndUsername?subjectname=${subjectname}&username=${username}`;
+                } else if (username) {
+                    url = `http://localhost:8080/Post/findPostsByUsername?username=${username}`;
+                } else if (subjectname) {
+                    url = `http://localhost:8080/Post/findPostsBySubject?subjectname=${subjectname}`;
+                }
+                fetchPosts(url);
+            });
+        });
+    </script>
+    
 </body>
 <footer id="footer" class="footer dark-background">
-
     <div class="container">
       <div class="row gy-3">
         <div class="col-lg-3 col-md-6 d-flex">
@@ -152,9 +252,7 @@
             <p>New York, NY 535022</p>
             <p></p>
           </div>
-
         </div>
-
         <div class="col-lg-3 col-md-6 d-flex">
           <i class="bi bi-telephone icon"></i>
           <div>
@@ -165,7 +263,6 @@
             </p>
           </div>
         </div>
-
         <div class="col-lg-3 col-md-6 d-flex">
           <i class="bi bi-clock icon"></i>
           <div>
@@ -176,7 +273,6 @@
             </p>
           </div>
         </div>
-
         <div class="col-lg-3 col-md-6">
           <h4>Follow Us</h4>
           <div class="social-links d-flex">
@@ -186,10 +282,8 @@
             <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
           </div>
         </div>
-
       </div>
     </div>
-
     <div class="container copyright text-center mt-4">
       <p>© <span>Copyright</span> <strong class="px-1 sitename">Yummy</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
@@ -200,15 +294,11 @@
         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href="https://themewagon.com">ThemeWagon</a>
       </div>
     </div>
-
   </footer>
-
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
   <!-- Preloader -->
   <div id="preloader"></div>
-
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
@@ -216,7 +306,6 @@
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 </html>
