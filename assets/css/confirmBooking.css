@@ -1,0 +1,82 @@
+h1,h3 {
+    font-family: Arial, sans-serif;
+}
+.booking-container {
+    display: flex;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    width: 100%;
+}
+.left-panel, .right-panel {
+    padding: 20px;
+}
+.left-panel {
+    flex: 2;
+}
+.right-panel {
+    flex: 1;
+    border-left: 1px solid #ddd;
+    text-align: center;
+}
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.price {
+    color: #d32f2f;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.date-picker {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.time-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+/* .time-slot {
+    padding: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    min-width: 60px;
+} */
+.time-slot:hover {
+    background: rgb(206, 18, 18);
+}
+.time-slot.selected {
+    background: rgb(206, 18, 18);
+}
+.days-time {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+ /* .day-time {
+    padding: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    min-width: 60px;
+} */
+.day-time:hover {
+    background: rgb(206, 18, 18);
+}
+.day-time.selected {
+    background: rgb(206, 18, 18);
+}
+.salon-info img {
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
