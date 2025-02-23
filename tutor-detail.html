@@ -28,19 +28,18 @@
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
-    <link href="assets/css/findTeacher.css" rel="stylesheet">
+    <link href="assets/css/tutorDetail.css" rel="stylesheet">
 
     <!-- =======================================================
-    * Template Name: Yummy
-    * Template URL: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/
-    * Updated: Aug 07 2024 with Bootstrap v5.3.3
-    * Author: BootstrapMade.com
-    * License: https://bootstrapmade.com/license/
-    ======================================================== -->
+        * Template Name: Yummy
+        * Template URL: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/
+        * Updated: Aug 07 2024 with Bootstrap v5.3.3
+        * Author: BootstrapMade.com
+        * License: https://bootstrapmade.com/license/
+        ======================================================== -->
 </head>
 
-<body class="index-page">
-
+<body>
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container position-relative d-flex align-items-center justify-content-between">
 
@@ -88,113 +87,127 @@
         </div>
     </header>
 
-    <main class="main">
-
+    <main class="container mt-4">
+        <!-- Tutor Detail Section -->
         <div class="container mt-4">
-            <h1 class="text-center mb-4">Tìm Kiếm Gia Sư</h1>
-
-            <div class="filter-section">
-                <h5>Lọc gia sư</h5>
-                <div class="d-flex filter-inputs">
-                    <div class="me-3 flex-fill">
-                        <input type="text" id="search-name" class="form-control" placeholder="Tìm theo tên">
-                    </div>
-                    <div class="me-3 flex-fill">
-                        <select id="search-subject" class="form-control">
-                            <option value="">Chọn môn học</option>
-                        </select>
+            <div class="row">
+                <!-- Thông tin gia sư -->
+                <div class="col-md-4">
+                    <div class="tutor-card text-center">
+                        <img src="assets/img/teachers/tutor.jpg" class="profile-img mb-3" alt="Tutor Image">
+                        <h4 id="tutor-name">Tên Gia Sư</h4>
+                        <p><strong>Email:</strong> <span id="tutor-email"></span></p>
+                        <p><strong>Điện thoại:</strong> <span id="tutor-phone"></span></p>
+                        <p><strong>Địa chỉ:</strong> <span id="tutor-address"></span></p>
+                        <p><strong>Bằng cấp:</strong> <span id="tutor-qualification"></span></p>
+                        <p><strong>Kinh nghiệm:</strong> <span id="tutor-experience"></span> năm</p>
+                        <p><strong>Mô tả:</strong> <span id="tutor-bio"></span></p>
+                        <p><strong>Môn dạy:</strong> <span id="tutor-subjects"></span></p>
                     </div>
                 </div>
-            </div>
 
-            <div class="row" id="tutor-list">
-                <!-- Các gia sư sẽ được hiển thị tại đây -->
-            </div>
-        </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const nameInput = document.querySelector('#search-name');
-                const subjectSelect = document.querySelector('#search-subject');
-                const tutorContainer = document.querySelector('#tutor-list'); // Chọn container chứa danh sách gia sư
-
-                // Hàm để lấy danh sách môn học từ API
-                function fetchSubjects() {
-                    fetch('http://localhost:8080/subject/getAllSubjects')
-                        .then(response => response.json())
-                        .then(data => {
-                            const subjects = data.result;
-
-                            // Thêm các môn học vào dropdown
-                            subjects.forEach(subject => {
-                                const option = document.createElement('option');
-                                option.value = subject.subjectname;
-                                option.textContent = subject.subjectname;
-                                subjectSelect.appendChild(option);
-                            });
-                        })
-                        .catch(error => console.error('Error fetching subjects:', error));
-                }
-
-                // Hàm để lấy danh sách gia sư từ API
-                function fetchTutors() {
-                    const name = nameInput.value.trim();  // Lấy giá trị từ input tên
-                    const subject = subjectSelect.value.trim();  // Lấy giá trị từ dropdown môn học
-
-                    let url = `http://localhost:8080/tutor/getAllTutors?name=${name}&subject=${subject}`;
-
-                    // Gửi yêu cầu tới API
-                    fetch(url)
-                        .then(response => response.json())
-                        .then(data => {
-                            tutorContainer.innerHTML = '';  // Xóa các gia sư cũ trước khi thêm mới
-
-                            const tutors = data.result;  // Lấy danh sách gia sư
-
-                            if (tutors.length === 0) {
-                                tutorContainer.innerHTML = `<p>Không tìm thấy gia sư phù hợp.</p>`;
-                            }
-
-                            tutors.forEach(tutor => {
-    const tutorCard = document.createElement('div');
-    tutorCard.classList.add('col-md-6');
-    tutorCard.innerHTML = `
-        <div class="tutor-card d-flex align-items-center">
-            <a href="tutor-detail.html?tutorId=${tutor.id}" class="me-3">
-                <img src="assets/img/teachers/tutor.jpg" alt="Gia Sư" class="rounded-circle" width="80">
-            </a>
-            <div class="flex-grow-1">
-                <h5>
-                    <a href="tutor-detail.html?tutorId=${tutor.id}" class="tutor-link">
-                        ${tutor.fullname}
-                    </a>
-                </h5>
-                <p>Kinh nghiệm: ${tutor.experience} năm</p>
-                <p>Môn học: ${tutor.subjects.join(', ')}</p>
+                <!-- Thời khóa biểu -->
+                <div class="col-md-8">
+                    <h3 class="text-center">Thời Khóa Biểu</h3>
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>Slot</th>
+                                <th>MON</th>
+                                <th>TUE</th>
+                                <th>WED</th>
+                                <th>THU</th>
+                                <th>FRI</th>
+                                <th>SAT</th>
+                                <th>SUN</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schedule-body">
+                            <!-- Dữ liệu lịch học sẽ được tải từ API -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    `;
-    tutorContainer.appendChild(tutorCard);
-});
-
-
-                        })
-                        .catch(error => console.error('Error fetching tutors:', error));
-                }
-
-                // Khi người dùng thay đổi tên hoặc môn học, gọi lại API
-                nameInput.addEventListener('input', fetchTutors);
-                subjectSelect.addEventListener('change', fetchTutors);
-
-                // Lấy dữ liệu ban đầu khi trang tải
-                fetchSubjects();
-                fetchTutors();
-            });
-        </script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-
     </main>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tutorId = urlParams.get('tutorId');
+
+    if (!tutorId) {
+        alert("Không tìm thấy ID gia sư.");
+        return;
+    }
+
+    fetch(`http://localhost:8080/tutor/getTutorDetail/${tutorId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.result) {
+                alert("Không tìm thấy thông tin gia sư.");
+                return;
+            }
+
+            const tutor = data.result;
+            document.getElementById("tutor-name").textContent = tutor.fullname;
+            document.getElementById("tutor-email").textContent = tutor.email;
+            document.getElementById("tutor-phone").textContent = tutor.phoneNumber;
+            document.getElementById("tutor-address").textContent = tutor.address;
+            document.getElementById("tutor-qualification").textContent = tutor.qualification;
+            document.getElementById("tutor-experience").textContent = tutor.experience;
+            document.getElementById("tutor-bio").textContent = tutor.bio;
+            document.getElementById("tutor-subjects").textContent = tutor.subjects.join(", ");
+
+            // Hiển thị thời khóa biểu
+            const scheduleBody = document.getElementById("schedule-body");
+            scheduleBody.innerHTML = ""; // Xóa dữ liệu cũ
+
+            const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+            let scheduleData = {}; // Lưu lịch của từng ngày
+            days.forEach(day => scheduleData[day] = []);
+
+            // Nhóm lịch theo ngày
+            tutor.schedule.forEach(entry => {
+                let date = new Date(entry.date);
+                let dayIndex = date.getDay();  // 0: Chủ nhật, 1: Thứ Hai, ..., 6: Thứ Bảy
+                let dayName = days[dayIndex === 0 ? 6 : dayIndex - 1]; // Đổi vị trí Chủ nhật
+
+                scheduleData[dayName].push({
+                    startTime: entry.startTime,
+                    endTime: entry.endTime
+                });
+            });
+
+            // Sắp xếp thời gian theo từng ngày
+            days.forEach(day => {
+                scheduleData[day].sort((a, b) => a.startTime.localeCompare(b.startTime));
+            });
+
+            // Tìm ngày có nhiều nhất số lịch để tạo số hàng phù hợp
+            let maxRows = Math.max(...Object.values(scheduleData).map(list => list.length));
+
+            for (let i = 0; i < maxRows; i++) {
+                let row = "<tr>";
+                days.forEach(day => {
+                    if (scheduleData[day][i]) {
+                        let entry = scheduleData[day][i];
+                        row += `<td> Có lịch dạy (${entry.startTime} - ${entry.endTime}) </td>`;
+                    } else {
+                        row += `<td> - </td>`;
+                    }
+                });
+                row += "</tr>";
+                scheduleBody.innerHTML += row;
+            }
+        })
+        .catch(error => console.error('Lỗi khi lấy dữ liệu gia sư:', error));
+});
+
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <footer id="footer" class="footer dark-background">
 
         <div class="container">
@@ -259,7 +272,6 @@
         </div>
 
     </footer>
-
     <!-- Scroll Top -->
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
