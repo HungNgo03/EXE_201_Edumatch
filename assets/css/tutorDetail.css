@@ -78,6 +78,10 @@ body {
 }
 
 
+#tutor-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: normal;
+}
 
 .tutor-card {
     background: #f8f9fa;
