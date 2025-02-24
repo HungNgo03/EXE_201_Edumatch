@@ -28,9 +28,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (response.ok) {
             const data = await response.json();
-            localStorage.setItem("user", JSON.stringify({ username: data.username }));
+            localStorage.setItem("username", data.username );
             localStorage.setItem("userID", data.userID);
             localStorage.setItem("role", data.role);// Lưu session vào localStorage
+            localStorage.setItem("fullname", data.fullname);
+            localStorage.setItem("email", data.email);
+            localStorage.setItem("phoneNumber", data.phoneNumber);
             authButton.classList.add("d-none");
             userDropdownButton.textContent = data.username;
             userDropdown.classList.remove("d-none");
@@ -76,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
             localStorage.setItem("user", JSON.stringify({ username: data.username }));
             localStorage.setItem("userID", userData.id);// Đảm bảo lưu vào localStorage
+
             authButton.classList.add("d-none");
             userDropdownButton.textContent = data.username;
             userDropdown.classList.remove("d-none");
