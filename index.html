@@ -7,6 +7,11 @@
   <meta name="description" content="">
   <meta name="keywords" content="">
 
+  <!-- SweetAlert2 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -124,7 +129,9 @@
           Tài khoản
         </button>
         <ul class="dropdown-menu" aria-labelledby="userDropdownButton">
-          <li><a class="dropdown-item" href="#" id="logoutButton">Đăng xuất</a></li>
+          <li><a class="dropdown-item" href="profile.html" id="profileLink">Thông tin tài khoản</a></li>
+
+          <li><a class="dropdown-item" href="index.html" id="logoutButton">Đăng xuất</a></li>
         </ul>
       </div>
 
@@ -709,8 +716,34 @@
                 <input type="password" class="form-control rounded-3 p-2" id="loginPassword" name="password" placeholder="Nhập mật khẩu" required>
               </div>
               <button type="submit" class="btn text-white rounded-3 mt-2 px-4 py-2" style="background-color: #CE1212;">Đăng nhập</button>
-              <p class="mt-2"><a href="#" class="text-decoration-none">Quên mật khẩu?</a></p>
+              <p class="mt-2">
+                <a href="#" id="forgotPasswordLink" class="text-decoration-none">Quên mật khẩu?</a>
+              </p>
             </form>
+
+
+          </div>
+
+          <!-- Modal Quên Mật Khẩu -->
+          <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Quên Mật Khẩu</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <input type="email" id="forgotEmail" class="form-control mb-2" placeholder="Nhập email">
+                  <button id="sendOtpBtn" class="btn btn-primary w-100">Gửi OTP</button>
+
+                  <div id="otpSection" style="display:none;">
+                    <input type="text" id="otpCode" class="form-control mt-3" placeholder="Nhập mã OTP">
+                    <input type="password" id="newPassword" class="form-control mt-2" placeholder="Nhập mật khẩu mới">
+                    <button id="resetPasswordBtn" class="btn btn-success w-100 mt-2">Đặt lại mật khẩu</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Register Form -->
@@ -748,6 +781,59 @@
                       <option value="Tutor">Tutor</option>
                     </select>
                   </div>
+
+
+                  <!-- Trường dành cho Tutor -->
+                  <div id="tutorFields" style="display: none;">
+                    <div class="mb-3">
+                      <label for="gender" class="form-label fw-semibold">Giới tính</label>
+                      <select class="form-control rounded-3 p-2" id="gender">
+                        <option value="0">Nam</option>
+                        <option value="1">Nữ</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="dateOfBirth" class="form-label fw-semibold">Ngày sinh</label>
+                      <input type="date" class="form-control rounded-3 p-2" id="dateOfBirth">
+                    </div>
+                    <div class="mb-3">
+                      <label for="address" class="form-label fw-semibold">Địa chỉ</label>
+                      <input type="text" class="form-control rounded-3 p-2" id="address" placeholder="Nhập địa chỉ">
+                    </div>
+                    <div class="mb-3">
+                      <label for="qualification" class="form-label fw-semibold">Bằng cấp</label>
+                      <input type="text" class="form-control rounded-3 p-2" id="qualification" placeholder="Nhập bằng cấp">
+                    </div>
+                    <div class="mb-3">
+                      <label for="experience" class="form-label fw-semibold">Kinh nghiệm (năm)</label>
+                      <input type="number" class="form-control rounded-3 p-2" id="experience" min="0" placeholder="Nhập số năm kinh nghiệm">
+                    </div>
+                    <div class="mb-3">
+                      <label for="bio" class="form-label fw-semibold">Giới thiệu</label>
+                      <textarea class="form-control rounded-3 p-2" id="bio" placeholder="Giới thiệu bản thân"></textarea>
+                    </div>
+                  </div>
+
+                  <!-- Trường dành cho Student -->
+                  <div id="studentFields" style="display: none;">
+                    <div class="mb-3">
+                      <label for="parentName" class="form-label fw-semibold">Tên phụ huynh</label>
+                      <input type="text" class="form-control rounded-3 p-2" id="parentName" placeholder="Nhập tên phụ huynh">
+                    </div>
+                    <div class="mb-3">
+                      <label for="grade" class="form-label fw-semibold">Lớp học</label>
+                      <input type="text" class="form-control rounded-3 p-2" id="grade" placeholder="Nhập lớp học">
+                    </div>
+                    <div class="mb-3">
+                      <label for="addressStudent" class="form-label fw-semibold">Địa chỉ</label>
+                      <input type="text" class="form-control rounded-3 p-2" id="addressStudent" placeholder="Nhập địa chỉ">
+                    </div>
+                    <div class="mb-3">
+                      <label for="notes" class="form-label fw-semibold">Ghi chú</label>
+                      <textarea class="form-control rounded-3 p-2" id="notes" placeholder="Nhập ghi chú (nếu có)"></textarea>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
@@ -763,6 +849,7 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const registerForm = document.querySelector("#registerForm");
+      const loginRegisterTabs = new bootstrap.Tab(document.querySelector("#login-tab"));
 
       registerForm.addEventListener("submit", async function (event) {
         event.preventDefault();
@@ -775,31 +862,91 @@
         const username = document.getElementById("username").value;
         const role = document.getElementById("registerRole").value;
 
+        // Kiểm tra mật khẩu có khớp không
+        if (password.length < 6) {
+          Swal.fire({
+            title: "Lỗi!",
+            text: "Mật khẩu phải có ít nhất 6 ký tự!",
+            icon: "error",
+            confirmButtonText: "Thử lại"
+          });
+          return;
+        }
+
+        // Tạo đối tượng dữ liệu gửi đi
+        let requestBody = {
+          username: username,
+          fullname: fullname,
+          phoneNumber: phoneNumber,
+          email: email,
+          password: password,
+          role: role
+        };
+
+        // Nếu role là Tutor, thêm thông tin Tutor
+        if (role === "Tutor") {
+          requestBody.gender = document.getElementById("gender").value === "1";
+          requestBody.dateOfBirth = document.getElementById("dateOfBirth").value;
+          requestBody.address = document.getElementById("address").value;
+          requestBody.qualification = document.getElementById("qualification").value;
+          requestBody.experience = document.getElementById("experience").value;
+          requestBody.bio = document.getElementById("bio").value;
+        }
+
+        // Nếu role là Student, thêm thông tin Student
+        if (role === "Student") {
+          requestBody.parentName = document.getElementById("parentName").value;
+          requestBody.grade = document.getElementById("grade").value;
+          requestBody.address = document.getElementById("addressStudent").value;
+          requestBody.notes = document.getElementById("notes").value;
+        }
+
+        // Kiểm tra log dữ liệu gửi đi
+        console.log("Dữ liệu gửi lên:", JSON.stringify(requestBody, null, 2));
+
         // Gửi request đến backend
         const response = await fetch("http://localhost:8080/users/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            username: username, // Giả sử username là email
-            fullname: fullname,
-            phoneNumber: phoneNumber,
-            email: email,
-            passwordHash: password,
-            role: role
-          }),
+          body: JSON.stringify(requestBody),
         });
 
         const result = await response.text();
         if (response.ok) {
-          alert("Đăng ký thành công!");
-          registerForm.reset(); // Xóa dữ liệu form sau khi đăng ký thành công
+          Swal.fire({
+            title: "Đăng ký thành công!",
+            text: "Bây giờ bạn có thể đăng nhập.",
+            icon: "success",
+            confirmButtonText: "Đăng nhập ngay"
+          }).then(() => {
+            registerForm.reset();
+            loginRegisterTabs.show();
+          });
         } else {
-          alert("Lỗi: " + result);
+          Swal.fire({
+            title: "Lỗi!",
+            text: result,
+            icon: "error",
+            confirmButtonText: "Thử lại"
+          });
         }
       });
     });
+
+
+  </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+  const forgotPasswordLink = document.getElementById("forgotPasswordLink");
+  const forgotPasswordModal = new bootstrap.Modal(document.getElementById("forgotPasswordModal"));
+
+  forgotPasswordLink.addEventListener("click", function (event) {
+  event.preventDefault(); // Ngăn chặn chuyển hướng trang
+  forgotPasswordModal.show(); // Mở modal quên mật khẩu
+    });
+  });
   </script>
 
 </body>

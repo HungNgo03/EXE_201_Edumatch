@@ -42,6 +42,75 @@ body {
   font-family: 'Roboto', sans-serif;
   background-color: #f8f9fa;
 }
+.filter-section .form-control {
+  width: 100%;
+}
+
+.filter-inputs .flex-fill {
+  flex: 1;
+}
+
+.filter-inputs .form-control {
+  height: 40px; /* Chiều cao của input, select */
+}
+.filter-section .form-control {
+  width: 100%;
+  max-width: 300px; /* Điều chỉnh chiều rộng tối đa */
+}
+.filter-section {
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  z-index: 1; /* Đảm bảo không bị che khuất */
+  display: block; /* Đảm bảo phần tử được hiển thị */
+}
+
+#tutor-list {
+  margin-top: 20px; /* Tạo thêm không gian giữa phần lọc và danh sách gia sư */
+}
+
+.tutor-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tutor-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.filter-section {
+  margin-bottom: 20px;
+  z-index: 1;
+  position: relative;
+}
+
+#tutor-list {
+  z-index: 2;
+  margin-top: 20px;
+  position: relative; /* Thêm position relative để đảm bảo z-index hoạt động chính xác */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Căn chỉnh các thẻ gia sư đều */
+}
+
+.tutor-card {
+  flex: 1 1 calc(50% - 10px); /* Điều chỉnh để các thẻ gia sư không bị chồng lên nhau */
+  margin-bottom: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 h1, h5, p {
   font-family: 'Roboto', sans-serif !important;
 }
