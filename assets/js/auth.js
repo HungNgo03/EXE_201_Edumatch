@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (response.ok) {
             const data = await response.json();
-            localStorage.setItem("user", JSON.stringify({ username: data.username }));
+            localStorage.setItem("user", JSON.stringify({ username: data.username, userId : data.userID }));
             localStorage.setItem("userID", data.userID);
             localStorage.setItem("role", data.role);// Lưu session vào localStorage
             authButton.classList.add("d-none");
@@ -42,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: "Đăng nhập thành công!",
                 icon: "success",
                 confirmButtonText: "OK"
+            }).then(() => {
+                location.reload();
             });
         } else {
             Swal.fire({

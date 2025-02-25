@@ -1,524 +1,604 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDUMATCH Forum</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <link href="assets/css/main.css" rel="stylesheet">
-    <style>
-        .post-container {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 53rem;
-        }
-        .post-title {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .post-content {
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        .post-actions {
-            margin-top: 10px;
-        }
-        .post-actions button {
-            background-color: #ff6347;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-        .post-actions button:hover {
-            background-color: #e5533d;
-        }
-        .sidebar {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-right: 20px;
-        }
-        .sidebar h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-        .sidebar input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .sidebar select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .sidebar button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .sidebar button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EDUMATCH Forum</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+  <style>
+    .post-container {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 53rem;
+    }
+
+    .post-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .post-content {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .post-actions {
+      margin-top: 10px;
+    }
+
+    .post-actions button {
+      background-color: #ff6347;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .post-actions button:hover {
+      background-color: #e5533d;
+    }
+
+    .sidebar {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-right: 20px;
+    }
+
+    .sidebar h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .sidebar input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .sidebar select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .sidebar button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .sidebar button:hover {
+      background-color: #0056b3;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .page-button {
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 8px 12px;
+      margin: 0 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .page-button:hover {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
+
+    .page-button.active {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
+  </style>
 </head>
+
 <body class="index-page">
-    <header id="header" class="header d-flex align-items-center sticky-top">
-        <div class="container position-relative d-flex align-items-center justify-content-between">
-          <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-            <img src="assets/img/EDUMATCH.jpg" alt="">
-            <h1 class="sitename">EDUMATCH</h1>
-            <span>.</span>
-          </a>
-          <nav id="navmenu" class="navmenu">
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <img src="assets/img/EDUMATCH.jpg" alt="">
+        <h1 class="sitename">EDUMATCH</h1>
+        <span>.</span>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active">Home<br></a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="forum.html">Diễn đàn</a></li>
+          <li><a href="findTeacher-page.html">Tìm Gia Sư</a></li>
+          <li><a href="payment.html">Payment</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-                <li><a href="#hero" class="active">Home<br></a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="forum.html">Diễn đàn</a></li>
-                <li><a href="findTeacher-page.html">Tìm Gia Sư</a></li>
-                <li><a href="#chefs">Chefs</a></li>
-                <li><a href="#gallery">Gallery</a></li>
-                <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                  <ul>
-                    <li><a href="#">Dropdown Item 1</a></li>
-                    <li class="dropdown"><a href="#"><span>Dropdown Item 2</span> <i class="bi bi-chevron-right toggle-dropdown"></i></a>
-                      <ul>
-                        <li><a href="#">Dropdown Item 1</a></li>
-                        <li><a href="#">Dropdown Item 2</a></li>
-                        <li><a href="#">Dropdown Item 3</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="#">Dropdown Item 3</a></li>
-              <li><a href="#contact">Liên hệ</a></li>
+              <li><a href="#">Dropdown 1</a></li>
+              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
+                    class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="#">Deep Dropdown 1</a></li>
+                  <li><a href="#">Deep Dropdown 2</a></li>
+                  <li><a href="#">Deep Dropdown 3</a></li>
+                  <li><a href="#">Deep Dropdown 4</a></li>
+                  <li><a href="#">Deep Dropdown 5</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Dropdown 2</a></li>
+              <li><a href="#">Dropdown 3</a></li>
+              <li><a href="#">Dropdown 4</a></li>
             </ul>
-            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-          </nav>
-          <a id="authButton" class="btn-getstarted" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</a>
+          </li>
+          <li><a href="#contact">Liên hệ</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <a id="authButton" class="btn-getstarted" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng
+        nhập</a>
       <div id="userDropdown" class="d-none dropdown">
-        <button class="btn btn-secondary dropdown-toggle username-text" type="button" id="userDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle username-text" type="button" id="userDropdownButton"
+          data-bs-toggle="dropdown" aria-expanded="false">
           Tài khoản
         </button>
         <ul class="dropdown-menu" aria-labelledby="userDropdownButton">
-          <li><a class="dropdown-item" href="#" id="logoutButton">Đăng xuất</a></li>
+          <li><a class="dropdown-item" href="profile.html" id="profileLink">Thông tin tài khoản</a></li>
+
+          <li><a class="dropdown-item" href="index.html" id="logoutButton">Đăng xuất</a></li>
         </ul>
       </div>
 
-        </div>
-    </header>
-    <div class="container mt-5 d-flex">
-      <div class="sidebar">
-          <a class="btn btn-danger" id="addPostButton" style="    margin-bottom: 2rem;
-          width: 100%;
-          padding: 10px;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;">Thêm bài viết mới</a>
-            <h3>Bộ lọc bài viết</h3>
-            <input type="text" placeholder="Tìm kiếm..." id="search-input">
-            <select id="subject-select">
-              <option value="">Chọn môn học</option>
-            </select>
-            <button id="search-button">Tìm kiếm</button>
-        </div>
-        <div class="content" id="post-container">
-          <!-- Posts will be dynamically inserted here -->
-        </div>
-      </div>
-      
-      <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-      <script src="assets/vendor/aos/aos.js"></script>
-      <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-      <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-      <script src="assets/js/main.js"></script>
-      <script type="module">
-        import Post from './Post.js';
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            const postContainer = document.getElementById('post-container');
-            const searchInput = document.getElementById('search-input');
-            const searchButton = document.getElementById('search-button');
-            const subjectSelect = document.getElementById('subject-select');
-    
-            function fetchPosts(url) {
-                console.log("Fetching posts from URL:", url); // Debugging URL
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log("API Response:", data); // Kiểm tra dữ liệu trả về
-                        postContainer.innerHTML = ''; // Clear existing posts
-    
-                        // Kiểm tra nếu data có thuộc tính result và nó là một mảng
-                        if (data.result && Array.isArray(data.result) && data.result.length > 0) {
-                            data.result.forEach(postData => {
-                                console.log("Post Data:", postData); // Debugging postData
-                                const post = new Post(
-                                    postData.id,
-                                    postData.UserID, // Sửa lại từ userID -> UserID
-                                    postData.fullname,
-                                    postData.SubjectID, // Sửa lại từ subjectID -> SubjectID
-                                    postData.subjectname,
-                                    postData.title,
-                                    postData.content,
-                                    postData.rating,
-                                    postData.createdAt,
-                                    postData.updatedAt
-                                );
-                                console.log("Post Object:", post); // Debugging post object
-                                const postElement = document.createElement('div');
-                                postElement.classList.add('post-container');
-                                postElement.innerHTML = `
-                                    <div class="post-user">Người tạo bài viết: ${post.fullname}</div>
-                                    <div class="post-subject">Môn học: ${post.subjectname}</div>
-                                    <div class="post-title">Tiêu đề bài viết: ${post.title}</div>
-                                    <div class="post-content">${post.content}</div>
-                                    <div class="post-rating">Số sao đánh giá: ${post.rating}</div>
-                                    <div class="post-created-at">Ngày tạo bài viết: ${post.createdAt}</div>
-                                    <div class="post-updated-at">Ngày cập nhật bài viết: ${post.updatedAt}</div>
-                                    <div class="post-actions">
-                                        <button><i class="fas fa-thumbs-up"></i> Like</button>
-                                        <button><i class="fas fa-comment"></i> Comment</button>
-                                    </div>
-                                `;
-                                postContainer.appendChild(postElement);
-                            });
-                        } else {
-                          postContainer.innerHTML = '<p>Không có kết quả nào được hiển thị</p>';
-                            console.error("Data.result is not an array or is empty:", data.result);
-                        }
-                    })
-                    .catch(error => console.error('Error fetching posts:', error));
-            }
-
-            function fetchSubjects() {
-                fetch('http://localhost:8080/Post/getAllSubject')
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log("Subjects API Response:", data); // Debugging subjects data
-                        if (data.result && Array.isArray(data.result)) {
-                            data.result.forEach(subject => {
-                                const option = document.createElement('option');
-                                option.value = subject;
-                                option.textContent = subject;
-                                subjectSelect.appendChild(option);
-                            });
-                        } else {
-                          postContainer.innerHTML = '<p>Không có kết quả nào được hiển thị</p>';
-                            console.error("Data.result is not an array:", data.result);
-                        }
-                    })
-                    .catch(error => console.error('Error fetching subjects:', error));
-            }
-    
-            // Fetch all posts on page load
-            fetchPosts('http://localhost:8080/Post/getAllPost');
-            // Fetch all subjects on page load
-            fetchSubjects();
-    
-            // Search by username and subject when button is clicked
-            searchButton.addEventListener('click', function() {
-                const username = searchInput.value;
-                const subjectname = subjectSelect.value;
-                console.log("Searching by username:", username); // Debugging username
-                console.log("Filtering by subject:", subjectname); // Debugging subjectname
-                let url = 'http://localhost:8080/Post/getAllPost';
-                if (username && subjectname) {
-                    url = `http://localhost:8080/Post/findPostsBySubjectAndUsername?subjectname=${subjectname}&username=${username}`;
-                } else if (username) {
-                    url = `http://localhost:8080/Post/findPostsByUsername?username=${username}`;
-                } else if (subjectname) {
-                    url = `http://localhost:8080/Post/findPostsBySubject?subjectname=${subjectname}`;
-                }
-                fetchPosts(url);
-            });
-        });
-    </script>
-    <!-- Modal for adding post -->
-<div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content shadow-lg border-0 rounded-4">
-      <div class="modal-header border-0 bg-danger text-white text-center">
-        <h2 class="modal-title w-100 fw-bold display-5" id="addPostModalLabel">Thêm bài viết mới</h2>
-        <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-5">
-        <form id="addPostForm">
-            <div class="mb-3">
-                <label for="postTitle" class="form-label fw-semibold">Tiêu đề</label>
-                <input type="text" class="form-control rounded-3 p-2" id="postTitle" placeholder="Nhập tiêu đề" required>
-            </div>
-            <div class="mb-3">
-                <label for="postContent" class="form-label fw-semibold">Nội dung</label>
-                <textarea class="form-control rounded-3 p-2" id="postContent" rows="5" placeholder="Nhập nội dung" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="modal-subject-select" class="form-label fw-semibold">Chọn môn học</label>
-                <select class="form-control rounded-3 p-2" id="modal-subject-select" required>
-                    <option value="">Chọn môn học</option>
-                </select>
-            </div>
-            <button type="submit" class="btn w-100 py-2 rounded-3 text-white" style="background-color: #CE1212;">Đăng bài viết</button>
-        </form>
     </div>
+  </header>
+  <div class="container mt-5 d-flex">
+    <div class="sidebar">
+      <a class="btn btn-danger" id="addPostButton"
+        style="margin-bottom: 2rem; width: 100%; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
+        Thêm bài viết mới</a>
+      <h3>Bộ lọc bài viết</h3>
+      <input type="text" placeholder="Tìm kiếm..." id="search-input">
+      <select id="subject-select">
+        <option value="">Chọn môn học</option>
+      </select>
+      <button id="search-button">Tìm kiếm</button>
+    </div>
+    <div class="content" id="post-container">
+      <!-- Posts will be dynamically inserted here -->
     </div>
   </div>
-</div>
-    <!-- Login/Register Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content shadow-lg border-0 rounded-4">
-          <div class="modal-header border-0 bg-danger text-white text-center">
-            <h2 class="modal-title w-100 fw-bold display-5" id="loginModalLabel">🎉 Chào mừng bạn! 🎉</h2>
-            <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body p-5">
-            <!-- Tabs for Login & Register -->
-            <ul class="nav nav-pills nav-justified mb-3" id="loginRegisterTabs" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Đăng nhập</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link fw-bold" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Đăng ký</button>
-              </li>
-            </ul>
-    
-            <div class="tab-content mt-3">
-              <!-- Login Form -->
-              <div class="tab-pane fade show active" id="login" role="tabpanel">
-                <form id="loginForm" class="d-flex flex-column align-items-center">
-                  <div class="mb-3 w-50 text-start">
-                    <label for="loginUsername" class="form-label fw-semibold">Username</label>
-                    <input type="text" class="form-control rounded-3 p-2" id="loginUsername" name="username" placeholder="Nhập username" required>
+
+  <!-- Pagination -->
+  <div class="pagination" id="pagination-container">
+    <!-- Pagination buttons will be dynamically inserted here -->
+  </div>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script type="module">
+    import Post from './Post.js';
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const postContainer = document.getElementById('post-container');
+      const searchInput = document.getElementById('search-input');
+      const searchButton = document.getElementById('search-button');
+      const subjectSelect = document.getElementById('subject-select');
+      const paginationContainer = document.getElementById('pagination-container');
+
+      let currentPage = 0;
+      const pageSize = 5;
+      let currentUrl = 'http://localhost:8080/Post/getAllPost1';
+
+      function fetchPaginatedPosts(url, pageNo = 0, pageSize = 5) {
+        console.log("Fetching paginated posts from URL:", url); // Debugging URL
+        fetch(`${url}?pageNo=${pageNo}&pageSize=${pageSize}`)
+          .then(response => response.json())
+          .then(data => {
+            console.log("API Response:", data);
+            postContainer.innerHTML = '';
+
+            if (data.result && data.result.content && Array.isArray(data.result.content) && data.result.content.length > 0) {
+              data.result.content.forEach(postData => {
+                const post = new Post(
+                  postData.id,
+                  postData.userID,
+                  postData.username,
+                  postData.subjectID,
+                  postData.subjectname,
+                  postData.title,
+                  postData.content,
+                  postData.rating,
+                  postData.createdAt,
+                  postData.updatedAt
+                );
+                const postElement = createPostElement(post);
+                postContainer.appendChild(postElement);
+              });
+              updatePagination(data.result.totalPages, pageNo);
+            } else {
+              postContainer.innerHTML = '<p>Không có kết quả nào được hiển thị</p>';
+              console.error("Data.result is not an array or is empty:", data.result);
+            }
+          })
+          .catch(error => console.error('Error fetching posts:', error));
+      }
+
+      function fetchAllPosts(url) {
+        console.log("Fetching all posts from URL:", url);
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            console.log("API Response:", data);
+            postContainer.innerHTML = '';
+
+            if (data.result && Array.isArray(data.result)) {
+              data.result.forEach(postData => {
+                const post = new Post(
+                  postData.id,
+                  postData.userID,
+                  postData.username,
+                  postData.subjectID,
+                  postData.subjectname,
+                  postData.title,
+                  postData.content,
+                  postData.rating,
+                  postData.createdAt,
+                  postData.updatedAt
+                );
+                const postElement = createPostElement(post);
+                postContainer.appendChild(postElement);
+              });
+              paginationContainer.innerHTML = ''; // Remove pagination
+            } else {
+              postContainer.innerHTML = '<p>Không có kết quả nào được hiển thị</p>';
+              console.error("Data.result is not an array or is empty:", data.result);
+            }
+          })
+          .catch(error => console.error('Error fetching posts:', error));
+      }
+
+      function createPostElement(post) {
+        const postElement = document.createElement('div');
+        postElement.classList.add('post-container');
+        postElement.innerHTML = `
+                  <div class="post-user">Người tạo bài viết: ${post.username}</div>
+                  <div class="post-subject">Môn học: ${post.subjectname}</div>
+                  <div class="post-title">Tiêu đề bài viết: ${post.title}</div>
+                  <div class="post-content">${post.content}</div>
+                  <div class="post-rating">Số sao đánh giá: ${post.rating}</div>
+                  <div class="post-created-at">Ngày tạo bài viết: ${post.createdAt}</div>
+                  <div class="post-updated-at">Ngày cập nhật bài viết: ${post.updatedAt}</div>
+                  <div class="post-actions">
+                      <button><i class="fas fa-thumbs-up"></i> Like</button>
+                      <button><i class="fas fa-comment"></i> Comment</button>
                   </div>
-                  <div class="mb-3 w-50 text-start">
-                    <label for="loginPassword" class="form-label fw-semibold">Mật khẩu</label>
-                    <input type="password" class="form-control rounded-3 p-2" id="loginPassword" name="password" placeholder="Nhập mật khẩu" required>
-                  </div>
-                  <button type="submit" class="btn text-white rounded-3 mt-2 px-4 py-2" style="background-color: #CE1212;">Đăng nhập</button>
-                  <p class="mt-2"><a href="#" class="text-decoration-none">Quên mật khẩu?</a></p>
-                </form>
-              </div>
-    
-              <!-- Register Form -->
-              <div class="tab-pane fade" id="register" role="tabpanel">
-                <form id="registerForm">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="mb-3">
-                        <label for="registerName" class="form-label fw-semibold">Họ và Tên</label>
-                        <input type="text" class="form-control rounded-3 p-2" id="registerName" placeholder="Nhập họ tên" required>
-                      </div>
-                      <div class="mb-3">
-                        <label for="registerPhone" class="form-label fw-semibold">Số điện thoại</label>
-                        <input type="tel" class="form-control rounded-3 p-2" id="registerPhone" placeholder="Nhập số điện thoại" required>
-                      </div>
-                      <div class="mb-3">
-                        <label for="registerEmail" class="form-label fw-semibold">Email</label>
-                        <input type="email" class="form-control rounded-3 p-2" id="registerEmail" placeholder="Nhập email" required>
-                      </div>
-                    </div>
-    
-                    <div class="col-md-6">
-                      <div class="mb-3">
-                        <label for="registerPassword" class="form-label fw-semibold">Mật khẩu</label>
-                        <input type="password" class="form-control rounded-3 p-2" id="registerPassword" placeholder="Tạo mật khẩu" required>
-                      </div>
-                      <div class="mb-3">
-                        <label for="username" class="form-label fw-semibold">Username</label>
-                        <input type="text" class="form-control rounded-3 p-2" id="username" placeholder="Nhập username" required>
-                      </div>
-                      <div class="mb-3">
-                        <label for="registerRole" class="form-label fw-semibold">Chọn vai trò</label>
-                        <select class="form-control rounded-3 p-2" id="registerRole" required>
-                          <option value="Student">Student</option>
-                          <option value="Tutor">Tutor</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-    
-                  <button type="submit" class="btn w-100 py-2 rounded-3 text-white" style="background-color: #CE1212;">Đăng ký</button>
-                </form>
-              </div>
-    
+              `;
+        return postElement;
+      }
+
+      function fetchSubjects() {
+        fetch('http://localhost:8080/Post/getAllSubject')
+          .then(response => response.json())
+          .then(data => {
+            console.log("Subjects API Response:", data);
+            if (data.result && Array.isArray(data.result)) {
+              data.result.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                subjectSelect.appendChild(option);
+              });
+            } else {
+              postContainer.innerHTML = '<p>Không có kết quả nào được hiển thị</p>';
+              console.error("Data.result is not an array:", data.result);
+            }
+          })
+          .catch(error => console.error('Error fetching subjects:', error));
+      }
+
+      function updatePagination(totalPages, currentPage) {
+        paginationContainer.innerHTML = '';
+        for (let i = 0; i < totalPages; i++) {
+          const pageButton = document.createElement('button');
+          pageButton.textContent = i + 1;
+          pageButton.classList.add('page-button');
+          if (i === currentPage) {
+            pageButton.classList.add('active');
+          }
+          pageButton.addEventListener('click', () => {
+            currentPage = i;
+            fetchPaginatedPosts(currentUrl, currentPage, pageSize);
+          });
+          paginationContainer.appendChild(pageButton);
+        }
+      }
+
+      // Fetch all posts on page load
+      fetchPaginatedPosts(currentUrl, currentPage, pageSize);
+      // Fetch all subjects on page load
+      fetchSubjects();
+
+      // Search event listener
+      searchButton.addEventListener('click', function () {
+        const username = searchInput.value;
+        const subjectname = subjectSelect.value;
+        let url = 'http://localhost:8080/Post/getAllPost'; // Default to getAllPost for search
+
+        if (username && subjectname) {
+          url = `http://localhost:8080/Post/findPostsBySubjectAndUsername?subjectname=${subjectname}&username=${username}`;
+        } else if (username) {
+          url = `http://localhost:8080/Post/findPostsByUsername?username=${username}`;
+        } else if (subjectname) {
+          url = `http://localhost:8080/Post/findPostsBySubject?subjectname=${subjectname}`;
+        }
+
+        currentUrl = url;
+        fetchAllPosts(currentUrl);
+      });
+    });
+  </script>
+  <!-- Modal for adding post -->
+  <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content shadow-lg border-0 rounded-4">
+        <div class="modal-header border-0 bg-danger text-white text-center">
+          <h2 class="modal-title w-100 fw-bold display-5" id="addPostModalLabel">Thêm bài viết mới</h2>
+          <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-5">
+          <form id="addPostForm">
+            <div class="mb-3">
+              <label for="postTitle" class="form-label fw-semibold">Tiêu đề</label>
+              <input type="text" class="form-control rounded-3 p-2" id="postTitle" placeholder="Nhập tiêu đề" required>
             </div>
+            <div class="mb-3">
+              <label for="postContent" class="form-label fw-semibold">Nội dung</label>
+              <textarea class="form-control rounded-3 p-2" id="postContent" rows="5" placeholder="Nhập nội dung"
+                required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="modal-subject-select" class="form-label fw-semibold">Chọn môn học</label>
+              <select class="form-control rounded-3 p-2" id="modal-subject-select" required>
+                <option value="">Chọn môn học</option>
+              </select>
+            </div>
+            <button type="submit" class="btn w-100 py-2 rounded-3 text-white" style="background-color: #CE1212;">Đăng
+              bài viết</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Login/Register Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content shadow-lg border-0 rounded-4">
+        <div class="modal-header border-0 bg-danger text-white text-center">
+          <h2 class="modal-title w-100 fw-bold display-5" id="loginModalLabel">🎉 Chào mừng bạn! 🎉</h2>
+          <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-5">
+          <!-- Tabs for Login & Register -->
+          <ul class="nav nav-pills nav-justified mb-3" id="loginRegisterTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
+                type="button" role="tab">Đăng nhập</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link fw-bold" id="register-tab" data-bs-toggle="tab" data-bs-target="#register"
+                type="button" role="tab">Đăng ký</button>
+            </li>
+          </ul>
+
+          <div class="tab-content mt-3">
+            <!-- Login Form -->
+            <div class="tab-pane fade show active" id="login" role="tabpanel">
+              <form id="loginForm" class="d-flex flex-column align-items-center">
+                <div class="mb-3 w-50 text-start">
+                  <label for="loginUsername" class="form-label fw-semibold">Username</label>
+                  <input type="text" class="form-control rounded-3 p-2" id="loginUsername" name="username"
+                    placeholder="Nhập username" required>
+                </div>
+                <div class="mb-3 w-50 text-start">
+                  <label for="loginPassword" class="form-label fw-semibold">Mật khẩu</label>
+                  <input type="password" class="form-control rounded-3 p-2" id="loginPassword" name="password"
+                    placeholder="Nhập mật khẩu" required>
+                </div>
+                <button type="submit" class="btn text-white rounded-3 mt-2 px-4 py-2"
+                  style="background-color: #CE1212;">Đăng nhập</button>
+                <p class="mt-2"><a href="#" class="text-decoration-none">Quên mật khẩu?</a></p>
+              </form>
+            </div>
+
+            <!-- Register Form -->
+            <div class="tab-pane fade" id="register" role="tabpanel">
+              <form id="registerForm">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="registerName" class="form-label fw-semibold">Họ và Tên</label>
+                      <input type="text" class="form-control rounded-3 p-2" id="registerName" placeholder="Nhập họ tên"
+                        required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="registerPhone" class="form-label fw-semibold">Số điện thoại</label>
+                      <input type="tel" class="form-control rounded-3 p-2" id="registerPhone"
+                        placeholder="Nhập số điện thoại" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="registerEmail" class="form-label fw-semibold">Email</label>
+                      <input type="email" class="form-control rounded-3 p-2" id="registerEmail" placeholder="Nhập email"
+                        required>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="registerPassword" class="form-label fw-semibold">Mật khẩu</label>
+                      <input type="password" class="form-control rounded-3 p-2" id="registerPassword"
+                        placeholder="Tạo mật khẩu" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="username" class="form-label fw-semibold">Username</label>
+                      <input type="text" class="form-control rounded-3 p-2" id="username" placeholder="Nhập username"
+                        required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="registerRole" class="form-label fw-semibold">Chọn vai trò</label>
+                      <select class="form-control rounded-3 p-2" id="registerRole" required>
+                        <option value="Student">Student</option>
+                        <option value="Tutor">Tutor</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn w-100 py-2 rounded-3 text-white"
+                  style="background-color: #CE1212;">Đăng ký</button>
+              </form>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const addPostButton = document.getElementById('addPostButton');
-          const addPostModal = new bootstrap.Modal(document.getElementById('addPostModal'));
-          const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-      
-          addPostButton.addEventListener('click', function() {
-              const user = JSON.parse(localStorage.getItem('user'));
-              if (user) {
-                  addPostModal.show();
-              } else {
-                  loginModal.show();
-              }
-          });
-      
-          const addPostForm = document.getElementById('addPostForm');
-          addPostForm.addEventListener('submit', function(event) {
-              event.preventDefault();
-              const postTitle = document.getElementById('postTitle').value;
-              const postContent = document.getElementById('postContent').value;
-              const subjectSelect = document.getElementById('subject-select');
-              const selectedSubject = subjectSelect.value;
-              const user = JSON.parse(localStorage.getItem('user'));
-      
-              fetch('http://localhost:8080/Post/addPost', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                      title: postTitle,
-                      content: postContent,
-                      username: user.username,
-                      subject: selectedSubject
-                  }),
-              })
-              .then(response => response.json())
-              .then(data => {
-                  if (data.status === 'OK') {
-                      alert('Bài viết đã được đăng thành công!');
-                      addPostForm.reset();
-                      addPostModal.hide();
-                      // Optionally, refresh the posts
-                      fetchPosts('http://localhost:8080/Post/getAllPost');
-                  } else {
-                      alert('Lỗi: ' + data.message);
-                      console.error('Lỗi ở đây: ', localStorage.getItem('user'));
-                  }
-              })
-              .catch(error => console.error('Error adding post:', error));
-          });
-      
-          function fetchSubjects() {
-              fetch('http://localhost:8080/Post/getAllSubject')
-                  .then(response => response.json())
-                  .then(data => {
-                      if (data.result && Array.isArray(data.result)) {
-                          const subjectSelect = document.getElementById('subject-select');
-                          console.log("Subject Select Element:", subjectSelect); // Debugging subjectSelect element
-                          data.result.forEach(subject => {
-                              const option = document.createElement('option');
-                              option.value = subject;
-                              option.textContent = subject;
-                              subjectSelect.appendChild(option);
-                          });
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const addPostButton = document.getElementById("addPostButton");
+      const addPostModal = new bootstrap.Modal(document.getElementById('addPostModal'));
+      const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
 
-                          // Populate the modal subject select as well
-                          const modalSubjectSelect = document.getElementById('modal-subject-select');
-                          data.result.forEach(subject => {
-                              const option = document.createElement('option');
-                              option.value = subject;
-                              option.textContent = subject;
-                              modalSubjectSelect.appendChild(option);
-                          });
-                      } else {
-                          console.error("Data.result is not an array:", data.result);
-                      }
-                  })
-                  .catch(error => console.error('Error fetching subjects:', error));
-          }
-      
-          // Fetch all subjects on page load
-          fetchSubjects();
-      });
-      </script>
-      <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          const registerForm = document.querySelector("#registerForm");
-    
-          registerForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
-    
-            // Lấy dữ liệu từ form
-            const fullname = document.getElementById("registerName").value;
-            const phoneNumber = document.getElementById("registerPhone").value;
-            const email = document.getElementById("registerEmail").value;
-            const password = document.getElementById("registerPassword").value;
-            const username = document.getElementById("username").value;
-            const role = document.getElementById("registerRole").value;
-    
-            // Gửi request đến backend
-            const response = await fetch("http://localhost:8080/users/register", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                username: username, // Giả sử username là email
-                fullname: fullname,
-                phoneNumber: phoneNumber,
-                email: email,
-                passwordHash: password,
-                role: role
-              }),
-            });
-    
-            const result = await response.text();
-            if (response.ok) {
-              alert("Đăng ký thành công!");
-              registerForm.reset(); // Xóa dữ liệu form sau khi đăng ký thành công
-            } else {
-              alert("Lỗi: " + result);
-            }
+      addPostButton.addEventListener("click", function (event) {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user) {
+          event.preventDefault();
+          Swal.fire({
+            icon: 'warning',
+            title: 'Bạn cần đăng nhập để thêm bài viết.',
+            showConfirmButton: true
           });
-        });
-      </script>
-      <script>
-        document.getElementById("loginForm").addEventListener("submit", async function (event) {
-        event.preventDefault();
-        const username = document.getElementById("loginUsername").value;
-        const password = document.getElementById("loginPassword").value;
-
-        const response = await fetch("http://localhost:8080/users/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem("user", JSON.stringify({ username: data.username })); // Lưu session vào localStorage
-            authButton.classList.add("d-none");
-            userDropdownButton.textContent = data.username;
-            userDropdown.classList.remove("d-none");
-            loginModal.hide();
-            alert("Đăng nhập thành công!");
-        } else {
-            alert("Đăng nhập thất bại!");
+          loginModal.show();
+          return;
         }
+        addPostModal.show();
+      });
+
+      const addPostForm = document.querySelector("#addPostForm");
+
+      addPostForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        // Lấy dữ liệu từ form
+        const title = document.getElementById("postTitle").value;
+        const content = document.getElementById("postContent").value;
+        const subjectID = document.getElementById("modal-subject-select").value;
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Bạn cần đăng nhập để thêm bài viết.',
+            showConfirmButton: true
+          });
+          loginModal.show();
+          return;
+        }
+
+        const userID = user.userId;
+
+        // Gửi request đến backend
+        const response = await fetch("http://localhost:8080/Post/addPost", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            UserID: userID,
+            SubjectID: subjectID,
+            Title: title,
+            Content: content,
+            Rating: 5
+          }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Bài viết đã được thêm thành công!',
+            showConfirmButton: false,
+            timer: 1500
+          }).then(() => {
+            addPostForm.reset();
+            addPostModal.hide();
+            location.reload();
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: result.message,
+            showConfirmButton: true
+          });
+          console.error("Error details:", result);
+        }
+      });
+
+      // Fetch subjects and populate the subject select dropdown
+      fetch('http://localhost:8080/Post/getAllSubjectId')
+        .then(response => response.json())
+        .then(data => {
+          const subjectSelect = document.getElementById("modal-subject-select");
+          if (data.result && Array.isArray(data.result)) {
+            data.result.forEach(subject => {
+              const option = document.createElement('option');
+              option.value = subject.id; // Sử dụng SubjectID làm giá trị
+              option.textContent = subject.subjectname; // Hiển thị SubjectName
+              console.log("Subject Option: ", option); // Debugging option
+              subjectSelect.appendChild(option);
+            });
+          } else {
+            console.error("Data.result is not an array:", data.result);
+          }
+        })
+        .catch(error => console.error('Error fetching subjects:', error));
     });
-      </script>
-</body>
-<footer id="footer" class="footer dark-background">
+  </script>
+
+  <footer id="footer" class="footer dark-background">
     <div class="container">
       <div class="row gy-3">
         <div class="col-lg-3 col-md-6 d-flex">
@@ -562,18 +642,21 @@
       </div>
     </div>
     <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Yummy</strong> <span>All Rights Reserved</span></p>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Yummy</strong> <span>All Rights Reserved</span>
+      </p>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->
         <!-- You can delete the links only if you've purchased the pro version. -->
         <!-- Licensing information: https://bootstrapmade.com/license/ -->
         <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href="https://themewagon.com">ThemeWagon</a>
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a
+          href="https://themewagon.com">ThemeWagon</a>
       </div>
     </div>
   </footer>
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
   <!-- Preloader -->
   <div id="preloader"></div>
   <!-- Vendor JS Files -->
@@ -584,9 +667,10 @@
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
-  <script type="module" src= 
-"https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"> 
-</script> 
+  <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js">
+  </script>
+
 </html>
