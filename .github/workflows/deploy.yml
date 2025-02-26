@@ -20,9 +20,6 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            sudo apt-get update
-            sudo apt-get install -y nginx git  
-
             cd /var/www/html
             git pull origin main  # Sao chép mã nguồn từ GitHub vào VPS
 
