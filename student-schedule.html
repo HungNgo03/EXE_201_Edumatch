@@ -28,15 +28,75 @@
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
-    <link href="assets/css/tutorDetail.css" rel="stylesheet">
+    <style>
+        .main-container {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
 
-    <!-- =======================================================
-        * Template Name: Yummy
-        * Template URL: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/
-        * Updated: Aug 07 2024 with Bootstrap v5.3.3
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
+        h3.text-center {
+            font-family: initial;
+            font-weight: normal;
+        }
+
+        table {
+            width: 100%;
+            /* Đảm bảo bảng chiếm 100% chiều rộng của container */
+            table-layout: fixed;
+            /* Giúp điều chỉnh các cột đều */
+        }
+
+        table th,
+        table td {
+            font-size: 14px;
+            /* Giảm kích thước chữ xuống 14px, bạn có thể thay đổi giá trị này */
+            padding: 10px;
+            /* Điều chỉnh khoảng cách bên trong ô */
+            text-align: center;
+        }
+
+        table th:nth-child(1),
+        table td:nth-child(1) {
+            width: 15%;
+            /* Cột MON */
+        }
+
+        table th:nth-child(2),
+        table td:nth-child(2) {
+            width: 15%;
+            /* Cột TUE */
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 15%;
+            /* Cột WED */
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 15%;
+            /* Cột Thurs */
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 15%;
+            /* Cột fri */
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 15%;
+            /* Cột sat */
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 15%;
+            /* Cột cn */
+        }
+    </style>
 </head>
 
 
@@ -82,18 +142,28 @@
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
+            <div id="userDropdown" class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle username-text" type="button" id="userDropdownButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Tài khoản
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="userDropdownButton">
+                    <li><a class="dropdown-item" href="profile.html" id="profileLink">Thông tin tài khoản</a></li>
+                    <li><a class="dropdown-item" href="index.html" id="logoutButton">Đăng xuất</a></li>
+                </ul>
+            </div>
 
-            <a class="btn-getstarted" href="index.html#book-a-table">Đăng nhập</a>
+
+
 
         </div>
     </header>
 
-    <main class="container mt-4">
-        <!-- Thời khóa biểu học sinh -->
+    <main class="container mt-4 main-container">
         <div class="container mt-4">
             <div class="row">
                 <!-- Thời khóa biểu -->
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <h3 class="text-center">Thời Khóa Biểu</h3>
                     <div class="d-flex align-items-center mb-3">
                         <label for="year-select" class="me-2 fw-bold text-danger">YEAR</label>
@@ -106,16 +176,16 @@
                             <!-- Danh sách tuần sẽ được tạo bằng JavaScript -->
                         </select>
                     </div>
-                    <table class="table table-bordered text-center">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>MON</th>
-                                <th>TUE</th>
-                                <th>WED</th>
-                                <th>THU</th>
-                                <th>FRI</th>
-                                <th>SAT</th>
-                                <th>SUN</th>
+                                <th>MON (24/02)</th>
+                                <th>TUE (25/02)</th>
+                                <th>WED (26/02)</th>
+                                <th>THU (27/02)</th>
+                                <th>FRI (28/02)</th>
+                                <th>SAT (01/03)</th>
+                                <th>SUN (02/03)</th>
                             </tr>
                         </thead>
                         <tbody id="schedule-body">
@@ -129,22 +199,33 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const userId = urlParams.get('studentId');  // Get studentId from query string
 
+            const user = JSON.parse(localStorage.getItem("user"));
+            const authButton = document.getElementById("authButton");
+            const userDropdownButton = document.getElementById("userDropdownButton");
+            const userDropdown = document.getElementById("userDropdown");
+            const userId = JSON.parse(localStorage.getItem("userID"));
+            console.log("User: ", userId);
             if (!userId) {
-                alert("Không tìm thấy ID học sinh.");
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Bạn cần đăng nhập để thêm bài viết.',
+                    showConfirmButton: true
+                });
+                loginModal.show();
                 return;
             }
-
-            const user = localStorage.getItem("user");
-            if (!user) {
-                alert("Vui lòng đăng nhập để xem lịch học.");
-                return;
+            if (user) {
+                userDropdownButton.textContent = user.username;
+                userDropdown.classList.remove("d-none");
+            } else {
+                userDropdown.classList.add("d-none");
+                authButton.classList.remove("d-none");
             }
 
-            const userData = JSON.parse(user);
-            const loggedInUserId = userData.userId;  // Lấy userId từ thông tin người dùng trong localStorage
+            const userData = JSON.parse(userId);
+            const loggedInUserId = userId;  // Lấy userId từ thông tin người dùng trong localStorage
 
             const yearSelect = document.getElementById('year-select');
             const weekSelect = document.getElementById('week-select');
@@ -257,17 +338,29 @@
             function updateSchedule() {
                 scheduleBody.innerHTML = "";
                 const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+                const dayDates = {};  // Store dates for each day
+
+                // Get the start and end of the week from the selected week
+                let [weekStart, weekEnd] = weekSelect.value.split(" - ").map(ts => new Date(parseInt(ts)));
+
+                // Calculate the date for each day of the week
+                days.forEach((day, index) => {
+                    let date = new Date(weekStart);
+                    date.setDate(weekStart.getDate() + index); // Increment by day index
+                    dayDates[day] = date.toLocaleDateString('en-GB'); // Format as dd/mm
+                });
+
+                // Update the header to show the dates
+                const headerRow = document.querySelector('thead tr');
+                days.forEach((day, index) => {
+                    const th = headerRow.querySelector(`th:nth-child(${index + 1})`);
+                    th.innerText = `${day} (${dayDates[day]})`;  // Show both day and date
+                });
+
                 let scheduleData = {};
                 days.forEach(day => scheduleData[day] = []);
 
-                if (!studentSchedule || studentSchedule.length === 0) {
-                    console.warn("Không có lịch học.");
-                    return;
-                }
-
-                let [weekStart, weekEnd] = weekSelect.value.split(" - ").map(ts => new Date(parseInt(ts)));
-
-                // **Lọc lịch học theo tuần được chọn**
+                // Process the schedule data and assign them to the correct day columns
                 studentSchedule.forEach(entry => {
                     let date = entry.date;
                     let dayIndex = date.getDay();
@@ -283,7 +376,7 @@
                     }
                 });
 
-                // **Hiển thị lịch học**
+                // Render the schedule data in the table
                 let maxRows = Math.max(...Object.values(scheduleData).map(list => list.length), 1);
                 for (let i = 0; i < maxRows; i++) {
                     let row = "<tr>";
