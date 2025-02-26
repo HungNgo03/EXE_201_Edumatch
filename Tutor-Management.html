@@ -3,29 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Grid</title>
+    <title>Tutor Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="assets/css/tutorManagement.css" rel="stylesheet">
+    <style>
+        .card-link {
+            text-decoration: none; /* Remove underline from the link */
+            color: inherit; /* Inherit the color from the parent */
+            display: block; /* Make the whole card clickable */
+            height: 100%; /* Ensure the link covers the entire card */
+        }
+
+        .card {
+            position: relative; /* Required for absolute positioning of the link */
+        }
+    </style>
 </head>
 <body>
     <div class="grid">
         <div class="card">
-            <div class="card-header" style="background-image: url('');">
-                <div class="card-overlay">
-                    <h3 class="card-title">SE1747-NET-MLN122</h3>
-                    <p class="card-author">Lê Thị Hồng Phương (FE FPTU HN)</p>
+            <a href="class-detail.html" class="card-link">
+                <div class="card-header" style="background-image: url('');">
+                    <div class="card-overlay">
+                        <h3 class="card-title">SE1747-NET-MLN122</h3>
+                        <p class="card-author">Lê Thị Hồng Phương (FE FPTU HN)</p>
+                    </div>
+                    <div class="card-options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                    <img src="" alt="Profile" class="profile-pic">
                 </div>
-                <div class="card-options">
-                    <i class="fas fa-ellipsis-v"></i>
+                <div class="card-actions">
+                    <i class="fas fa-folder-plus action-icon"></i>
+                    <i class="fas fa-share-alt action-icon"></i>
                 </div>
-                <img src="" alt="Profile" class="profile-pic">
-            </div>
-            <div class="card-actions">
-                <i class="fas fa-folder-plus action-icon"></i>
-                <i class="fas fa-share-alt action-icon"></i>
-            </div>
+            </a>
         </div>
-        
     </div>
 </body>
 </html>
