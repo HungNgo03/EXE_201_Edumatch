@@ -108,7 +108,9 @@
             </div>
 
             <div class="row" id="tutor-list">
-                <!-- Các gia sư sẽ được hiển thị tại đây -->
+            </div>
+
+            <div id="pagination" class="pagination">
             </div>
         </div>
         <script>
@@ -116,6 +118,10 @@
                 const nameInput = document.querySelector('#search-name');
                 const subjectSelect = document.querySelector('#search-subject');
                 const tutorContainer = document.querySelector('#tutor-list'); // Chọn container chứa danh sách gia sư
+                const paginationContainer = document.querySelector('#pagination'); // Container cho phân trang
+
+                let currentPage = 0;
+                const pageSize = 8;
 
                 // Hàm để lấy danh sách môn học từ API
                 function fetchSubjects() {
@@ -123,8 +129,6 @@
                         .then(response => response.json())
                         .then(data => {
                             const subjects = data.result;
-
-                            // Thêm các môn học vào dropdown
                             subjects.forEach(subject => {
                                 const option = document.createElement('option');
                                 option.value = subject.subjectname;
@@ -137,53 +141,79 @@
 
                 // Hàm để lấy danh sách gia sư từ API
                 function fetchTutors() {
-                    const name = nameInput.value.trim();  // Lấy giá trị từ input tên
-                    const subject = subjectSelect.value.trim();  // Lấy giá trị từ dropdown môn học
+                    const name = nameInput.value.trim();
+                    const subject = subjectSelect.value.trim();
 
-                    let url = `http://localhost:8080/tutor/getAllTutors?name=${name}&subject=${subject}`;
+                    const url = `http://localhost:8080/tutor/getAllTutors?page=${currentPage}&size=${pageSize}&name=${name}&subject=${subject}`;
 
                     // Gửi yêu cầu tới API
                     fetch(url)
                         .then(response => response.json())
                         .then(data => {
-                            tutorContainer.innerHTML = '';  // Xóa các gia sư cũ trước khi thêm mới
+                            const tutors = data.result;
+                            const totalPages = data.totalPages;
 
-                            const tutors = data.result;  // Lấy danh sách gia sư
+                            tutorContainer.innerHTML = ''; // Xóa các gia sư cũ trước khi thêm mới
 
                             if (tutors.length === 0) {
                                 tutorContainer.innerHTML = `<p>Không tìm thấy gia sư phù hợp.</p>`;
                             }
 
+                            // Hiển thị các gia sư
                             tutors.forEach(tutor => {
-    const tutorCard = document.createElement('div');
-    tutorCard.classList.add('col-md-6');
-    tutorCard.innerHTML = `
-        <div class="tutor-card d-flex align-items-center">
-            <a href="confirmBooking.html?tutorId=${tutor.id}" class="me-3">
-                <img src="assets/img/teachers/tutor.jpg" alt="Gia Sư" class="rounded-circle" width="80">
-            </a>
-            <div class="flex-grow-1">
-                <h5>
-                    <a href="confirmBooking.html?tutorId=${tutor.id}" class="tutor-link">
-                        ${tutor.fullname}
-                    </a>
-                </h5>
-                <p>Kinh nghiệm: ${tutor.experience} năm</p>
-                <p>Môn học: ${tutor.subjects.join(', ')}</p>
-            </div>
-        </div>
-    `;
-    tutorContainer.appendChild(tutorCard);
-});
+                                const tutorCard = document.createElement('div');
+                                tutorCard.classList.add('col-md-6');
+                                tutorCard.innerHTML = `
+                        <div class="tutor-card d-flex align-items-center">
+                            <a href="tutor-detail.html?tutorId=${tutor.id}" class="me-3">
+                                <img src="assets/img/teachers/tutor.jpg" alt="Gia Sư" class="rounded-circle" width="80">
+                            </a>
+                            <div class="flex-grow-1">
+                                <h5>
+                                    <a href="tutor-detail.html?tutorId=${tutor.id}" class="tutor-link">
+                                        ${tutor.fullname}
+                                    </a>
+                                </h5>
+                                <p>Kinh nghiệm: ${tutor.experience} năm</p>
+                                <p>Môn học: ${tutor.subjects.join(', ')}</p>
+                            </div>
+                        </div>
+                    `;
+                                tutorContainer.appendChild(tutorCard);
+                            });
 
-
+                            // Hiển thị phân trang
+                            displayPagination(totalPages);
                         })
                         .catch(error => console.error('Error fetching tutors:', error));
                 }
 
+                // Hiển thị phân trang
+                function displayPagination(totalPages) {
+                    paginationContainer.innerHTML = ''; // Xóa phân trang cũ
+
+                    for (let i = 0; i < totalPages; i++) {
+                        const pageButton = document.createElement('button');
+                        pageButton.textContent = i + 1;
+                        pageButton.classList.add('page-btn');
+                        pageButton.addEventListener('click', function () {
+                            currentPage = i;  // Cập nhật trang hiện tại
+                            fetchTutors();     // Gọi lại API để tải dữ liệu cho trang mới
+                        });
+
+                        paginationContainer.appendChild(pageButton);
+                    }
+                }
+
                 // Khi người dùng thay đổi tên hoặc môn học, gọi lại API
-                nameInput.addEventListener('input', fetchTutors);
-                subjectSelect.addEventListener('change', fetchTutors);
+                nameInput.addEventListener('input', function () {
+                    currentPage = 0; // Reset về trang đầu tiên
+                    fetchTutors();
+                });
+                subjectSelect.addEventListener('change', function () {
+                    currentPage = 0; // Reset về trang đầu tiên
+                    fetchTutors();
+                });
 
                 // Lấy dữ liệu ban đầu khi trang tải
                 fetchSubjects();
