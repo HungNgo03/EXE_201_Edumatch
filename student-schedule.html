@@ -153,7 +153,7 @@
             let studentSchedule = []; // Lưu trữ dữ liệu lịch học từ API
 
             // **Gọi API để lấy dữ liệu lịch học của học sinh**
-            fetch(`http://localhost:8080/api/student/getSchedule/${loggedInUserId}`)
+            fetch(`http://157.66.24.154:8080/api/student/getSchedule/${loggedInUserId}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dữ liệu trả về từ API:", data); // Log dữ liệu trả về từ API để kiểm tra

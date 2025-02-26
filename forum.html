@@ -218,7 +218,7 @@
 
       let currentPage = 0;
       const pageSize = 5;
-      let currentUrl = 'http://localhost:8080/Post/getAllPost1';
+      let currentUrl = 'http://157.66.24.154:8080/Post/getAllPost1';
 
       function fetchPaginatedPosts(url, pageNo = 0, pageSize = 5) {
         console.log("Fetching paginated posts from URL:", url); // Debugging URL
@@ -308,7 +308,7 @@
       }
 
       function fetchSubjects() {
-        fetch('http://localhost:8080/Post/getAllSubject')
+        fetch('http://157.66.24.154:8080/Post/getAllSubject')
           .then(response => response.json())
           .then(data => {
             console.log("Subjects API Response:", data);
@@ -353,14 +353,14 @@
       searchButton.addEventListener('click', function () {
         const username = searchInput.value;
         const subjectname = subjectSelect.value;
-        let url = 'http://localhost:8080/Post/getAllPost'; // Default to getAllPost for search
+        let url = 'http://157.66.24.154:8080/Post/getAllPost'; // Default to getAllPost for search
 
         if (username && subjectname) {
-          url = `http://localhost:8080/Post/findPostsBySubjectAndUsername?subjectname=${subjectname}&username=${username}`;
+          url = `http://157.66.24.154:8080/Post/findPostsBySubjectAndUsername?subjectname=${subjectname}&username=${username}`;
         } else if (username) {
-          url = `http://localhost:8080/Post/findPostsByUsername?username=${username}`;
+          url = `http://157.66.24.154:8080/Post/findPostsByUsername?username=${username}`;
         } else if (subjectname) {
-          url = `http://localhost:8080/Post/findPostsBySubject?subjectname=${subjectname}`;
+          url = `http://157.66.24.154:8080/Post/findPostsBySubject?subjectname=${subjectname}`;
         }
 
         currentUrl = url;
@@ -623,7 +623,7 @@
           console.log("Dữ liệu gửi lên:", JSON.stringify(requestBody, null, 2));
   
           // Gửi request đến backend
-          const response = await fetch("http://localhost:8080/users/register", {
+          const response = await fetch("http://157.66.24.154:8080/users/register", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -710,7 +710,7 @@
         const userID = user.userId;
 
         // Gửi request đến backend
-        const response = await fetch("http://localhost:8080/Post/addPost", {
+        const response = await fetch("http://157.66.24.154:8080/Post/addPost", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -748,7 +748,7 @@
       });
 
       // Fetch subjects and populate the subject select dropdown
-      fetch('http://localhost:8080/Post/getAllSubject2')
+      fetch('http://157.66.24.154:8080/Post/getAllSubject2')
         .then(response => response.json())
         .then(data => {
           const subjectSelect = document.getElementById("modal-subject-select");

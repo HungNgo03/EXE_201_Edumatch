@@ -158,7 +158,7 @@
             let tutorSchedule = []; // Lưu trữ dữ liệu lịch học từ API
 
             // **Gọi API để lấy dữ liệu gia sư**
-            fetch(`http://localhost:8080/tutor/getTutorDetail/${tutorId}`)
+            fetch(`http://157.66.24.154:8080/tutor/getTutorDetail/${tutorId}`)
                 .then(response => response.json())
                 .then(data => {
                     if (!data.result) {
