@@ -125,7 +125,7 @@
 
                 // Hàm để lấy danh sách môn học từ API
                 function fetchSubjects() {
-                    fetch('http://localhost:8080/subject/getAllSubjects')
+                    fetch('http://157.66.24.154:8080/subject/getAllSubjects')
                         .then(response => response.json())
                         .then(data => {
                             const subjects = data.result;
@@ -144,7 +144,7 @@
                     const name = nameInput.value.trim();
                     const subject = subjectSelect.value.trim();
 
-                    const url = `http://localhost:8080/tutor/getAllTutors?page=${currentPage}&size=${pageSize}&name=${name}&subject=${subject}`;
+                    const url = `http://157.66.24.154:8080/tutor/getAllTutors?page=${currentPage}&size=${pageSize}&name=${name}&subject=${subject}`;
 
                     // Gửi yêu cầu tới API
                     fetch(url)

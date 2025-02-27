@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const username = document.getElementById("loginUsername").value;
         const password = document.getElementById("loginPassword").value;
 
-        const response = await fetch("http://localhost:8080/users/login", {
+        const response = await fetch("http://157.66.24.154:8080/users/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password })
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Kiểm tra session từ server nếu cần
     async function checkSession() {
-        const response = await fetch("http://localhost:8080/users/profile", { credentials: "include" });
+        const response = await fetch("http://157.66.24.154:8080/users/profile", { credentials: "include" });
         if (response.ok) {
             const data = await response.json();
             localStorage.setItem("user", JSON.stringify({ username: data.username }));
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const response = await fetch("http://localhost:8080/users/forgot-password?email=" + email, {
+        const response = await fetch("http://157.66.24.154:8080/users/forgot-password?email=" + email, {
             method: "POST"
         });
 
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const otp = otpCode.value;
         const password = newPassword.value;
 
-        const response = await fetch("http://localhost:8080/users/reset-password", {
+        const response = await fetch("http://157.66.24.154:8080/users/reset-password", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({ email, otp, newPassword: password })
