@@ -2,7 +2,7 @@ async function fetchSchedule() {
     const urlParams = new URLSearchParams(window.location.search);
     const tutorId = urlParams.get('tutorId');
     try {
-        let response = await fetch(`http://localhost:8080/tutor/avalability/getAvalabilityByTutorId/${tutorId}`); // Thay bằng API thực tế
+        let response = await fetch(`http://157.66.24.154:8080/tutor/avalability/getAvalabilityByTutorId/${tutorId}`); // Thay bằng API thực tế
         let data = await response.json();
         console.log(data);
         
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
     // **Gọi API để lấy dữ liệu gia sư**
-    fetch(`http://localhost:8080/tutor/getTutorDetail/${tutorId}`)
+    fetch(`http://157.66.24.154:8080/tutor/getTutorDetail/${tutorId}`)
         .then(response => response.json())
         .then(data => {
             if (!data.result) {
@@ -154,7 +154,7 @@ document.getElementById("generateQR").addEventListener("click", async function (
         const urlParams = new URLSearchParams(window.location.search);
         const tutorId = urlParams.get('tutorId');
         const user = JSON.parse(localStorage.getItem("user")); // Chuyển chuỗi JSON thành object
-        let responseRegister = await fetch("http://localhost:8080/class/register", {
+        let responseRegister = await fetch("http://157.66.24.154:8080/class/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -196,7 +196,7 @@ document.getElementById("confirmPayment").addEventListener("click", async functi
         let confirmBtn = document.getElementById("confirmPayment");
         let registerId = confirmBtn.getAttribute("data-register-id");
         // Gọi API thanh toán hoặc thực hiện hành động khác khi nhấn "Xác nhận thanh toán"
-        let responsePayment = await fetch("http://localhost:8080/payment/checkPayment", {
+        let responsePayment = await fetch("http://157.66.24.154:8080/payment/checkPayment", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
