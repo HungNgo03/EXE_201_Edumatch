@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            cd /var/www/html
+            cd /var/www/html/EXE_201_Edumatch
             git pull origin main  # Sao chép mã nguồn từ GitHub vào VPS
 
             # Kiểm tra quyền truy cập
