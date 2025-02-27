@@ -131,12 +131,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const userId = urlParams.get('studentId');  // Get studentId from query string
-
-            if (!userId) {
-                alert("Không tìm thấy ID học sinh.");
-                return;
-            }
-
             const user = localStorage.getItem("user");
             if (!user) {
                 alert("Vui lòng đăng nhập để xem lịch học.");
