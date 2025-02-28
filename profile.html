@@ -9,8 +9,8 @@
 
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
@@ -27,6 +27,10 @@
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
@@ -151,6 +155,35 @@
             padding: 20px;
             text-align: center;
         }
+        .image-container {
+            width: 300px;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Căn nút xuống dưới ảnh */
+        .mt-3 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px; /* Khoảng cách giữa các nút */
+        }
+
+        button {
+            width: 150px;
+        }
+
+
+
+
+
 
     </style>
     <script src="assets/js/profile.js" ></script>
@@ -210,18 +243,156 @@
 
     </div>
 </header>
+
 <main>
     <div class="container main-content">
+        <div class="container text-center mt-4">
+            <div class="d-flex flex-column align-items-center">
+                <div class="image-container">
+                    <img id="userImage" class="img-fluid rounded" alt="User Image">
+                </div>
+                <input type="file" id="fileInput" class="d-none" accept="image/*">
+                <!-- Nút chỉnh ảnh & lưu ảnh -->
+                <div class="mt-3 d-flex gap-2">
+                    <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">Chỉnh ảnh</button>
+                    <button id="saveButton" class="btn btn-success">Lưu ảnh</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
         <div class="profile-container">
             <h2>Thông tin cá nhân</h2>
-            <p><strong>Họ và tên:</strong> <span id="profileName"></span></p>
-            <p><strong>Email:</strong> <span id="profileEmail"></span></p>
-            <p><strong>Số điện thoại:</strong> <span id="profilePhone"></span></p>
+            <p><strong>Họ và tên:</strong> <span id="profileName"></span>
+            <p><strong>Email:</strong> <span id="profileEmail"></span>
+            <p><strong>Số điện thoại:</strong> <span id="profilePhone"></span>
             <div id="extraInfo"></div>
+            <!-- Button to Open the Modal -->
+            <div class="mt-3">
+                <button id="editProfileBtn" class="btn btn-primary">Sửa thông tin</button>
+                <button id="changePasswordBtn" class="btn btn-warning">Đổi mật khẩu</button>
+            </div>
+        </div>
+    </div>
+    <!-- Profile Update Modal -->
+    <div id="profileModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cập nhật thông tin cá nhân</h5>
+
+                </div>
+                <div class="modal-body">
+                    <form id="updateProfileForm">
+                        <input type="hidden" id="userId" value="1"> <!-- Giả định userId là 1 -->
+                        <input type="hidden" id="role" value=""> <!-- Ẩn role -->
+                        <div class="form-group">
+                            <label for="username1">Tên đăng nhập</label>
+                            <input type="text" id="username1" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname1">Họ và tên</label>
+                            <input type="text" id="fullname1" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email1">Email</label>
+                            <input type="email" id="email1" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone1">Số điện thoại</label>
+                            <input type="text" id="phone1" class="form-control" required>
+                        </div>
+
+                        <!-- Trường dành cho Tutor -->
+                        <div id="tutorFields1" style="display: none;">
+                            <div class="form-group">
+                                <label for="qualification1">Bằng cấp</label>
+                                <input type="text" id="qualification1" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="dateOfBirth1">Bằng cấp</label>
+                                <input type="date" class="form-control rounded-3 p-2" id="dateOfBirth1">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gender1">Giới tính</label>
+                                <select class="form-control rounded-3 p-2" id="gender1">
+                                    <option value="0">Nam</option>
+                                    <option value="1">Nữ</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="qualification1">Địa chỉ</label>
+                                <input type="text" id="address1" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="experience1">Kinh nghiệm</label>
+                                <input type="number" id="experience1" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="bio1">Giới thiệu</label>
+                                <textarea id="bio1" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Trường dành cho Student -->
+                        <div id="studentFields1" style="display: none;">
+                            <div class="form-group">
+                                <label for="parentName1">Tên phụ huynh</label>
+                                <input type="text" id="parentName1" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="grade1">Khối lớp</label>
+                                <input type="text" id="grade1" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="address1">Địa chỉ</label>
+                                <input type="text" id="address2" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="notes1">Ghi chú</label>
+                                <input type="text" id="notes1" class="form-control">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
 </main>
+<!-- Modal Đổi Mật Khẩu -->
+<div id="changePasswordModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Đổi mật khẩu</h5>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm">
+                    <input type="hidden" id="userId1" value="">
+                    <div class="form-group">
+                        <label for="oldPassword">Mật khẩu cũ</label>
+                        <input type="password" id="oldPassword" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">Mật khẩu mới</label>
+                        <input type="password" id="newPassword1" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Xác nhận mật khẩu</label>
+                        <input type="password" id="confirmPassword" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">Đổi mật khẩu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <footer id="footer" class="footer dark-background">
@@ -572,6 +743,252 @@
             forgotPasswordModal.show(); // Mở modal quên mật khẩu
         });
     });
+</script>
+<script>
+    const imgElement = document.getElementById("userImage");
+    imgElement.src = `http://localhost:8080/users/image/${localStorage.getItem("userID")}`;
+
+    document.getElementById("fileInput").addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById("userImage").src = e.target.result; // Hiển thị ảnh đã chọn
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let cropper;
+
+        // Khi chọn ảnh mới
+        document.getElementById("fileInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("userImage").src = e.target.result;
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(document.getElementById("userImage"), {
+                        aspectRatio: 1,
+                        viewMode: 1
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Khi nhấn nút "Lưu ảnh"
+        document.getElementById("saveButton").addEventListener("click", function () {
+            if (cropper) {
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    const formData = new FormData();
+                    formData.append("file", blob, "profile.jpg");
+                    const userId = localStorage.getItem("userID");
+                    fetch(`http://localhost:8080/users/update-image/${userId}`, {
+                        method: "PUT",
+                        body: formData
+                    })
+                        .then(response => response.text())
+                        .then(result => {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Cập nhật thành công!",
+                                text: "Ảnh đại diện của bạn đã được lưu.",
+                                confirmButtonText: "OK"
+                            }).then(() => {
+                                location.reload();
+                            });
+                            console.log(result);
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi!",
+                                text: "Có lỗi xảy ra khi tải ảnh lên. Vui lòng thử lại.",
+                                confirmButtonText: "OK"
+                            });
+                            console.error("Lỗi khi tải ảnh lên:", error);
+                        });
+                });
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Chưa chọn ảnh!",
+                    text: "Vui lòng chọn ảnh trước khi lưu.",
+                    confirmButtonText: "OK"
+                });
+            }
+        });
+
+    });
+
+
+
+</script>
+<script>
+    document.getElementById("editProfileBtn").addEventListener("click", async function() {
+        const role = localStorage.getItem("role");
+        const userId = localStorage.getItem("userID");
+        const response2 = await fetch(`http://localhost:8080/users/user/${userId}`);
+        const userdata2 = await response2.json();
+        document.getElementById("role").value = role;
+        document.getElementById("username1").value = userdata2.username;
+        document.getElementById("fullname1").value = userdata2.fullname;
+        document.getElementById("email1").value = userdata2.email;
+        document.getElementById("phone1").value = userdata2.phoneNumber;
+
+            const response = await fetch(`http://localhost:8080/users/profile/${userId}`);
+
+            const userData = await response.json();
+
+
+
+
+        // Hiển thị các trường phù hợp với vai trò
+        if (role === "Tutor") {
+            document.getElementById("tutorFields1").style.display = "block";
+            document.getElementById("gender1").value = userData.gender ? "1" : "0";
+            document.getElementById("dateOfBirth1").value = userData.dateOfBirth;
+            document.getElementById("qualification1").value = userData.qualification;
+            document.getElementById("address1").value = userData.address;
+            document.getElementById("experience1").value = userData.experience;
+            document.getElementById("bio1").value = userData.bio;
+
+            document.getElementById("studentFields1").style.display = "none";
+        } else if (role === "Student") {
+            document.getElementById("tutorFields1").style.display = "none";
+            document.getElementById("studentFields1").style.display = "block";
+            document.getElementById("parentName1").value = userData.parentName;
+            document.getElementById("grade1").value = userData.grade;
+            document.getElementById("address2").value = userData.address;
+            document.getElementById("notes1").value = userData.notes;
+        }
+
+        $("#profileModal").modal("show");
+    });
+
+    document.getElementById("updateProfileForm").addEventListener("submit", async function (event){
+        event.preventDefault();
+        const userId = document.getElementById("userId").value;
+        const role = document.getElementById("role").value;
+
+        const requestData = {
+            username: document.getElementById("username1").value,
+            fullname: document.getElementById("fullname1").value,
+            email: document.getElementById("email1").value,
+            phoneNumber: document.getElementById("phone1").value,
+            role: role,
+        };
+
+        if (role === "Tutor") {
+            requestData.gender = document.getElementById("gender1").value === "1";
+            requestData.dateOfBirth = document.getElementById("dateOfBirth1").value;
+            requestData.qualification = document.getElementById("qualification1").value;
+            requestData.experience = parseInt(document.getElementById("experience1").value, 10) || 0;
+            requestData.address = document.getElementById("address1").value;
+            requestData.bio = document.getElementById("bio1").value;
+
+        } else if (role === "Student") {
+            requestData.parentName = document.getElementById("parentName1").value;
+            requestData.grade = parseInt(document.getElementById("grade1").value,10) ||0;
+            requestData.address = document.getElementById("address2").value;
+            requestData.notes = document.getElementById("notes1").value;
+        }
+        console.log("Dữ liệu gửi lên:", JSON.stringify(requestData, null, 2));
+        console.log(localStorage.getItem("userID"))
+        const response3 = await fetch (`http://localhost:8080/users/update-profile/${localStorage.getItem("userID")}`, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(requestData)
+        })
+        const result = await response3.json();
+        if (response3.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'thành công!',
+                showConfirmButton: true,
+                timer: 1500
+            }).then(() => {
+            location.reload();
+            });
+        } else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: result,
+
+            });
+        }
+    })
+
+
+
+    document.getElementById("changePasswordBtn").addEventListener("click", function () {
+        $("#changePasswordModal").modal("show");
+    });
+
+    document.getElementById("changePasswordForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const userId = localStorage.getItem("userID"); // Lấy userId từ localStorage
+        const oldPassword = document.getElementById("oldPassword").value;
+        const newPassword = document.getElementById("newPassword1").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (newPassword !== confirmPassword) {
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi!",
+                text: "Mật khẩu mới không khớp!",
+                confirmButtonText: "Thử lại"
+            });
+            return;
+        }
+
+        const requestData = {
+            id: userId,
+            oldPassword: oldPassword,
+            newPassword: newPassword
+        };
+
+        console.log("Dữ liệu gửi lên:", JSON.stringify(requestData, null, 2));
+
+        const response = await fetch("http://localhost:8080/users/change-password", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestData)
+        });
+
+        const result = await response.text();
+        if (response.ok) {
+            Swal.fire({
+                icon: "success",
+                title: "Thành công!",
+                text: "Mật khẩu đã được cập nhật.",
+                confirmButtonText: "OK"
+            }).then(() => {
+                $("#changePasswordModal").modal("hide");
+            });
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi!",
+                text: result,
+                confirmButtonText: "Thử lại"
+            });
+        }
+    });
+
+
+
+
+
+
+
+
+
 </script>
 
 </body>
