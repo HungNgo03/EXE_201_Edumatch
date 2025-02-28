@@ -18,7 +18,7 @@ let users = [];
 let currentUserId = null;
 
 // API base URL
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'http://157.66.24.154:8080';
 
 function init() {
   fetchUsers();
