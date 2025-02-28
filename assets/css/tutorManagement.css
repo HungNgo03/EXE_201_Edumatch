@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+.card {
+    width: 300px;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.card-header {
+    position: relative;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+}
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.4);
+    padding: 10px;
+    color: white;
+}
+.card-title {
+    margin: 0;
+    font-size: 18px;
+}
+.card-author {
+    margin: 5px 0 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+.card-options {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.card:hover .card-options {
+    opacity: 1;
+}
+.profile-pic {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+.action-icon {
+    margin-left: 10px;
+    color: #666;
+}

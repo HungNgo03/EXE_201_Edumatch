@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const username = document.getElementById("loginUsername").value;
         const password = document.getElementById("loginPassword").value;
 
-        const response = await fetch("http://localhost:8080/users/login", {
+        const response = await fetch("http://157.66.24.154:8080/users/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password })
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (response.ok) {
             const data = await response.json();
-            localStorage.setItem("username", data.username );
+            localStorage.setItem("user", JSON.stringify({ username: data.username, userId: data.userID }));
             localStorage.setItem("userID", data.userID);
             localStorage.setItem("role", data.role);// Lưu session vào localStorage
             localStorage.setItem("fullname", data.fullname);
@@ -45,6 +45,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: "Đăng nhập thành công!",
                 icon: "success",
                 confirmButtonText: "OK"
+            }).then(() => {
+                if (data.role === "Admin") {
+                    window.location.href = "Admin-Page.html";
+                } else {
+                    location.reload();
+                }
             });
         } else {
             Swal.fire({
@@ -74,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Kiểm tra session từ server nếu cần
     async function checkSession() {
-        const response = await fetch("http://localhost:8080/users/profile", { credentials: "include" });
+        const response = await fetch("http://157.66.24.154:8080/users/profile", { credentials: "include" });
         if (response.ok) {
             const data = await response.json();
             localStorage.setItem("user", JSON.stringify({ username: data.username }));
@@ -103,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const response = await fetch("http://localhost:8080/users/forgot-password?email=" + email, {
+        const response = await fetch("http://157.66.24.154:8080/users/forgot-password?email=" + email, {
             method: "POST"
         });
 
@@ -120,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const otp = otpCode.value;
         const password = newPassword.value;
 
-        const response = await fetch("http://localhost:8080/users/reset-password", {
+        const response = await fetch("http://157.66.24.154:8080/users/reset-password", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({ email, otp, newPassword: password })
@@ -151,6 +157,96 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const registerForm = document.querySelector("#registerForm");
+    const loginRegisterTabs = new bootstrap.Tab(document.querySelector("#login-tab"));
+
+    registerForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        // Lấy dữ liệu từ form
+        const fullname = document.getElementById("registerName").value;
+        const phoneNumber = document.getElementById("registerPhone").value;
+        const email = document.getElementById("registerEmail").value;
+        const password = document.getElementById("registerPassword").value;
+        const username = document.getElementById("username").value;
+        const role = document.getElementById("registerRole").value;
+
+        // Kiểm tra mật khẩu có khớp không
+        if (password.length < 6) {
+            Swal.fire({
+                title: "Lỗi!",
+                text: "Mật khẩu phải có ít nhất 6 ký tự!",
+                icon: "error",
+                confirmButtonText: "Thử lại"
+            });
+            return;
+        }
+
+        // Tạo đối tượng dữ liệu gửi đi
+        let requestBody = {
+            username: username,
+            fullname: fullname,
+            phoneNumber: phoneNumber,
+            email: email,
+            password: password,
+            role: role
+        };
+
+        // Nếu role là Tutor, thêm thông tin Tutor
+        if (role === "Tutor") {
+            requestBody.gender = document.getElementById("gender").value === "1";
+            requestBody.dateOfBirth = document.getElementById("dateOfBirth").value;
+            requestBody.address = document.getElementById("address").value;
+            requestBody.qualification = document.getElementById("qualification").value;
+            requestBody.experience = document.getElementById("experience").value;
+            requestBody.bio = document.getElementById("bio").value;
+        }
+
+        // Nếu role là Student, thêm thông tin Student
+        if (role === "Student") {
+            requestBody.parentName = document.getElementById("parentName").value;
+            requestBody.grade = document.getElementById("grade").value;
+            requestBody.address = document.getElementById("addressStudent").value;
+            requestBody.notes = document.getElementById("notes").value;
+        }
+
+        // Kiểm tra log dữ liệu gửi đi
+        console.log("Dữ liệu gửi lên:", JSON.stringify(requestBody, null, 2));
+
+        // Gửi request đến backend
+        const response = await fetch("http://157.66.24.154:8080/users/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+        });
+
+        const result = await response.text();
+        if (response.ok) {
+            Swal.fire({
+                title: "Đăng ký thành công!",
+                text: "Bây giờ bạn có thể đăng nhập.",
+                icon: "success",
+                confirmButtonText: "Đăng nhập ngay"
+            }).then(() => {
+                registerForm.reset();
+                loginRegisterTabs.show();
+            });
+        } else {
+            Swal.fire({
+                title: "Lỗi!",
+                text: result,
+                icon: "error",
+                confirmButtonText: "Thử lại"
+            });
+        }
+    });
+});
+
+
 
 
 
