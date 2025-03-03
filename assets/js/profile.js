@@ -10,22 +10,27 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     try {
-        const response = await fetch(`http://157.66.24.154:8080/users/profile/${userId}`);
+
+
+        const response = await fetch(`http://157.66.24.154:8080/users/profile/${localStorage.getItem("userID")}`);
+
+
         if (!response.ok) {
             throw new Error("Không thể lấy thông tin người dùng");
         }
-
+        const response1 = await fetch(`http://157.66.24.154:8080/users/user/${localStorage.getItem("userID")}`)
+        const userdata1 = await response1.json();
         const userData = await response.json();
         console.log("Thông tin người dùng:", userData);
 
         // Sửa lại cách hiển thị dữ liệu từ API
-        document.getElementById("profileName").textContent = fullname;
-        document.getElementById("profileEmail").textContent = email;
-        document.getElementById("profilePhone").textContent = phoneNumber;
+        document.getElementById("profileName").textContent = userdata1.fullname;
+        document.getElementById("profileEmail").textContent = userdata1.email;
+        document.getElementById("profilePhone").textContent = userdata1.phoneNumber;
 
         if (localStorage.getItem("role") === "Tutor") {  // Kiểm tra role
             document.getElementById("extraInfo").innerHTML = `
-                <p>Giới tính: ${userData.gender ? "Nam" : "Nữ"}</p>
+                <p>Giới tính: ${userData.gender ? "Nữ" : "Nam"}</p>
                 <p>Ngày sinh: ${userData.dateOfBirth}</p>
                 <p>Địa chỉ: ${userData.address}</p>
                 <p>Chuyên môn: ${userData.qualification}</p>

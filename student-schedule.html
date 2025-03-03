@@ -113,35 +113,14 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="#hero" class="active">Home<br></a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="forum.html">Diễn đàn</a></li>
-                    <li><a href="findTeacher-page.html">Events</a></li>
-                    <li><a href="#chefs">Chefs</a></li>
-                    <li><a href="#gallery">Gallery</a></li>
-                    <li class="dropdown"><a href="#"><span>Dropdown</span> <i
-                                class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul>
-                            <li><a href="#">Dropdown 1</a></li>
-                            <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
-                                        class="bi bi-chevron-down toggle-dropdown"></i></a>
-                                <ul>
-                                    <li><a href="#">Deep Dropdown 1</a></li>
-                                    <li><a href="#">Deep Dropdown 2</a></li>
-                                    <li><a href="#">Deep Dropdown 3</a></li>
-                                    <li><a href="#">Deep Dropdown 4</a></li>
-                                    <li><a href="#">Deep Dropdown 5</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Dropdown 2</a></li>
-                            <li><a href="#">Dropdown 3</a></li>
-                            <li><a href="#">Dropdown 4</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#contact">Liên hệ</a></li>
+                  <li><a href="index.html" class="active">Trang chủ<br></a></li>
+                  <li><a href="forum.html">Diễn đàn</a></li>
+                  <li><a href="findTeacher-page.html">Tìm Gia Sư</a></li>
+                  <li><a href="student-schedule.html">Thời khóa biểu</a></li>
+                  <li><a href="#contact">Liên hệ</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-            </nav>
+              </nav>
             <div id="userDropdown" class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle username-text" type="button" id="userDropdownButton"
                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -149,7 +128,7 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="userDropdownButton">
                     <li><a class="dropdown-item" href="profile.html" id="profileLink">Thông tin tài khoản</a></li>
-                    <li><a class="dropdown-item" href="index.html" id="logoutButton">Đăng xuất</a></li>
+                    <li><a class="dropdown-item" href="#" id="logoutButton">Đăng xuất</a></li>
                 </ul>
             </div>
 
@@ -198,13 +177,46 @@
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener("DOMContentLoaded", function () {
+            const user = JSON.parse(localStorage.getItem("user"));
 
+            if (!user) {
+                // Lưu trạng thái vào localStorage để biết cần hiển thị modal đăng nhập
+                localStorage.setItem("requireLogin", "true");
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Bạn cần đăng nhập để xem Thời Khóa Biểu!',
+                    text: 'Bạn sẽ được chuyển về trang chính để đăng nhập.',
+                    showConfirmButton: true
+                }).then(() => {
+                    window.location.href = "index.html"; // Chuyển về trang index
+                });
+            }
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.location.pathname.includes("student-schedule.html")) {
+                const user = JSON.parse(localStorage.getItem("user"));
+
+                if (!user) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Bạn cần đăng nhập để xem Thời Khóa Biểu!',
+                        showConfirmButton: true
+                    }).then(() => {
+                        window.location.href = "index.html"; // Chuyển hướng về trang chính nếu chưa đăng nhập
+                    });
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
             const user = JSON.parse(localStorage.getItem("user"));
             const authButton = document.getElementById("authButton");
             const userDropdownButton = document.getElementById("userDropdownButton");
             const userDropdown = document.getElementById("userDropdown");
             const userId = JSON.parse(localStorage.getItem("userID"));
+            const role = localStorage.getItem("role");
             console.log("User: ", userId);
             if (!userId) {
                 event.preventDefault();
@@ -226,15 +238,27 @@
 
             const userData = JSON.parse(userId);
             const loggedInUserId = userId;  // Lấy userId từ thông tin người dùng trong localStorage
-
+            const loggedInUserRole = role;
             const yearSelect = document.getElementById('year-select');
             const weekSelect = document.getElementById('week-select');
             const scheduleBody = document.getElementById("schedule-body");
 
             let studentSchedule = []; // Lưu trữ dữ liệu lịch học từ API
+            // Xác định API cần gọi
+            let apiUrl = "";
+
+            if (loggedInUserRole === "Student") {
+                apiUrl = `http://157.66.24.154:8080/api/student/getSchedule/${loggedInUserId}`;
+            } else if (loggedInUserRole === "Tutor") {
+                apiUrl = `http://157.66.24.154:8080/api/tutor/getSchedule/${loggedInUserId}`;
+            } else {
+                console.error("Không thể xác định vai trò của người dùng.");
+            }
+
 
             // **Gọi API để lấy dữ liệu lịch học của học sinh**
-            fetch(`http://157.66.24.154:8080/api/student/getSchedule/${loggedInUserId}`)
+            fetch(apiUrl)
+
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dữ liệu trả về từ API:", data); // Log dữ liệu trả về từ API để kiểm tra
@@ -476,9 +500,12 @@
     <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
     <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script>
 </body>
 
 </html>
