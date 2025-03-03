@@ -1,8 +1,8 @@
 export default class Post {
-    constructor(id, userID, fullname, subjectID, subjectname, title, content, rating, createdAt, updatedAt) {
+    constructor(id, userID, username, subjectID, subjectname, title, content, rating, createdAt, updatedAt) {
         this.id = id;
         this.userID = userID;
-        this.fullname = fullname;
+        this.username = username;
         this.subjectID = subjectID;
         this.subjectname = subjectname;
         this.title = title;

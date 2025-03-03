@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>EDUMATCH</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Amatic+SC:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet">
+    <style>
+        .main-container {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        h3.text-center {
+            font-family: initial;
+            font-weight: normal;
+        }
+
+        table {
+            width: 100%;
+            /* Đảm bảo bảng chiếm 100% chiều rộng của container */
+            table-layout: fixed;
+            /* Giúp điều chỉnh các cột đều */
+        }
+
+        table th,
+        table td {
+            font-size: 14px;
+            /* Giảm kích thước chữ xuống 14px, bạn có thể thay đổi giá trị này */
+            padding: 10px;
+            /* Điều chỉnh khoảng cách bên trong ô */
+            text-align: center;
+        }
+
+        table th:nth-child(1),
+        table td:nth-child(1) {
+            width: 15%;
+            /* Cột MON */
+        }
+
+        table th:nth-child(2),
+        table td:nth-child(2) {
+            width: 15%;
+            /* Cột TUE */
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 15%;
+            /* Cột WED */
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 15%;
+            /* Cột Thurs */
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 15%;
+            /* Cột fri */
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 15%;
+            /* Cột sat */
+        }
+
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 15%;
+            /* Cột cn */
+        }
+    </style>
+</head>
+
+
+<body>
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+
+            <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <img src="assets/img/EDUMATCH.jpg" alt="">
+                <h1 class="sitename">EDUMATCH</h1>
+                <span>.</span>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="#hero" class="active">Home<br></a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="forum.html">Diễn đàn</a></li>
+                    <li><a href="findTeacher-page.html">Events</a></li>
+                    <li><a href="#chefs">Chefs</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li class="dropdown"><a href="#"><span>Dropdown</span> <i
+                                class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li><a href="#">Dropdown 1</a></li>
+                            <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
+                                        class="bi bi-chevron-down toggle-dropdown"></i></a>
+                                <ul>
+                                    <li><a href="#">Deep Dropdown 1</a></li>
+                                    <li><a href="#">Deep Dropdown 2</a></li>
+                                    <li><a href="#">Deep Dropdown 3</a></li>
+                                    <li><a href="#">Deep Dropdown 4</a></li>
+                                    <li><a href="#">Deep Dropdown 5</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Dropdown 2</a></li>
+                            <li><a href="#">Dropdown 3</a></li>
+                            <li><a href="#">Dropdown 4</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#contact">Liên hệ</a></li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+            <div id="userDropdown" class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle username-text" type="button" id="userDropdownButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Tài khoản
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="userDropdownButton">
+                    <li><a class="dropdown-item" href="profile.html" id="profileLink">Thông tin tài khoản</a></li>
+                    <li><a class="dropdown-item" href="index.html" id="logoutButton">Đăng xuất</a></li>
+                </ul>
+            </div>
+
+
+
+
+        </div>
+    </header>
+
+    <main class="container mt-4 main-container">
+        <div class="container mt-4">
+            <div class="row">
+                <!-- Thời khóa biểu -->
+                <div class="col-md-12">
+                    <h3 class="text-center">Thời Khóa Biểu</h3>
+                    <div class="d-flex align-items-center mb-3">
+                        <label for="year-select" class="me-2 fw-bold text-danger">YEAR</label>
+                        <select id="year-select" class="form-select me-3" style="width: 100px;">
+                            <!-- Danh sách năm sẽ được tạo bằng JavaScript -->
+                        </select>
+
+                        <label for="week-select" class="me-2 fw-bold">WEEK</label>
+                        <select id="week-select" class="form-select" style="width: 200px;">
+                            <!-- Danh sách tuần sẽ được tạo bằng JavaScript -->
+                        </select>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>MON (24/02)</th>
+                                <th>TUE (25/02)</th>
+                                <th>WED (26/02)</th>
+                                <th>THU (27/02)</th>
+                                <th>FRI (28/02)</th>
+                                <th>SAT (01/03)</th>
+                                <th>SUN (02/03)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schedule-body">
+                            <!-- Dữ liệu lịch học sẽ được tải từ API -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const user = JSON.parse(localStorage.getItem("user"));
+            const authButton = document.getElementById("authButton");
+            const userDropdownButton = document.getElementById("userDropdownButton");
+            const userDropdown = document.getElementById("userDropdown");
+            const userId = JSON.parse(localStorage.getItem("userID"));
+            console.log("User: ", userId);
+            if (!userId) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Bạn cần đăng nhập để thêm bài viết.',
+                    showConfirmButton: true
+                });
+                loginModal.show();
+                return;
+            }
+            if (user) {
+                userDropdownButton.textContent = user.username;
+                userDropdown.classList.remove("d-none");
+            } else {
+                userDropdown.classList.add("d-none");
+                authButton.classList.remove("d-none");
+            }
+
+            const userData = JSON.parse(userId);
+            const loggedInUserId = userId;  // Lấy userId từ thông tin người dùng trong localStorage
+
+            const yearSelect = document.getElementById('year-select');
+            const weekSelect = document.getElementById('week-select');
+            const scheduleBody = document.getElementById("schedule-body");
+
+            let studentSchedule = []; // Lưu trữ dữ liệu lịch học từ API
+
+            // **Gọi API để lấy dữ liệu lịch học của học sinh**
+            fetch(`http://157.66.24.154:8080/api/student/getSchedule/${loggedInUserId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Dữ liệu trả về từ API:", data); // Log dữ liệu trả về từ API để kiểm tra
+
+                    if (!data || data.length === 0) {
+                        alert("Không tìm thấy lịch học của học sinh.");
+                        return;
+                    }
+
+                    studentSchedule = data.map(entry => ({
+                        date: new Date(entry.date), // Chuyển thành object Date
+                        subjectname: entry.subjectName,
+                        classname: entry.className,  // Lưu ý sử dụng đúng thuộc tính
+                        startTime: entry.startTime,
+                        endTime: entry.endTime
+                    }));
+
+                    setupYearAndWeekDropdowns();
+                    updateSchedule(); // Hiển thị lịch ban đầu
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy dữ liệu lịch học của học sinh:', error);
+                    alert('Có lỗi khi lấy dữ liệu lịch học.');
+                });
+
+            // **Hàm tạo dropdown chọn năm & tuần**
+            function setupYearAndWeekDropdowns() {
+                const currentYear = new Date().getFullYear();
+                for (let year = currentYear - 5; year <= currentYear + 5; year++) {
+                    let option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    if (year === currentYear) option.selected = true;
+                    yearSelect.appendChild(option);
+                }
+
+                function generateWeeks(year) {
+                    weekSelect.innerHTML = ''; // Xóa danh sách tuần cũ
+                    let firstDayOfYear = new Date(year, 0, 1); // Ngày 01/01 của năm
+                    let firstSunday = new Date(firstDayOfYear);
+                    firstSunday.setDate(firstSunday.getDate() + (7 - firstSunday.getDay())); // Chủ Nhật đầu tiên của năm
+
+                    let currentTime = new Date().getTime();
+                    let currentWeekFound = false;
+                    let weekNumber = 1;
+                    let hasWeeks = false;
+
+                    // **Tuần đầu tiên: 01/01 đến Chủ Nhật đầu tiên**
+                    let mondayOfWeek = new Date(firstDayOfYear);
+                    let sundayOfWeek = new Date(firstSunday);
+
+                    while (mondayOfWeek.getFullYear() === year) {
+                        let startStr = mondayOfWeek.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+                        let endStr = sundayOfWeek.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+
+                        let option = document.createElement('option');
+                        option.value = `${mondayOfWeek.getTime()} - ${sundayOfWeek.getTime()}`;
+                        option.textContent = `${startStr} đến ${endStr}`;
+                        hasWeeks = true;
+
+                        // **Tự động chọn tuần hiện tại**
+                        if (!currentWeekFound && currentTime >= mondayOfWeek.getTime() && currentTime <= sundayOfWeek.getTime()) {
+                            option.selected = true;
+                            currentWeekFound = true;
+                        }
+
+                        weekSelect.appendChild(option);
+                        weekNumber++;
+
+                        // **Chuyển sang tuần tiếp theo (Thứ Hai - Chủ Nhật)**
+                        mondayOfWeek = new Date(sundayOfWeek);
+                        mondayOfWeek.setDate(sundayOfWeek.getDate() + 1); // Sang Thứ Hai
+                        sundayOfWeek = new Date(mondayOfWeek);
+                        sundayOfWeek.setDate(mondayOfWeek.getDate() + 6); // Chủ Nhật
+                    }
+
+                    // **Nếu không có tuần nào, hiển thị lỗi**
+                    if (!hasWeeks) {
+                        console.error("Không tìm thấy tuần hợp lệ!");
+                        let defaultOption = document.createElement('option');
+                        defaultOption.value = "";
+                        defaultOption.textContent = "Lỗi tạo tuần! Kiểm tra console";
+                        defaultOption.selected = true;
+                        weekSelect.appendChild(defaultOption);
+                    }
+
+                    updateSchedule(); // Hiển thị lịch mặc định
+                }
+
+                generateWeeks(currentYear);
+
+                yearSelect.addEventListener('change', function () {
+                    generateWeeks(parseInt(this.value));
+                    updateSchedule();
+                });
+
+                weekSelect.addEventListener('change', updateSchedule);
+            }
+
+            // **Hàm cập nhật lịch học theo tuần**
+            function updateSchedule() {
+                scheduleBody.innerHTML = "";
+                const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+                const dayDates = {};  // Store dates for each day
+
+                // Get the start and end of the week from the selected week
+                let [weekStart, weekEnd] = weekSelect.value.split(" - ").map(ts => new Date(parseInt(ts)));
+
+                // Calculate the date for each day of the week
+                days.forEach((day, index) => {
+                    let date = new Date(weekStart);
+                    date.setDate(weekStart.getDate() + index); // Increment by day index
+                    dayDates[day] = date.toLocaleDateString('en-GB'); // Format as dd/mm
+                });
+
+                // Update the header to show the dates
+                const headerRow = document.querySelector('thead tr');
+                days.forEach((day, index) => {
+                    const th = headerRow.querySelector(`th:nth-child(${index + 1})`);
+                    th.innerText = `${day} (${dayDates[day]})`;  // Show both day and date
+                });
+
+                let scheduleData = {};
+                days.forEach(day => scheduleData[day] = []);
+
+                // Process the schedule data and assign them to the correct day columns
+                studentSchedule.forEach(entry => {
+                    let date = entry.date;
+                    let dayIndex = date.getDay();
+                    let dayName = days[dayIndex === 0 ? 6 : dayIndex - 1];
+
+                    if (date >= weekStart && date <= weekEnd) {
+                        scheduleData[dayName].push({
+                            subjectname: entry.subjectname,
+                            classname: entry.classname,
+                            startTime: entry.startTime,
+                            endTime: entry.endTime
+                        });
+                    }
+                });
+
+                // Render the schedule data in the table
+                let maxRows = Math.max(...Object.values(scheduleData).map(list => list.length), 1);
+                for (let i = 0; i < maxRows; i++) {
+                    let row = "<tr>";
+                    days.forEach(day => {
+                        if (scheduleData[day][i]) {
+                            let entry = scheduleData[day][i];
+                            row += `<td>${entry.subjectname} - ${entry.classname} <br> (${entry.startTime} - ${entry.endTime}) </td>`;
+                        } else {
+                            row += `<td> - </td>`;
+                        }
+                    });
+                    row += "</tr>";
+                    scheduleBody.innerHTML += row;
+                }
+            }
+        });
+
+
+
+    </script>
+
+    <footer id="footer" class="footer dark-background">
+
+        <div class="container">
+            <div class="row gy-3">
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-geo-alt icon"></i>
+                    <div class="address">
+                        <h4>Địa chỉ</h4>
+                        <p>Khu Công nghệ cao Hòa Lạc, Km29 Đại lộ Thăng Long</p>
+                        <p>Huyện Thạch Thất, Hà Nội</p>
+                        <p></p>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-telephone icon"></i>
+                    <div>
+                        <h4>Liên hệ</h4>
+                        <p>
+                            <strong>Điện thoại:</strong> <span>+84 982819359</span><br>
+                            <strong>Email:</strong> <span>edumatch@work.gmail.com</span><br>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-clock icon"></i>
+                    <div>
+                        <h4>Thời gian mở cửa</h4>
+                        <p>
+                            <strong>Thứ 2 - Thứ 6:</strong> <span>11AM - 23PM</span><br>
+                            <strong>Chủ nhật</strong>: <span>Đóng cửa</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h4>Theo dõi chúng tôi</h4>
+                    <div class="social-links d-flex">
+                        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container copyright text-center mt-4">
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">EDUMATCH</strong> <span>All Rights Reserved</span>
+            </p>
+            <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you've purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a
+                    href="https://themewagon.com">ThemeWagon</a>
+            </div>
+        </div>
+
+    </footer>
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

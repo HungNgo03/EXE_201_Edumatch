@@ -10,7 +10,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     try {
+
+
         const response = await fetch(`http://157.66.24.154:8080/users/profile/${localStorage.getItem("userID")}`);
+
+
         if (!response.ok) {
             throw new Error("Không thể lấy thông tin người dùng");
         }
