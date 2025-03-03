@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+
     // Kiểm tra session từ server nếu cần
     async function checkSession() {
         const response = await fetch("http://localhost:8080/users/profile", { credentials: "include" });
@@ -153,6 +154,36 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const scheduleLink = document.getElementById("scheduleLink");
 
+    if (scheduleLink) {
+        scheduleLink.addEventListener("click", function (event) {
+            const user = JSON.parse(localStorage.getItem("user"));
 
+            if (!user) {
+                event.preventDefault();
 
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Bạn cần đăng nhập để xem Thời Khóa Biểu!',
+                    showConfirmButton: true
+                });
+
+                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            }
+        });
+    }
+});
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("auth.js đã được load!");
+
+    const loginModalElement = document.getElementById("loginModal");
+    if (loginModalElement) {
+        const loginModal = new bootstrap.Modal(loginModalElement);
+        console.log("Login modal đã được khởi tạo");
+    } else {
+        console.warn("Không tìm thấy loginModal trong DOM");
+    }
+});
