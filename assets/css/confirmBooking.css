@@ -37,46 +37,44 @@ h1,h3 {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-.time-slots {
+.day-container {
+    margin-bottom: 15px;
+}
+
+.day-title {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.time-slot-container {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
 }
-/* .time-slot {
-    padding: 10px;
-    background: #e0e0e0;
-    border-radius: 5px;
+
+.time-slot {
+    display: inline-block;
+    padding: 5px 10px;
     cursor: pointer;
-    text-align: center;
-    min-width: 60px;
-} */
-.time-slot:hover {
-    background: rgb(206, 18, 18);
+    border-radius: 5px;
+    transition: background 0.3s ease;
 }
+
 .time-slot.selected {
     background: rgb(206, 18, 18);
+    color: white;
 }
-.days-time {
+
+
+.subjects-list {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
 }
- /* .day-time {
-    padding: 10px;
-    background: #e0e0e0;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    min-width: 60px;
-} */
-.day-time:hover {
+#subjects-list .btn:hover {
     background: rgb(206, 18, 18);
 }
-.day-time.selected {
+#subjects-list .btn.selected {
     background: rgb(206, 18, 18);
-}
-.salon-info img {
-    width: 100%;
-    border-radius: 5px;
-    margin-bottom: 10px;
+    color: white; /* Để chữ dễ nhìn hơn */
 }

@@ -6,16 +6,13 @@
     <title>EDUMATCH</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
-
+  <!-- SweetAlert2 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
-
     <!-- Vendor CSS Files -->
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -46,60 +43,73 @@
     <h1 class="text-center">Thông tin lớp học</h1>
     <div class="booking-container">
         <div class="left-panel">
-            <div class="title">Cắt tóc nam</div>
-            <p>Hãy cắt tóc chuyên nghiệp cho nam theo phong cách bạn thích.</p>
-            <div class="price">1.200.000 ₫ • 30 phút</div>
-            <h3>Chọn thứ:</h3>
-            <div class="days-time" id="days-time"></div>
-            <h3>Chọn thời gian:</h3>
-            <div class="time-slots" id="time-slots"></div>
+            <h3>Chọn lịch dạy:</h3>
+            <table id="schedule-table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Thứ</th>
+                        <th>Khung giờ</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="mb-3">
+                <h3>Chọn lớp:</h3>
+                <select id="grade-select" class="form-select">
+                    <option value="">-- Chọn lớp --</option>
+                </select>
+            </div>
+            <h3>Chọn môn học:</h3>
+            <div id="subjects-list"  class="subjects-list"></div>
+            
+            <h3>Hình thức:</h3>
+            <select name="" class="form-select">
+                <option>Online</option>
+                <option>Offline</option>
+            </select>
+            <div>
+            </div>
+            <div class="row d-flex pb-5" style="margin-top: 20px;">
+                <div  class="col-md-5 col-xl-7 mb-4 mb-md-0">
+                    <div id="totalPrice">
+                        <h4>Tổng tiền thanh toán (10 buổi):</h4>
+                    </div>
+                    <input type="button" id="generateQR" value="Thanh toán" data-mdb-ripple-init class="btn btn-primary" />
+                    <button id="confirmPayment" class="btn btn-warning" style="display: none;">Xác nhận thanh toán</button>
+                </div>
+                <div class="col-md-5 col-xl-4 offset-xl-1" style="margin-left: 0;">
+                    <div class="text-center">
+                        <img id="qrImage" style="width: 18vw;" src="" />
+        
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="right-panel">
-            <div class="salon-info">
-                <img src="salon.jpg" alt="Tutor">
+            <div class="tutor-card">
                 <h3>Thông tin gia sư</h3>
-                <p>Dịch vụ cao cấp, phù hợp phong cách của bạn.</p>
-                <p><strong>📞 (555) 123-4567</strong></p>
-                <p><strong>📍 1234 Fashion Avenue, NY 10001</strong></p>
-                <p><strong>✉️ contact@elitecutssalon.com</strong></p>
+                <img style="    width: 21vh;border-radius: 21px;" src="assets/img/teachers/tutor.jpg" class="profile-img mb-3" alt="Tutor Image">
+                <h4 id="tutor-name"></h4>
+                <div style="    text-align: left;">
+
+                    <p><strong>Email:</strong> <span id="tutor-email"></span></p>
+                    <!-- <p><strong>Điện thoại:</strong> <span id="tutor-phone"></span></p> -->
+                    <p><strong>Địa chỉ:</strong> <span id="tutor-address"></span></p>
+                    <p><strong>Bằng cấp:</strong> <span id="tutor-qualification"></span></p>
+                    <p><strong>Kinh nghiệm:</strong> <span id="tutor-experience"></span> năm</p>
+                    <p><strong>Mô tả:</strong> <span id="tutor-bio"></span></p>
+                    <p><strong>Môn dạy:</strong> <span id="tutor-subjects"></span></p>
+                    <p><strong>Học phí/buổi:</strong> <span id="tutor-fee"></span></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        function updateTimeSlots() {
-            const slots = ["8:00", "9:00", "9:30", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];
-            let slot = document.getElementById("time-slots");
-            slot.innerHTML = "";
-            slots.forEach(time => {
-                let div = document.createElement("div");
-                div.className = "time-slot  btn btn-primary";
-                div.textContent = time;
-                div.onclick = function () {
-                    document.querySelectorAll(".time-slot").forEach(slot => slot.classList.remove("selected"));
-                    div.classList.add("selected");
-                };
-                slot.appendChild(div);
-            });
-            const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-            let day = document.getElementById("days-time");
-            day.innerHTML = "";
-            days.forEach(time => {
-                let div = document.createElement("div");
-                div.className = "day-time btn btn-primary";
-                div.textContent = time;
-                div.onclick = function () {
-                    // Xóa trạng thái chọn trước đó
-                    document.querySelectorAll(".day-time").forEach(slot => slot.classList.remove("selected"));
-                    // Thêm trạng thái "được chọn"
-                    div.classList.add("selected");
-                };
-                day.appendChild(div);
-            });
-        }
-        updateTimeSlots();
-        </script>
+<script>
+             
+               
+</script>
 </main>
 
 <footer id="footer" class="footer dark-background"></footer>
@@ -110,6 +120,16 @@
         document.getElementById('footer').innerHTML = data;
     })
     .catch(error => console.error('Error loading footer:', error));
+    document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(() => {
+        const loginModalEl = document.getElementById("loginModal");
+        if (!loginModalEl) {
+            console.error("Lỗi: Không tìm thấy phần tử #loginModal");
+            return;
+        }
+        const loginModal = new bootstrap.Modal(loginModalEl);
+    }, 500); // Delay để đảm bảo phần tử đã tồn tại
+});
 </script>
 <!-- Scroll Top -->
 <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -124,10 +144,11 @@
 <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
 <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
 <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+<!-- Thêm Bootstrap JS và Popper.js (nếu chưa có) -->
 
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
-
+<script src="assets/js/payment.js"></script>
 </body>
 
 </html>

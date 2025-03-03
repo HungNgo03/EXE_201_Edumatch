@@ -14,23 +14,35 @@
   <link href="assets/css/main.css" rel="stylesheet">
   <style>
     .post-container {
-      background-color: #fff;
+      background-color: #f9f9f9;
+      /* A lighter background */
       border: 1px solid #ddd;
-      border-radius: 5px;
+      border-radius: 8px;
+      /* Slightly more rounded corners */
       padding: 20px;
       margin: 20px 0;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      width: 53rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      /* A subtle shadow */
+      width: 50rem;
+      /* Make it responsive */
     }
 
     .post-title {
-      font-size: 20px;
-      font-weight: bold;
+      font-size: 22px;
+      /* Slightly larger title */
+      font-weight: 600;
+      /* Semi-bold */
+      color: #333;
+      /* Darker text color */
+      margin-bottom: 10px;
     }
 
     .post-content {
       font-size: 16px;
-      line-height: 1.6;
+      line-height: 1.7;
+      /* Improved readability */
+      color: #555;
+      /* Slightly lighter text color */
     }
 
     .post-actions {
@@ -38,17 +50,22 @@
     }
 
     .post-actions button {
-      background-color: #ff6347;
+      background-color: #CE1212;
+      /* Consistent primary color */
       color: #fff;
       border: none;
       padding: 10px 15px;
-      border-radius: 5px;
+      border-radius: 8px;
+      /* Consistent rounded corners */
       cursor: pointer;
       margin-right: 10px;
+      transition: background-color 0.3s ease;
+      /* Smooth transition */
     }
 
     .post-actions button:hover {
-      background-color: #e5533d;
+      background-color: #9e0e0e;
+      /* Darker shade on hover */
     }
 
     .sidebar {
@@ -57,6 +74,7 @@
       border-radius: 5px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       margin-right: 20px;
+      width: 16rem;
     }
 
     .sidebar h3 {
@@ -128,41 +146,25 @@
 <body class="index-page">
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
+
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
         <img src="assets/img/EDUMATCH.jpg" alt="">
         <h1 class="sitename">EDUMATCH</h1>
         <span>.</span>
       </a>
+
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="#hero" class="active">Home<br></a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="index.html" class="active">Trang chủ<br></a></li>
           <li><a href="forum.html">Diễn đàn</a></li>
           <li><a href="findTeacher-page.html">Tìm Gia Sư</a></li>
-          <li><a href="payment.html">Payment</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
-                    class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
-            </ul>
-          </li>
+          <li><a href="student-schedule.html">Thời khóa biểu</a></li>
           <li><a href="#contact">Liên hệ</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
+
       <a id="authButton" class="btn-getstarted" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng
         nhập</a>
       <div id="userDropdown" class="d-none dropdown">
@@ -218,7 +220,7 @@
 
       let currentPage = 0;
       const pageSize = 5;
-      let currentUrl = 'http://localhost:8080/Post/getAllPost1';
+      let currentUrl = 'http://157.66.24.154:8080/Post/getAllPost1';
 
       function fetchPaginatedPosts(url, pageNo = 0, pageSize = 5) {
         console.log("Fetching paginated posts from URL:", url); // Debugging URL
@@ -308,7 +310,7 @@
       }
 
       function fetchSubjects() {
-        fetch('http://localhost:8080/Post/getAllSubject')
+        fetch('http://157.66.24.154:8080/Post/getAllSubject')
           .then(response => response.json())
           .then(data => {
             console.log("Subjects API Response:", data);
@@ -353,14 +355,14 @@
       searchButton.addEventListener('click', function () {
         const username = searchInput.value;
         const subjectname = subjectSelect.value;
-        let url = 'http://localhost:8080/Post/getAllPost'; // Default to getAllPost for search
+        let url = 'http://157.66.24.154:8080/Post/getAllPost'; // Default to getAllPost for search
 
         if (username && subjectname) {
-          url = `http://localhost:8080/Post/findPostsBySubjectAndUsername?subjectname=${subjectname}&username=${username}`;
+          url = `http://157.66.24.154:8080/Post/findPostsBySubjectAndUsername?subjectname=${subjectname}&username=${username}`;
         } else if (username) {
-          url = `http://localhost:8080/Post/findPostsByUsername?username=${username}`;
+          url = `http://157.66.24.154:8080/Post/findPostsByUsername?username=${username}`;
         } else if (subjectname) {
-          url = `http://localhost:8080/Post/findPostsBySubject?subjectname=${subjectname}`;
+          url = `http://157.66.24.154:8080/Post/findPostsBySubject?subjectname=${subjectname}`;
         }
 
         currentUrl = url;
@@ -407,40 +409,46 @@
       <div class="modal-content shadow-lg border-0 rounded-4">
         <div class="modal-header border-0 bg-danger text-white text-center">
           <h2 class="modal-title w-100 fw-bold display-5" id="loginModalLabel">🎉 Chào mừng bạn! 🎉</h2>
-          <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3" data-bs-dismiss="modal"
+            aria-label="Close"></button>
         </div>
         <div class="modal-body p-5">
           <!-- Tabs for Login & Register -->
           <ul class="nav nav-pills nav-justified mb-3" id="loginRegisterTabs" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Đăng nhập</button>
+              <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
+                type="button" role="tab">Đăng nhập</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link fw-bold" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Đăng ký</button>
+              <button class="nav-link fw-bold" id="register-tab" data-bs-toggle="tab" data-bs-target="#register"
+                type="button" role="tab">Đăng ký</button>
             </li>
           </ul>
-  
+
           <div class="tab-content mt-3">
             <!-- Login Form -->
             <div class="tab-pane fade show active" id="login" role="tabpanel">
               <form id="loginForm" class="d-flex flex-column align-items-center">
                 <div class="mb-3 w-50 text-start">
                   <label for="loginUsername" class="form-label fw-semibold">Username</label>
-                  <input type="text" class="form-control rounded-3 p-2" id="loginUsername" name="username" placeholder="Nhập username" required>
+                  <input type="text" class="form-control rounded-3 p-2" id="loginUsername" name="username"
+                    placeholder="Nhập username" required>
                 </div>
                 <div class="mb-3 w-50 text-start">
                   <label for="loginPassword" class="form-label fw-semibold">Mật khẩu</label>
-                  <input type="password" class="form-control rounded-3 p-2" id="loginPassword" name="password" placeholder="Nhập mật khẩu" required>
+                  <input type="password" class="form-control rounded-3 p-2" id="loginPassword" name="password"
+                    placeholder="Nhập mật khẩu" required>
                 </div>
-                <button type="submit" class="btn text-white rounded-3 mt-2 px-4 py-2" style="background-color: #CE1212;">Đăng nhập</button>
+                <button type="submit" class="btn text-white rounded-3 mt-2 px-4 py-2"
+                  style="background-color: #CE1212;">Đăng nhập</button>
                 <p class="mt-2">
                   <a href="#" id="forgotPasswordLink" class="text-decoration-none">Quên mật khẩu?</a>
                 </p>
               </form>
-  
-  
+
+
             </div>
-  
+
             <!-- Modal Quên Mật Khẩu -->
             <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true">
               <div class="modal-dialog">
@@ -452,7 +460,7 @@
                   <div class="modal-body">
                     <input type="email" id="forgotEmail" class="form-control mb-2" placeholder="Nhập email">
                     <button id="sendOtpBtn" class="btn btn-primary w-100">Gửi OTP</button>
-  
+
                     <div id="otpSection" style="display:none;">
                       <input type="text" id="otpCode" class="form-control mt-3" placeholder="Nhập mã OTP">
                       <input type="password" id="newPassword" class="form-control mt-2" placeholder="Nhập mật khẩu mới">
@@ -462,7 +470,7 @@
                 </div>
               </div>
             </div>
-  
+
             <!-- Register Form -->
             <div class="tab-pane fade" id="register" role="tabpanel">
               <form id="registerForm">
@@ -470,26 +478,31 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="registerName" class="form-label fw-semibold">Họ và Tên</label>
-                      <input type="text" class="form-control rounded-3 p-2" id="registerName" placeholder="Nhập họ tên" required>
+                      <input type="text" class="form-control rounded-3 p-2" id="registerName" placeholder="Nhập họ tên"
+                        required>
                     </div>
                     <div class="mb-3">
                       <label for="registerPhone" class="form-label fw-semibold">Số điện thoại</label>
-                      <input type="tel" class="form-control rounded-3 p-2" id="registerPhone" placeholder="Nhập số điện thoại" required>
+                      <input type="tel" class="form-control rounded-3 p-2" id="registerPhone"
+                        placeholder="Nhập số điện thoại" required>
                     </div>
                     <div class="mb-3">
                       <label for="registerEmail" class="form-label fw-semibold">Email</label>
-                      <input type="email" class="form-control rounded-3 p-2" id="registerEmail" placeholder="Nhập email" required>
+                      <input type="email" class="form-control rounded-3 p-2" id="registerEmail" placeholder="Nhập email"
+                        required>
                     </div>
                   </div>
-  
+
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="registerPassword" class="form-label fw-semibold">Mật khẩu</label>
-                      <input type="password" class="form-control rounded-3 p-2" id="registerPassword" placeholder="Tạo mật khẩu" required>
+                      <input type="password" class="form-control rounded-3 p-2" id="registerPassword"
+                        placeholder="Tạo mật khẩu" required>
                     </div>
                     <div class="mb-3">
                       <label for="username" class="form-label fw-semibold">Username</label>
-                      <input type="text" class="form-control rounded-3 p-2" id="username" placeholder="Nhập username" required>
+                      <input type="text" class="form-control rounded-3 p-2" id="username" placeholder="Nhập username"
+                        required>
                     </div>
                     <div class="mb-3">
                       <label for="registerRole" class="form-label fw-semibold">Chọn vai trò</label>
@@ -499,8 +512,8 @@
                         <option value="Tutor">Tutor</option>
                       </select>
                     </div>
-  
-  
+
+
                     <!-- Trường dành cho Tutor -->
                     <div id="tutorFields" style="display: none;">
                       <div class="mb-3">
@@ -520,23 +533,27 @@
                       </div>
                       <div class="mb-3">
                         <label for="qualification" class="form-label fw-semibold">Bằng cấp</label>
-                        <input type="text" class="form-control rounded-3 p-2" id="qualification" placeholder="Nhập bằng cấp">
+                        <input type="text" class="form-control rounded-3 p-2" id="qualification"
+                          placeholder="Nhập bằng cấp">
                       </div>
                       <div class="mb-3">
                         <label for="experience" class="form-label fw-semibold">Kinh nghiệm (năm)</label>
-                        <input type="number" class="form-control rounded-3 p-2" id="experience" min="0" placeholder="Nhập số năm kinh nghiệm">
+                        <input type="number" class="form-control rounded-3 p-2" id="experience" min="0"
+                          placeholder="Nhập số năm kinh nghiệm">
                       </div>
                       <div class="mb-3">
                         <label for="bio" class="form-label fw-semibold">Giới thiệu</label>
-                        <textarea class="form-control rounded-3 p-2" id="bio" placeholder="Giới thiệu bản thân"></textarea>
+                        <textarea class="form-control rounded-3 p-2" id="bio"
+                          placeholder="Giới thiệu bản thân"></textarea>
                       </div>
                     </div>
-  
+
                     <!-- Trường dành cho Student -->
                     <div id="studentFields" style="display: none;">
                       <div class="mb-3">
                         <label for="parentName" class="form-label fw-semibold">Tên phụ huynh</label>
-                        <input type="text" class="form-control rounded-3 p-2" id="parentName" placeholder="Nhập tên phụ huynh">
+                        <input type="text" class="form-control rounded-3 p-2" id="parentName"
+                          placeholder="Nhập tên phụ huynh">
                       </div>
                       <div class="mb-3">
                         <label for="grade" class="form-label fw-semibold">Lớp học</label>
@@ -544,21 +561,24 @@
                       </div>
                       <div class="mb-3">
                         <label for="addressStudent" class="form-label fw-semibold">Địa chỉ</label>
-                        <input type="text" class="form-control rounded-3 p-2" id="addressStudent" placeholder="Nhập địa chỉ">
+                        <input type="text" class="form-control rounded-3 p-2" id="addressStudent"
+                          placeholder="Nhập địa chỉ">
                       </div>
                       <div class="mb-3">
                         <label for="notes" class="form-label fw-semibold">Ghi chú</label>
-                        <textarea class="form-control rounded-3 p-2" id="notes" placeholder="Nhập ghi chú (nếu có)"></textarea>
+                        <textarea class="form-control rounded-3 p-2" id="notes"
+                          placeholder="Nhập ghi chú (nếu có)"></textarea>
                       </div>
                     </div>
-  
+
                   </div>
                 </div>
-  
-                <button type="submit" class="btn w-100 py-2 rounded-3 text-white" style="background-color: #CE1212;">Đăng ký</button>
+
+                <button type="submit" class="btn w-100 py-2 rounded-3 text-white"
+                  style="background-color: #CE1212;">Đăng ký</button>
               </form>
             </div>
-  
+
           </div>
         </div>
       </div>
@@ -623,7 +643,7 @@
           console.log("Dữ liệu gửi lên:", JSON.stringify(requestBody, null, 2));
   
           // Gửi request đến backend
-          const response = await fetch("http://localhost:8080/users/register", {
+          const response = await fetch("http://157.66.24.154:8080/users/register", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -657,15 +677,109 @@
     </script>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
-    const forgotPasswordLink = document.getElementById("forgotPasswordLink");
-    const forgotPasswordModal = new bootstrap.Modal(document.getElementById("forgotPasswordModal"));
-  
-    forgotPasswordLink.addEventListener("click", function (event) {
-    event.preventDefault(); // Ngăn chặn chuyển hướng trang
-    forgotPasswordModal.show(); // Mở modal quên mật khẩu
+      const forgotPasswordLink = document.getElementById("forgotPasswordLink");
+      const forgotPasswordModal = new bootstrap.Modal(document.getElementById("forgotPasswordModal"));
+
+      forgotPasswordLink.addEventListener("click", function (event) {
+        event.preventDefault(); // Ngăn chặn chuyển hướng trang
+        forgotPasswordModal.show(); // Mở modal quên mật khẩu
       });
     });
-    </script>
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const authButton = document.getElementById("authButton");
+      const userDropdown = document.getElementById("userDropdown");
+      const userDropdownButton = document.getElementById("userDropdownButton");
+      const logoutButton = document.getElementById("logoutButton");
+      const loginModal = new bootstrap.Modal(document.getElementById("loginModal"));
+
+      // Kiểm tra session trong localStorage
+      const user = localStorage.getItem("user");
+      if (user) {
+        const userData = JSON.parse(user);
+        authButton.classList.add("d-none");
+        userDropdownButton.textContent = userData.username;
+        userDropdown.classList.remove("d-none");
+      }
+
+      // Xử lý đăng nhập
+      document.getElementById("loginForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const username = document.getElementById("loginUsername").value;
+        const password = document.getElementById("loginPassword").value;
+
+        const response = await fetch("http://157.66.24.154:8080/users/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem("user", JSON.stringify({ username: data.username, userId: data.userID }));
+          localStorage.setItem("userID", data.userID);
+          localStorage.setItem("role", data.role);// Lưu session vào localStorage
+          localStorage.setItem("fullname", data.fullname);
+          localStorage.setItem("email", data.email);
+          localStorage.setItem("phoneNumber", data.phoneNumber);
+          authButton.classList.add("d-none");
+          userDropdownButton.textContent = data.username;
+          userDropdown.classList.remove("d-none");
+          loginModal.hide();
+
+          // Hiển thị thông báo đăng nhập thành công
+          Swal.fire({
+            title: "Thành công!",
+            text: "Đăng nhập thành công!",
+            icon: "success",
+            confirmButtonText: "OK"
+          }).then(() => {
+            location.reload();
+          });
+        } else {
+          Swal.fire({
+            title: "Lỗi!",
+            text: "Đăng nhập thất bại. Vui lòng kiểm tra lại!",
+            icon: "error",
+            confirmButtonText: "Thử lại"
+          });
+        }
+      });
+
+      // Xử lý đăng xuất
+      logoutButton.addEventListener("click", function () {
+        localStorage.removeItem("user"); // Xóa session khỏi localStorage
+        localStorage.clear();
+
+        userDropdown.classList.add("d-none");
+        authButton.classList.remove("d-none");
+
+        Swal.fire({
+          title: "Đã đăng xuất!",
+          text: "Bạn đã đăng xuất thành công.",
+          icon: "success",
+          confirmButtonText: "OK"
+        });
+      });
+
+      // Kiểm tra session từ server nếu cần
+      async function checkSession() {
+        const response = await fetch("http://157.66.24.154:8080/users/profile", { credentials: "include" });
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem("user", JSON.stringify({ username: data.username }));
+          localStorage.setItem("userID", userData.id);// Đảm bảo lưu vào localStorage
+
+          authButton.classList.add("d-none");
+          userDropdownButton.textContent = data.username;
+          userDropdown.classList.remove("d-none");
+        }
+      }
+
+      checkSession(); // Kiểm tra session khi tải trang
+    });
+  </script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const addPostButton = document.getElementById("addPostButton");
@@ -710,7 +824,7 @@
         const userID = user.userId;
 
         // Gửi request đến backend
-        const response = await fetch("http://localhost:8080/Post/addPost", {
+        const response = await fetch("http://157.66.24.154:8080/Post/addPost", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -748,7 +862,7 @@
       });
 
       // Fetch subjects and populate the subject select dropdown
-      fetch('http://localhost:8080/Post/getAllSubject2')
+      fetch('http://157.66.24.154:8080/Post/getAllSubject2')
         .then(response => response.json())
         .then(data => {
           const subjectSelect = document.getElementById("modal-subject-select");
