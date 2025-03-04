@@ -53,14 +53,14 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                  <li><a href="index.html" class="active">Trang chủ<br></a></li>
-                  <li><a href="forum.html">Diễn đàn</a></li>
-                  <li><a href="findTeacher-page.html">Tìm Gia Sư</a></li>
-                  <li><a href="student-schedule.html">Thời khóa biểu</a></li>
-                  <li><a href="#contact">Liên hệ</a></li>
+                    <li><a href="index.html" class="active">Trang chủ<br></a></li>
+                    <li><a href="forum.html">Diễn đàn</a></li>
+                    <li><a href="findTeacher-page.html">Tìm Gia Sư</a></li>
+                    <li><a href="student-schedule.html">Thời khóa biểu</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-              </nav>
+            </nav>
 
             <a class="btn-getstarted" href="index.html#book-a-table">Đăng nhập</a>
 
@@ -122,6 +122,7 @@
                 function fetchTutors() {
                     const name = nameInput.value.trim();
                     const subject = subjectSelect.value.trim();
+                    // const url = `http://localhost:8080/api/tutor/getAllTutors?page=${currentPage}&size=${pageSize}&name=${name}&subject=${subject}`;
 
                     const url = `http://157.66.24.154:8080/tutor/getAllTutors?page=${currentPage}&size=${pageSize}&name=${name}&subject=${subject}`;
 
@@ -129,6 +130,10 @@
                     fetch(url)
                         .then(response => response.json())
                         .then(data => {
+                            console.log("API Response:", data);
+                            data.result.forEach(tutor => {
+                                console.log(`${tutor.fullname} - Image: ${tutor.image}`);
+                            });
                             const tutors = data.result;
                             const totalPages = data.totalPages;
 
@@ -142,11 +147,12 @@
                             tutors.forEach(tutor => {
                                 const tutorCard = document.createElement('div');
                                 tutorCard.classList.add('col-md-6');
+                                const imageUrl = `assets/img/tutors/${tutor.image}`;
                                 tutorCard.innerHTML = `
                         <div class="tutor-card d-flex align-items-center">
                             <a href="confirmBooking.html?tutorId=${tutor.id}" class="me-3">
-                                <img src="assets/img/teachers/tutor.jpg" alt="Gia Sư" class="rounded-circle" width="80">
-                            </a>
+                            <img src="${imageUrl}" alt="${tutor.fullname}" class="rounded-circle" width="80">
+                        </a>
                             <div class="flex-grow-1">
                                 <h5>
                                     <a href="confirmBooking.html?tutorId=${tutor.id}" class="tutor-link">
