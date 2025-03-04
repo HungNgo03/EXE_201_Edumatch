@@ -1,6 +1,6 @@
 const user = JSON.parse(localStorage.getItem("user"));
-// const apiUrl = `http://localhost:8080/class/getBooking/${user.userId}`; 
-const apiUrl = `http://localhost:8080/class/getBooking/18`;
+// const apiUrl = `http://http://157.66.24.154:8080/class/getBooking/${user.userId}`; 
+const apiUrl = `http://localhost:8080/class/getBooking/1`;
 
 const classListDiv = document.getElementById("classList");
 function getStatusBadgeColor(status) {
@@ -83,12 +83,21 @@ function renderClassList(classData) {
                                                 <!-- Chỉ hiển thị nút Cập nhật nếu là Tutor -->
                                                 <div style="display: flex;">
                                                     ${userRole === "Tutor" && item.status === "Pending" ? `
-                                                    <button type="button" class="btn btn-success  " onclick="updateStatus(${item.id},${item.preferredSchedule})" data-toggle="modal" data-target="#updateModal">Duyệt</button>
+                                                    <button type="button" class="btn btn-success  " onclick="updateStatus(${item.preferredSchedule})" data-toggle="modal" data-target="#updateModal">Duyệt</button>
                                                     <button type="button" class="btn btn-danger" style="margin-left: 10px;" onclick="rejectStatus(${item.id})">Từ chối</button>
                                                     ` : ""}
+                                                    ${userRole === "Student" && item.paymentStatus === "Chưa hoàn thành" ? `
+                                                        <button type="button" class="btn btn-success" onclick="getQr(${item.id})">Thanh toán</button>
+                                                        ` : ""}
+                                                </div>
+                                                </div>
+                                                <div class="col-md-5 col-xl-4 offset-xl-1" style="margin-left: 0;">
+                                                    <div class="text-center">
+                                                        <img id="qrImage${item.id}" style="width: 18vw;" src="" />
+                                        
+                                                    </div>
                                                 </div>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -97,12 +106,29 @@ function renderClassList(classData) {
 
     classListDiv.innerHTML = html;
 }
-function updateStatus(registerId,preferredSchedule) {
+function updateStatus(preferredSchedule) {
     document.getElementById("newSchedule").value = preferredSchedule;
     fetchTutorClasses();
     $("#updateModal").modal("show");
 }
+async function getQr(id) {
+    try {
+        let response = await fetch(`http://localhost:8080/class/getPaymentQr/${id}`);
+        
+        if (!response.ok) {
+            throw new Error(`Lỗi API: ${response.status} - ${response.statusText}`);
+        }
 
+        let data = await response.json();
+        
+        let qrImg = document.getElementById("qrImage"+id);
+        qrImg.src = data.result;
+        qrImg.style.display = "block";
+        
+    } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu:", error);
+    }
+}
 // Hàm gọi API lấy danh sách lớp của Tutor
 function fetchTutorClasses() {
     fetch(`/api/tutor/classes`)
@@ -148,13 +174,13 @@ function submitUpdate() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newClass)
         })
-        .then(response => response.json())
-        .then(data => {
-            alert("Tạo lớp mới thành công!");
-            $("#updateModal").modal("hide");
-            location.reload();
-        })
-        .catch(error => console.error("Lỗi tạo lớp mới:", error));
+            .then(response => response.json())
+            .then(data => {
+                alert("Tạo lớp mới thành công!");
+                $("#updateModal").modal("hide");
+                location.reload();
+            })
+            .catch(error => console.error("Lỗi tạo lớp mới:", error));
 
     } else {
         // Nếu chọn lớp đã có sẵn, chỉ cần cập nhật lớp cho đăng ký
@@ -168,13 +194,13 @@ function updateClassRegistration(classId) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ registrationId: selectedRegistrationId, classId })
     })
-    .then(response => response.json())
-    .then(data => {
-        alert("Cập nhật thành công!");
-        $("#updateModal").modal("hide");
-        location.reload();
-    })
-    .catch(error => console.error("Lỗi cập nhật đăng ký:", error));
+        .then(response => response.json())
+        .then(data => {
+            alert("Cập nhật thành công!");
+            $("#updateModal").modal("hide");
+            location.reload();
+        })
+        .catch(error => console.error("Lỗi cập nhật đăng ký:", error));
 }
 
 fetchClassList();
