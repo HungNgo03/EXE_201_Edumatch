@@ -1,6 +1,6 @@
 const user = JSON.parse(localStorage.getItem("user"));
-// const apiUrl = `http://http://157.66.24.154:8080/class/getBooking/${user.userId}`; 
-const apiUrl = `http://localhost:8080/class/getBooking/1`;
+const apiUrl = `http://http://157.66.24.154:8080/class/getBooking/${user.userId}`; 
+// const apiUrl = `http://localhost:8080/class/getBooking/1`;
 
 const classListDiv = document.getElementById("classList");
 function getStatusBadgeColor(status) {
@@ -113,7 +113,7 @@ function updateStatus(preferredSchedule) {
 }
 async function getQr(id) {
     try {
-        let response = await fetch(`http://localhost:8080/class/getPaymentQr/${id}`);
+        let response = await fetch(`http://157.66.24.154:8080/class/getPaymentQr/${id}`);
         
         if (!response.ok) {
             throw new Error(`Lỗi API: ${response.status} - ${response.statusText}`);
