@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
     // **Gọi API để lấy dữ liệu gia sư**
-    fetch(`http://http://157.66.24.154:8080/api/tutor/getTutorDetail/${tutorId}`)
+    fetch(`/http://157.66.24.154:8080/api/tutor/getTutorDetail/${tutorId}`)
         .then(response => response.json())
         .then(data => {
             if (!data.result) {
