@@ -3,9 +3,7 @@ async function fetchSchedule() {
     const tutorId = urlParams.get('tutorId');
     try {
         let response = await fetch(`http://157.66.24.154:8080/tutor/avalability/getAvalabilityByTutorId/${tutorId}`); // Thay bằng API thực tế
-        let data = await response.json();
-        console.log(data);
-        
+        let data = await response.json();        
         if (data.status === 200) {
             processSchedule(data.result);
         } else {
@@ -81,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
     // **Gọi API để lấy dữ liệu gia sư**
-    fetch(`http://157.66.24.154:8080/tutor/getTutorDetail/${tutorId}`)
+    fetch(`http://157.66.24.154:8080/api/tutor/getTutorDetail/${tutorId}`)
         .then(response => response.json())
         .then(data => {
             if (!data.result) {
@@ -128,13 +126,13 @@ function populateGradeSelect() {
     }
 }
 populateGradeSelect();
-document.getElementById("generateQR").addEventListener("click", async function () {
+document.getElementById("registerButton").addEventListener("click", async function () {
     let selectedRows = document.querySelectorAll("#schedule-table .time-slot.selected");
     let selectedSubject = document.querySelector("#subjects-list .btn.selected")?.textContent;    
     let selectedGrade = document.getElementById("grade-select").value.trim();
     
     if (selectedRows.length === 0 || !selectedSubject || !selectedGrade) {
-        alert("Vui lòng chọn Lịch học, Môn học và Lớp trước khi tạo QR!");
+        alert("Vui lòng chọn Lịch học, Môn học và Lớp trước khi đăng ký!");
         return;
     }
     
@@ -154,13 +152,14 @@ document.getElementById("generateQR").addEventListener("click", async function (
         const urlParams = new URLSearchParams(window.location.search);
         const tutorId = urlParams.get('tutorId');
         const user = JSON.parse(localStorage.getItem("user")); // Chuyển chuỗi JSON thành object
-        let responseRegister = await fetch("http://157.66.24.154:8080/class/register", {
+        let responseRegister = await fetch("http://http://157.66.24.154:8080/class/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                userName:user.username,
+                // userName:user.username,
+                userName:"ttm",
                 tutorId:tutorId,
                 subjectId:selectedSubject,
                 grade: selectedGrade,
@@ -170,60 +169,72 @@ document.getElementById("generateQR").addEventListener("click", async function (
         let data = await responseRegister.json();
 
         if (data.status === 200 && data.result) {
-            let qrImg = document.getElementById("qrImage");
-            qrImg.src = data.result.urlQr;
-            qrImg.style.display = "block"; // Hiển thị ảnh QR
-            let totalPrice = document.getElementById("totalPrice");
-            totalPrice.innerHTML = `<h4>Tổng tiền thanh toán (10 buổi):</h4><p>${data.result.totalPrice.toLocaleString("vi-VN")} VND / 10 Buổi</p>`;
-            let generateBtn = document.getElementById("generateQR");
-            let confirmBtn = document.getElementById("confirmPayment");
-             // Chuyển nút "Tạo mã QR" thành "Xác nhận thanh toán"
-             generateBtn.style.display = "none"; // Ẩn nút "Tạo mã QR"
-             confirmBtn.style.display = "inline-block"; // Hiển thị nút "Xác nhận thanh toán"
+            Swal.fire({
+                title: "Đăng ký thành công!",
+                text: "Bây giờ bạn có thể xem thông tin đăng ký.",
+                icon: "success",
+                confirmButtonText: "Xem"
+              }).then(() => {
+                window.location.href="/register-class-list.html";
+              });
+            // let qrImg = document.getElementById("qrImage");
+            // qrImg.src = data.result.urlQr;
+            // qrImg.style.display = "block"; // Hiển thị ảnh QR
+            // let totalPrice = document.getElementById("totalPrice");
+            // totalPrice.innerHTML = `<h4>Tổng tiền thanh toán (10 buổi):</h4><p>${data.result.totalPrice.toLocaleString("vi-VN")} VND / 10 Buổi</p>`;
+            // let generateBtn = document.getElementById("generateQR");
+            // let confirmBtn = document.getElementById("confirmPayment");
+            //  // Chuyển nút "Tạo mã QR" thành "Xác nhận thanh toán"
+            //  generateBtn.style.display = "none"; // Ẩn nút "Tạo mã QR"
+            //  confirmBtn.style.display = "inline-block"; // Hiển thị nút "Xác nhận thanh toán"
  
-             // Lưu registerId vào data attribute để sử dụng khi thanh toán
-             confirmBtn.setAttribute("data-register-id", data.result.registerId);
+            //  // Lưu registerId vào data attribute để sử dụng khi thanh toán
+            //  confirmBtn.setAttribute("data-register-id", data.result.registerId);
         } else {
-            alert("Không thể tạo QR. Vui lòng thử lại!");
+            Swal.fire({
+                title: "Lỗi!",
+                text: result,
+                icon: "error",
+                confirmButtonText: "Thử lại"
+              });
         }
     } catch (error) {
-        console.error("Lỗi khi lấy mã QR:", error);
         alert("Lỗi kết nối, vui lòng thử lại!");
     }
 });
-document.getElementById("confirmPayment").addEventListener("click", async function () {
-    try {
-        let confirmBtn = document.getElementById("confirmPayment");
-        let registerId = confirmBtn.getAttribute("data-register-id");
-        // Gọi API thanh toán hoặc thực hiện hành động khác khi nhấn "Xác nhận thanh toán"
-        let responsePayment = await fetch("http://157.66.24.154:8080/payment/checkPayment", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                registerId:registerId
-            })
-        });
+// document.getElementById("confirmPayment").addEventListener("click", async function () {
+//     try {
+//         let confirmBtn = document.getElementById("confirmPayment");
+//         let registerId = confirmBtn.getAttribute("data-register-id");
+//         // Gọi API thanh toán hoặc thực hiện hành động khác khi nhấn "Xác nhận thanh toán"
+//         let responsePayment = await fetch("http://157.66.24.154:8080/payment/checkPayment", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: JSON.stringify({
+//                 registerId:registerId
+//             })
+//         });
 
-        let paymentData = await responsePayment.json();
+//         let paymentData = await responsePayment.json();
 
-        if (paymentData.status === 200 && paymentData.result) {
-            let qrImg = document.getElementById("qrImage");
-            qrImg.style.opacity = 0.11;  // Làm mờ QR code (hoặc bạn có thể thêm một lớp phủ mờ)
-            Swal.fire({
-                title: "Thanh toán thành công!",
-                icon: "success",
-                showConfirmButton: true
-              })
-            let confirmBtn = document.getElementById("confirmPayment");
-            confirmBtn.disabled = true;  // Tắt nút xác nhận thanh toán để tránh người dùng click lại
+//         if (paymentData.status === 200 && paymentData.result) {
+//             let qrImg = document.getElementById("qrImage");
+//             qrImg.style.opacity = 0.11;  // Làm mờ QR code (hoặc bạn có thể thêm một lớp phủ mờ)
+//             Swal.fire({
+//                 title: "Thanh toán thành công!",
+//                 icon: "success",
+//                 showConfirmButton: true
+//               })
+//             let confirmBtn = document.getElementById("confirmPayment");
+//             confirmBtn.disabled = true;  // Tắt nút xác nhận thanh toán để tránh người dùng click lại
             
-        } else {
-            alert("Thanh toán ko thành công vui lòng thử lại");
-        }
-    } catch (error) {
-        console.error("Lỗi khi xác nhận thanh toán:", error);
-        alert("Lỗi kết nối khi thanh toán. Vui lòng thử lại!");
-    }
-});
+//         } else {
+//             alert("Thanh toán ko thành công vui lòng thử lại");
+//         }
+//     } catch (error) {
+//         console.error("Lỗi khi xác nhận thanh toán:", error);
+//         alert("Lỗi kết nối khi thanh toán. Vui lòng thử lại!");
+//     }
+// });

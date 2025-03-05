@@ -273,9 +273,12 @@
                     updateSchedule(); // Hiển thị lịch ban đầu
                 })
                 .catch(error => {
-                    console.error('Lỗi khi lấy dữ liệu lịch học của học sinh:', error);
-                    alert('Có lỗi khi lấy dữ liệu lịch học.');
+                    console.warn('Không có dữ liệu lịch học hoặc lỗi kết nối:', error);
+                    studentSchedule = []; 
+                    setupYearAndWeekDropdowns();
+                    updateSchedule();
                 });
+
 
             // **Hàm tạo dropdown chọn năm & tuần**
             function setupYearAndWeekDropdowns() {

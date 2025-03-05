@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>EDUMATCH</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="assets/css/tutorManagement.css" rel="stylesheet">
+
+
+    <style>
+        .card-link {
+            text-decoration: none;
+            /* Remove underline from the link */
+            color: inherit;
+            /* Inherit the color from the parent */
+            display: block;
+            /* Make the whole card clickable */
+            height: 100%;
+            /* Ensure the link covers the entire card */
+        }
+
+        .card {
+            position: relative;
+            /* Required for absolute positioning of the link */
+        }
+    </style>
+</head>
+<header id="header" class="header d-flex align-items-center sticky-top"></header>
+<script>
+    fetch('/components/header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading header:', error));
+</script>
+
+<body class="index-page">
+
+
+
+    <main class="main" style="    min-height: 51vh;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h3>Danh sách lớp học</h3>
+            </div>
+            <div class="grid">
+                <!-- <div class="card">
+                    <a href="class-detail.html" class="card-link">
+                        <div class="card-header" style="background-image: url('');">
+                            <div class="card-overlay">
+                                <h3 class="card-title">SE1747-NET-MLN122</h3>
+                                <p class="card-author">Lê Thị Hồng Phương (FE FPTU HN)</p>
+                            </div>
+                            <div class="card-options">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                            <img src="" alt="Profile" class="profile-pic">
+                        </div>
+                        <div class="card-actions">
+                            <i class="fas fa-folder-plus action-icon"></i>
+                            <i class="fas fa-share-alt action-icon"></i>
+                        </div>
+                    </a>
+                </div> -->
+                <div id="class-list" style="display: flex;"></div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Gọi API để lấy danh sách lớp
+                fetch("http://localhost:8080/class/getClassList/18")
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 200 && data.result) {
+                            const classListContainer = document.getElementById("class-list"); // Lấy container để thêm card
+                            classListContainer.innerHTML = ""; // Xóa nội dung cũ trước khi thêm mới
+
+                            data.result.forEach(cls => {
+                                const cardHTML = `
+                                    <div class="card" style="    margin-right: 37px;">
+                                        <a href="class-detail.html?class=${cls.className}" class="card-link">
+                                            <div class="card-header" style="background-image: url('');">
+                                                <div class="card-overlay">
+                                                    <h3 class="card-title">${cls.className}</h3>
+                                                    <p class="card-author">${cls.tutorName}</p>
+                                                </div>
+                                                <div class="card-options">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </div>
+                                                <img src="" alt="" class="profile-pic">
+                                            </div>
+                                            <div class="card-actions">
+                                                <i class="fas fa-folder-plus action-icon"></i>
+                                                <i class="fas fa-share-alt action-icon"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                `;
+                                classListContainer.innerHTML += cardHTML; // Thêm card vào danh sách
+                            });
+                        } else {
+                            console.error("Lỗi dữ liệu API:", data.message);
+                        }
+                    })
+                    .catch(error => console.error("Lỗi khi gọi API:", error));
+            });
+        </script>
+
+    </main>
+
+    <footer id="footer" class="footer dark-background"></footer>
+    <script>
+        fetch('/components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(() => {
+                const loginModalEl = document.getElementById("loginModal");
+                if (!loginModalEl) {
+                    console.error("Lỗi: Không tìm thấy phần tử #loginModal");
+                    return;
+                }
+                const loginModal = new bootstrap.Modal(loginModalEl);
+            }, 500); // Delay để đảm bảo phần tử đã tồn tại
+        });
+    </script>
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <!-- Thêm Bootstrap JS và Popper.js (nếu chưa có) -->
+
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script>
+
+</body>
+
+</html>
