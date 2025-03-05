@@ -18,14 +18,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         connect(user.username);
-        playNotificationSound(); // Phát âm thanh khi tham gia chat
+        playNotificationSound();
         chatContainer.classList.remove("d-none");
         joinChatBtn.classList.add("d-none");
         leaveChatBtn.classList.remove("d-none");
     });
 
     function connect(username) {
-        console.log("User from localStorage: ", JSON.parse(localStorage.getItem("user")));
         const socket = new SockJS("http://157.66.24.154:8080/chat-websocket");
         stompClient = new StompJs.Client({
             webSocketFactory: () => socket,
@@ -37,12 +36,11 @@ document.addEventListener("DOMContentLoaded", function () {
         stompClient.onConnect = function (frame) {
             console.log("Connected: " + frame);
 
-            const privateSub = stompClient.subscribe("/user/" + username + "/queue/private", function (message) {
+            stompClient.subscribe("/user/" + username + "/queue/private", function (message) {
                 console.log("Received private message from queue: ", message.body);
                 const msg = JSON.parse(message.body);
                 showMessage(msg);
             });
-            console.log("Subscribed to /user/" + username + "/queue/private, sub ID: ", privateSub.id);
 
             stompClient.subscribe("/topic/public", function (message) {
                 console.log("Public message: ", message.body);
@@ -94,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 receiver: selectedReceiver,
                 type: "CHAT"
             };
-            // Hiển thị tin nhắn ngay cho người gửi
             showMessage(chatMessage);
             stompClient.publish({
                 destination: "/app/chat.sendPrivateMessage/" + selectedReceiver,
@@ -102,6 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             messageInput.value = "";
             console.log("Sent private message to: " + selectedReceiver);
+            // Lưu người nhận vào danh sách đã chat
+            saveChattedUser(selectedReceiver);
         } else {
             console.error("STOMP client not connected or no message content");
         }
@@ -131,7 +130,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function showMessage(message) {
         const user = JSON.parse(localStorage.getItem("user"));
         console.log("Showing message: ", message, "Current user: ", user.username);
-        // Hiển thị tất cả tin nhắn liên quan đến người dùng hiện tại
         if (message.sender === user.username || message.receiver === user.username) {
             const messageElement = document.createElement("div");
             messageElement.classList.add("message");
@@ -140,25 +138,48 @@ document.addEventListener("DOMContentLoaded", function () {
             messageArea.appendChild(messageElement);
             messageArea.scrollTop = messageArea.scrollHeight;
         }
-        // Phát âm thanh khi nhận tin nhắn private (type = CHAT) từ người khác
         if (message.receiver === user.username && message.type === "CHAT") {
             playNotificationSound();
+            // Lưu người gửi vào danh sách đã chat
+            saveChattedUser(message.sender);
+        }
+    }
+
+    function saveChattedUser(username) {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (username === user.username) return; // Không lưu chính mình
+        let chattedUsers = JSON.parse(localStorage.getItem("chattedUsers")) || [];
+        if (!chattedUsers.includes(username)) {
+            chattedUsers.push(username);
+            localStorage.setItem("chattedUsers", JSON.stringify(chattedUsers));
         }
     }
 
     function updateOnlineList(onlineUsers) {
         onlineList.innerHTML = "";
-        onlineUsers.forEach(user => {
-            const li = document.createElement("li");
-            li.textContent = user;
-            li.addEventListener("click", function () {
-                selectedReceiver = user;
-                messageHeader.textContent = "Chat với " + user;
-                onlineList.querySelectorAll("li").forEach(item => item.classList.remove("active"));
-                li.classList.add("active");
-                loadChatHistory(user);
-            });
-            onlineList.appendChild(li);
+        const user = JSON.parse(localStorage.getItem("user"));
+        let chattedUsers = JSON.parse(localStorage.getItem("chattedUsers")) || [];
+        // Kết hợp danh sách online và đã chat, loại bỏ trùng lặp
+        const allUsers = [...new Set([...onlineUsers, ...chattedUsers])];
+        
+        allUsers.forEach(userItem => {
+            if (userItem !== user.username) { // Không hiển thị chính người dùng
+                const li = document.createElement("li");
+                li.textContent = userItem;
+                // Đánh dấu người online
+                if (onlineUsers.includes(userItem)) {
+                    li.style.fontWeight = "bold"; // Hoặc thêm biểu tượng online
+                    li.innerHTML = `${userItem} <span style="color: green;">●</span>`;
+                }
+                li.addEventListener("click", function () {
+                    selectedReceiver = userItem;
+                    messageHeader.textContent = "Chat với " + userItem;
+                    onlineList.querySelectorAll("li").forEach(item => item.classList.remove("active"));
+                    li.classList.add("active");
+                    loadChatHistory(userItem);
+                });
+                onlineList.appendChild(li);
+            }
         });
     }
 
@@ -180,7 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(() => console.log("Notification sound played successfully"))
             .catch(error => {
                 console.error("Error playing notification sound: ", error);
-                // Thử phát lại sau khi người dùng tương tác
                 document.addEventListener("click", () => notificationSound.play(), { once: true });
             });
     }
