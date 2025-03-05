@@ -152,7 +152,7 @@ document.getElementById("registerButton").addEventListener("click", async functi
         const urlParams = new URLSearchParams(window.location.search);
         const tutorId = urlParams.get('tutorId');
         const user = JSON.parse(localStorage.getItem("user")); // Chuyển chuỗi JSON thành object
-        let responseRegister = await fetch("http://http://157.66.24.154:8080/class/register", {
+        let responseRegister = await fetch("http://157.66.24.154:8080/class/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
