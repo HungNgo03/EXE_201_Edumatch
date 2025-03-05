@@ -152,14 +152,13 @@ document.getElementById("registerButton").addEventListener("click", async functi
         const urlParams = new URLSearchParams(window.location.search);
         const tutorId = urlParams.get('tutorId');
         const user = JSON.parse(localStorage.getItem("user")); // Chuyển chuỗi JSON thành object
-        let responseRegister = await fetch("http://http://157.66.24.154:8080/class/register", {
+        let responseRegister = await fetch("http://157.66.24.154:8080/class/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                // userName:user.username,
-                userName:"ttm",
+                userName:user.username,
                 tutorId:tutorId,
                 subjectId:selectedSubject,
                 grade: selectedGrade,
@@ -202,39 +201,3 @@ document.getElementById("registerButton").addEventListener("click", async functi
         alert("Lỗi kết nối, vui lòng thử lại!");
     }
 });
-// document.getElementById("confirmPayment").addEventListener("click", async function () {
-//     try {
-//         let confirmBtn = document.getElementById("confirmPayment");
-//         let registerId = confirmBtn.getAttribute("data-register-id");
-//         // Gọi API thanh toán hoặc thực hiện hành động khác khi nhấn "Xác nhận thanh toán"
-//         let responsePayment = await fetch("http://157.66.24.154:8080/payment/checkPayment", {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//             body: JSON.stringify({
-//                 registerId:registerId
-//             })
-//         });
-
-//         let paymentData = await responsePayment.json();
-
-//         if (paymentData.status === 200 && paymentData.result) {
-//             let qrImg = document.getElementById("qrImage");
-//             qrImg.style.opacity = 0.11;  // Làm mờ QR code (hoặc bạn có thể thêm một lớp phủ mờ)
-//             Swal.fire({
-//                 title: "Thanh toán thành công!",
-//                 icon: "success",
-//                 showConfirmButton: true
-//               })
-//             let confirmBtn = document.getElementById("confirmPayment");
-//             confirmBtn.disabled = true;  // Tắt nút xác nhận thanh toán để tránh người dùng click lại
-            
-//         } else {
-//             alert("Thanh toán ko thành công vui lòng thử lại");
-//         }
-//     } catch (error) {
-//         console.error("Lỗi khi xác nhận thanh toán:", error);
-//         alert("Lỗi kết nối khi thanh toán. Vui lòng thử lại!");
-//     }
-// });
