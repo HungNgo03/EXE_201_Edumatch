@@ -760,7 +760,7 @@
         });
 
         const result = await response.text();
-        if (response.ok||response.status === 500) {
+        if (response.ok || response.status == 500) {
           Swal.fire({
             title: "Đăng ký thành công!",
             text: "Bây giờ bạn có thể đăng nhập.",
