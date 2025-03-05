@@ -879,7 +879,7 @@
         }
         console.log("Dữ liệu gửi lên:", JSON.stringify(requestData, null, 2));
         console.log(localStorage.getItem("userID"))
-        const response3 = await fetch (`http://157.66.24.154/users/update-profile/${localStorage.getItem("userID")}`, {
+        const response3 = await fetch (`http://157.66.24.154:8080/users/update-profile/${localStorage.getItem("userID")}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(requestData)
