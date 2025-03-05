@@ -820,7 +820,7 @@
         document.getElementById("email1").value = userdata2.email;
         document.getElementById("phone1").value = userdata2.phoneNumber;
 
-            const response = await fetch(`http://157.66.24.154:8080/users/profile/${userId}`);
+            const response = await fetch(`http://localhost:8080/users/profile/${userId}`);
 
             const userData = await response.json();
 
