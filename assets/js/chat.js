@@ -96,8 +96,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             leaveChatBtn.addEventListener("click", function () {
+        disconnect();
+    });
+
+    // Xử lý khi người dùng rời trang
+    window.addEventListener("beforeunload", function () {
+        disconnect();
+    });
+
+    function disconnect() {
                 const user = JSON.parse(localStorage.getItem("user"));
-                if (stompClient) {
+        if (stompClient && stompClient.connected) {
                     stompClient.publish({
                         destination: "/app/chat.removeUser",
                         body: JSON.stringify({
@@ -106,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         })
                     });
                     stompClient.deactivate();
+        }
                     chatContainer.classList.add("d-none");
                     joinChatBtn.classList.remove("d-none");
                     leaveChatBtn.classList.add("d-none");
@@ -115,7 +125,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     selectedReceiver = null;
                     messageHeader.textContent = "Chọn người để chat";
                 }
-            });
 
             function showMessage(message) {
                 const user = JSON.parse(localStorage.getItem("user"));

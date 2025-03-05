@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Chat Real-time</title>
@@ -11,7 +10,6 @@
             background-color: #f0f2f5;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         #chatContainer {
             display: flex;
             height: 80vh;
@@ -21,99 +19,79 @@
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-
         #userList {
             width: 30%;
             border-right: 1px solid #e0e0e0;
             padding: 10px;
             overflow-y: auto;
         }
-
         #userList h5 {
             font-size: 16px;
             margin-bottom: 10px;
             color: #65676b;
         }
-
-        #onlineList,
-        #chattedList {
+        #onlineList, #chattedList {
             list-style: none;
             padding: 0;
         }
-
-        #onlineList li,
-        #chattedList li {
+        #onlineList li, #chattedList li {
             padding: 10px;
             cursor: pointer;
             border-radius: 5px;
             margin-bottom: 5px;
         }
-
-        #onlineList li:hover,
-        #onlineList li.active,
-        #chattedList li:hover,
-        #chattedList li.active {
+        #onlineList li:hover, #onlineList li.active,
+        #chattedList li:hover, #chattedList li.active {
             background-color: #e4e6eb;
         }
-
         #chatArea {
             width: 70%;
             display: flex;
             flex-direction: column;
         }
-
         #messageHeader {
             padding: 10px;
             border-bottom: 1px solid #e0e0e0;
             font-weight: bold;
             color: #1c1e21;
         }
-
         #messageArea {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
             background-color: #fff;
         }
-
         .message {
             margin-bottom: 10px;
             display: flex;
             align-items: flex-end;
         }
-
         .message.sent {
             justify-content: flex-end;
         }
-
         .message.received {
             justify-content: flex-start;
         }
-
         .message-content {
             max-width: 60%;
             padding: 10px 15px;
             border-radius: 18px;
             font-size: 14px;
         }
-
         .message.sent .message-content {
             background-color: #0084ff;
             color: white;
         }
-
         .message.received .message-content {
             background-color: #e4e6eb;
             color: #1c1e21;
         }
-
         #messageInputArea {
             padding: 10px;
             border-top: 1px solid #e0e0e0;
             display: flex;
             align-items: center;
         }
-
         #messageInput {
             flex: 1;
             border: none;
@@ -122,13 +100,11 @@
             background-color: #f0f2f5;
             margin-right: 10px;
         }
-
         #messageInput:focus {
             outline: none;
             background-color: #fff;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
-
         #sendMessageBtn {
             background-color: #0084ff;
             border-radius: 50%;
@@ -138,23 +114,19 @@
             align-items: center;
             justify-content: center;
         }
-
         #joinChatBtn {
             display: block;
             margin: 20px auto;
         }
-
         #onlineList li::after {
             content: " ●";
             color: green;
         }
-
         #chattedList {
             margin-top: 20px;
         }
     </style>
 </head>
-
 <body>
     <div class="container mt-5">
         <div id="chatContainer" class="d-none">
