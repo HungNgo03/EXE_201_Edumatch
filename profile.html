@@ -727,7 +727,7 @@
 </script>
 <script>
     const imgElement = document.getElementById("userImage");
-    imgElement.src = `http://157.66.24.154:8080/users/image/${localStorage.getItem("userID")}`;
+    imgElement.src = `http://localhost:8080/users/image/${localStorage.getItem("userID")}`;
 
     document.getElementById("fileInput").addEventListener("change", function(event) {
         const file = event.target.files[0];
@@ -767,7 +767,7 @@
                     const formData = new FormData();
                     formData.append("file", blob, "profile.jpg");
                     const userId = localStorage.getItem("userID");
-                    fetch(`http://157.66.24.154:8080/users/update-image/${userId}`, {
+                    fetch(`http://localhost:8080/users/update-image/${userId}`, {
                         method: "PUT",
                         body: formData
                     })
