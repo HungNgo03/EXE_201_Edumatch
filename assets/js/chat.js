@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function connect(username) {
         console.log("User from localStorage: ", JSON.parse(localStorage.getItem("user")));
-        const socket = new SockJS("http://localhost:8080/chat-websocket");
+        const socket = new SockJS("http://157.66.24.154:8080/chat-websocket");
         stompClient = new StompJs.Client({
             webSocketFactory: () => socket,
             debug: function (str) {
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
     async function loadChatHistory(receiver) {
         const user = JSON.parse(localStorage.getItem("user"));
         try {
-            const response = await fetch(`http://localhost:8080/chat/history?sender=${user.username}&receiver=${receiver}`);
+            const response = await fetch(`http://157.66.24.154:8080/chat/history?sender=${user.username}&receiver=${receiver}`);
             const history = await response.json();
             messageArea.innerHTML = "";
             history.forEach(msg => showMessage(msg));
