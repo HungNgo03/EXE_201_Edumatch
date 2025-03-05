@@ -262,7 +262,6 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dữ liệu trả về từ API:", data); // Log dữ liệu trả về từ API để kiểm tra
-
                     studentSchedule = data.map(entry => ({
                         date: new Date(entry.date), // Chuyển thành object Date
                         subjectname: entry.subjectName,
@@ -270,7 +269,6 @@
                         startTime: entry.startTime,
                         endTime: entry.endTime
                     }));
-
                     setupYearAndWeekDropdowns();
                     updateSchedule(); // Hiển thị lịch ban đầu
                 })
