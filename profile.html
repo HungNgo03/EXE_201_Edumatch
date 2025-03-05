@@ -727,7 +727,7 @@
 </script>
 <script>
     const imgElement = document.getElementById("userImage");
-    imgElement.src = `http://157.66.24.154:8080/users/image/${localStorage.getItem("userID")}`;
+    imgElement.src = `http://localhost:8080/users/image/${localStorage.getItem("userID")}`;
 
     document.getElementById("fileInput").addEventListener("change", function(event) {
         const file = event.target.files[0];
@@ -767,7 +767,7 @@
                     const formData = new FormData();
                     formData.append("file", blob, "profile.jpg");
                     const userId = localStorage.getItem("userID");
-                    fetch(`http://157.66.24.154:8080/users/update-image/${userId}`, {
+                    fetch(`http://localhost:8080/users/update-image/${userId}`, {
                         method: "PUT",
                         body: formData
                     })
@@ -820,7 +820,7 @@
         document.getElementById("email1").value = userdata2.email;
         document.getElementById("phone1").value = userdata2.phoneNumber;
 
-            const response = await fetch(`http://157.66.24.154:8080/users/profile/${userId}`);
+            const response = await fetch(`http://localhost:8080/users/profile/${userId}`);
 
             const userData = await response.json();
 
@@ -879,7 +879,7 @@
         }
         console.log("Dữ liệu gửi lên:", JSON.stringify(requestData, null, 2));
         console.log(localStorage.getItem("userID"))
-        const response3 = await fetch (`http://157.66.24.154/users/update-profile/${localStorage.getItem("userID")}`, {
+        const response3 = await fetch (`http://157.66.24.154:8080/users/update-profile/${localStorage.getItem("userID")}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(requestData)
