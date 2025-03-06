@@ -43,38 +43,49 @@
 
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container position-relative d-flex align-items-center justify-content-between">
-
-            <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                <img src="assets/img/EDUMATCH.jpg" alt="">
-                <h1 class="sitename">EDUMATCH</h1>
-                <span>.</span>
-            </a>
-
-            <nav id="navmenu" class="navmenu">
+    
+          <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <img src="assets/img/EDUMATCH.jpg" alt="">
+            <h1 class="sitename">EDUMATCH</h1>
+            <span>.</span>
+          </a>
+    
+          <nav id="navmenu" class="navmenu">
+            <ul>
+              <li><a href="index.html" class="active">Trang chủ<br></a></li>
+              <li><a href="forum.html">Diễn đàn</a></li>
+              <li><a href="chat.html">Trò chuyện</a></li>
+              <li><a href="findTeacher-page.html">Tìm Gia Sư</a></li>
+              <li class="dropdown"><a href="#"><span>Lớp học</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
-                  <li><a href="index.html" class="active">Trang chủ<br></a></li>
-                  <li><a href="forum.html">Diễn đàn</a></li>
-                  <li><a href="chat.html">Trò chuyện</a></li>
-                  <li><a href="findTeacher-page.html">Tìm Gia Sư</a></li>
-                  <li class="dropdown"><a href="#"><span>Lớp học</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                    <ul>
-                      <li><a href="class-list.html">Danh sách lớp học</a></li>
-                      <li><a href="register-class-list.html">Danh sách đăng ký</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="student-schedule.html" id="scheduleLink">Thời khóa biểu</a></li>
-        
-                  <li><a href="#contact">Liên hệ</a></li>
+                  <li><a href="class-list.html">Danh sách lớp học</a></li>
+                  <li><a href="register-class-list.html">Danh sách đăng ký</a></li>
                 </ul>
-                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-              </nav>
-
-            <a class="btn-getstarted" href="index.html#book-a-table">Đăng nhập</a>
-
+              </li>
+              <li><a href="student-schedule.html" id="scheduleLink">Thời khóa biểu</a></li>
+    
+              <li><a href="#contact">Liên hệ</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+          </nav>
+    
+          <a id="authButton" class="btn-getstarted" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng
+            nhập</a>
+          <div id="userDropdown" class="d-none dropdown">
+            <button class="btn btn-secondary dropdown-toggle username-text" type="button" id="userDropdownButton"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Tài khoản
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="userDropdownButton">
+              <li><a class="dropdown-item" href="profile.html" id="profileLink">Thông tin tài khoản</a></li>
+    
+              <li><a class="dropdown-item" href="index.html" id="logoutButton">Đăng xuất</a></li>
+            </ul>
+          </div>
+    
         </div>
-    </header>
-
+      </header>
     <main class="main">
 
         <div class="container mt-4">
@@ -101,6 +112,26 @@
             </div>
         </div>
         <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const scheduleLink = document.getElementById("scheduleLink"); // Lấy phần tử "Thời khóa biểu"
+                const loginModal = new bootstrap.Modal(document.getElementById("loginModal")); // Modal đăng nhập
+
+                scheduleLink.addEventListener("click", function (event) {
+                    const user = localStorage.getItem("user"); // Kiểm tra xem có user trong localStorage không
+
+                    if (!user) {
+                        event.preventDefault(); // Ngăn không cho điều hướng sang "Thời khóa biểu"
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Bạn cần đăng nhập để xem thời khóa biểu.',
+                            showConfirmButton: true
+                        }).then(() => {
+                            loginModal.show(); // Hiển thị modal đăng nhập
+                        });
+                    }
+                });
+            });
+
             document.addEventListener('DOMContentLoaded', function () {
                 const nameInput = document.querySelector('#search-name');
                 const subjectSelect = document.querySelector('#search-subject');
@@ -213,13 +244,325 @@
                 fetchTutors();
             });
         </script>
+        <!-- Login/Register Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content shadow-lg border-0 rounded-4">
+                    <div class="modal-header border-0 bg-danger text-white text-center">
+                        <h2 class="modal-title w-100 fw-bold display-5" id="loginModalLabel">🎉 Chào mừng bạn! 🎉</h2>
+                        <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-5">
+                        <!-- Tabs for Login & Register -->
+                        <ul class="nav nav-pills nav-justified mb-3" id="loginRegisterTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab"
+                                    data-bs-target="#login" type="button" role="tab">Đăng nhập</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link fw-bold" id="register-tab" data-bs-toggle="tab"
+                                    data-bs-target="#register" type="button" role="tab">Đăng ký</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt-3">
+                            <!-- Login Form -->
+                            <div class="tab-pane fade show active" id="login" role="tabpanel">
+                                <form id="loginForm" class="d-flex flex-column align-items-center">
+                                    <div class="mb-3 w-50 text-start">
+                                        <label for="loginUsername" class="form-label fw-semibold">Username</label>
+                                        <input type="text" class="form-control rounded-3 p-2" id="loginUsername"
+                                            name="username" placeholder="Nhập username" required>
+                                    </div>
+                                    <div class="mb-3 w-50 text-start">
+                                        <label for="loginPassword" class="form-label fw-semibold">Mật khẩu</label>
+                                        <input type="password" class="form-control rounded-3 p-2" id="loginPassword"
+                                            name="password" placeholder="Nhập mật khẩu" required>
+                                    </div>
+                                    <button type="submit" class="btn text-white rounded-3 mt-2 px-4 py-2"
+                                        style="background-color: #CE1212;">Đăng nhập</button>
+                                    <p class="mt-2">
+                                        <a href="#" id="forgotPasswordLink" class="text-decoration-none">Quên mật
+                                            khẩu?</a>
+                                    </p>
+                                </form>
+
+
+                            </div>
+
+                            <!-- Modal Quên Mật Khẩu -->
+                            <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Quên Mật Khẩu</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="email" id="forgotEmail" class="form-control mb-2"
+                                                placeholder="Nhập email">
+                                            <button id="sendOtpBtn" class="btn btn-primary w-100">Gửi OTP</button>
+
+                                            <div id="otpSection" style="display:none;">
+                                                <input type="text" id="otpCode" class="form-control mt-3"
+                                                    placeholder="Nhập mã OTP">
+                                                <input type="password" id="newPassword" class="form-control mt-2"
+                                                    placeholder="Nhập mật khẩu mới">
+                                                <button id="resetPasswordBtn" class="btn btn-success w-100 mt-2">Đặt lại
+                                                    mật khẩu</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Register Form -->
+                            <div class="tab-pane fade" id="register" role="tabpanel">
+                                <form id="registerForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="registerName" class="form-label fw-semibold">Họ và
+                                                    Tên</label>
+                                                <input type="text" class="form-control rounded-3 p-2" id="registerName"
+                                                    placeholder="Nhập họ tên" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="registerPhone" class="form-label fw-semibold">Số điện
+                                                    thoại</label>
+                                                <input type="tel" class="form-control rounded-3 p-2" id="registerPhone"
+                                                    placeholder="Nhập số điện thoại" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="registerEmail" class="form-label fw-semibold">Email</label>
+                                                <input type="email" class="form-control rounded-3 p-2"
+                                                    id="registerEmail" placeholder="Nhập email" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="registerPassword" class="form-label fw-semibold">Mật
+                                                    khẩu</label>
+                                                <input type="password" class="form-control rounded-3 p-2"
+                                                    id="registerPassword" placeholder="Tạo mật khẩu" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="username" class="form-label fw-semibold">Username</label>
+                                                <input type="text" class="form-control rounded-3 p-2" id="username"
+                                                    placeholder="Nhập username" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="registerRole" class="form-label fw-semibold">Chọn vai
+                                                    trò</label>
+                                                <select class="form-control rounded-3 p-2" id="registerRole" required>
+                                                    <option value="" selected></option>
+                                                    <option value="Student">Student</option>
+                                                    <option value="Tutor">Tutor</option>
+                                                </select>
+                                            </div>
+
+
+                                            <!-- Trường dành cho Tutor -->
+                                            <div id="tutorFields" style="display: none;">
+                                                <div class="mb-3">
+                                                    <label for="gender" class="form-label fw-semibold">Giới tính</label>
+                                                    <select class="form-control rounded-3 p-2" id="gender">
+                                                        <option value="0">Nam</option>
+                                                        <option value="1">Nữ</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="dateOfBirth" class="form-label fw-semibold">Ngày
+                                                        sinh</label>
+                                                    <input type="date" class="form-control rounded-3 p-2"
+                                                        id="dateOfBirth">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="address" class="form-label fw-semibold">Địa chỉ</label>
+                                                    <input type="text" class="form-control rounded-3 p-2" id="address"
+                                                        placeholder="Nhập địa chỉ">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="qualification" class="form-label fw-semibold">Bằng
+                                                        cấp</label>
+                                                    <input type="text" class="form-control rounded-3 p-2"
+                                                        id="qualification" placeholder="Nhập bằng cấp">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="experience" class="form-label fw-semibold">Kinh nghiệm
+                                                        (năm)</label>
+                                                    <input type="number" class="form-control rounded-3 p-2"
+                                                        id="experience" min="0" placeholder="Nhập số năm kinh nghiệm">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="bio" class="form-label fw-semibold">Giới thiệu</label>
+                                                    <textarea class="form-control rounded-3 p-2" id="bio"
+                                                        placeholder="Giới thiệu bản thân"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <!-- Trường dành cho Student -->
+                                            <div id="studentFields" style="display: none;">
+                                                <div class="mb-3">
+                                                    <label for="parentName" class="form-label fw-semibold">Tên phụ
+                                                        huynh</label>
+                                                    <input type="text" class="form-control rounded-3 p-2"
+                                                        id="parentName" placeholder="Nhập tên phụ huynh">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="grade" class="form-label fw-semibold">Lớp học</label>
+                                                    <input type="text" class="form-control rounded-3 p-2" id="grade"
+                                                        placeholder="Nhập lớp học">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="addressStudent" class="form-label fw-semibold">Địa
+                                                        chỉ</label>
+                                                    <input type="text" class="form-control rounded-3 p-2"
+                                                        id="addressStudent" placeholder="Nhập địa chỉ">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="notes" class="form-label fw-semibold">Ghi chú</label>
+                                                    <textarea class="form-control rounded-3 p-2" id="notes"
+                                                        placeholder="Nhập ghi chú (nếu có)"></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn w-100 py-2 rounded-3 text-white"
+                                        style="background-color: #CE1212;">Đăng ký</button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const registerForm = document.querySelector("#registerForm");
+                const loginRegisterTabs = new bootstrap.Tab(document.querySelector("#login-tab"));
+
+                registerForm.addEventListener("submit", async function (event) {
+                    event.preventDefault();
+
+                    // Lấy dữ liệu từ form
+                    const fullname = document.getElementById("registerName").value;
+                    const phoneNumber = document.getElementById("registerPhone").value;
+                    const email = document.getElementById("registerEmail").value;
+                    const password = document.getElementById("registerPassword").value;
+                    const username = document.getElementById("username").value;
+                    const role = document.getElementById("registerRole").value;
+
+                    // Kiểm tra mật khẩu có khớp không
+                    if (password.length < 6) {
+                        Swal.fire({
+                            title: "Lỗi!",
+                            text: "Mật khẩu phải có ít nhất 6 ký tự!",
+                            icon: "error",
+                            confirmButtonText: "Thử lại"
+                        });
+                        return;
+                    }
+
+                    // Tạo đối tượng dữ liệu gửi đi
+                    let requestBody = {
+                        username: username,
+                        fullname: fullname,
+                        phoneNumber: phoneNumber,
+                        email: email,
+                        password: password,
+                        role: role
+                    };
+
+                    // Nếu role là Tutor, thêm thông tin Tutor
+                    if (role === "Tutor") {
+                        requestBody.gender = document.getElementById("gender").value === "1";
+                        requestBody.dateOfBirth = document.getElementById("dateOfBirth").value;
+                        requestBody.address = document.getElementById("address").value;
+                        requestBody.qualification = document.getElementById("qualification").value;
+                        requestBody.experience = document.getElementById("experience").value;
+                        requestBody.bio = document.getElementById("bio").value;
+                    }
+
+                    // Nếu role là Student, thêm thông tin Student
+                    if (role === "Student") {
+                        requestBody.parentName = document.getElementById("parentName").value;
+                        requestBody.grade = document.getElementById("grade").value;
+                        requestBody.address = document.getElementById("addressStudent").value;
+                        requestBody.notes = document.getElementById("notes").value;
+                    }
+
+                    // Kiểm tra log dữ liệu gửi đi
+                    console.log("Dữ liệu gửi lên:", JSON.stringify(requestBody, null, 2));
+
+                    // Gửi request đến backend
+                    const response = await fetch("http://157.66.24.154:8080/users/register", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(requestBody),
+                    });
+
+                    const result = await response.text();
+                    if (response.ok) {
+                        Swal.fire({
+                            title: "Đăng ký thành công!",
+                            text: "Bây giờ bạn có thể đăng nhập.",
+                            icon: "success",
+                            confirmButtonText: "Đăng nhập ngay"
+                        }).then(() => {
+                            registerForm.reset();
+                            loginRegisterTabs.show();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Lỗi!",
+                            text: result,
+                            icon: "error",
+                            confirmButtonText: "Thử lại"
+                        });
+                    }
+                });
+            });
+
+
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const forgotPasswordLink = document.getElementById("forgotPasswordLink");
+                const forgotPasswordModal = new bootstrap.Modal(document.getElementById("forgotPasswordModal"));
+
+                forgotPasswordLink.addEventListener("click", function (event) {
+                    event.preventDefault(); // Ngăn chặn chuyển hướng trang
+                    forgotPasswordModal.show(); // Mở modal quên mật khẩu
+                });
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                const loginModal = document.getElementById("loginModal");
+
+                // Lắng nghe sự kiện khi modal bị đóng
+                loginModal.addEventListener("hidden.bs.modal", function () {
+                    // Xoá lớp mờ (nếu có)
+                    document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
+                    document.body.classList.remove("modal-open"); // Xoá class modal-open
+                    document.body.style.overflow = ""; // Reset lại overflow
+                });
+            });
+
+        </script>
+
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
     </main>
 
     <footer id="footer" class="footer dark-background">
-
         <div class="container">
             <div class="row gy-3">
                 <div class="col-lg-3 col-md-6 d-flex">
@@ -230,20 +573,17 @@
                         <p>Huyện Thạch Thất, Hà Nội</p>
                         <p></p>
                     </div>
-
                 </div>
-
                 <div class="col-lg-3 col-md-6 d-flex">
                     <i class="bi bi-telephone icon"></i>
                     <div>
                         <h4>Liên hệ</h4>
                         <p>
-                            <strong>Điện thoại:</strong> <span>+84 982819359</span><br>
-                            <strong>Email:</strong> <span>edumatch@work.gmail.com</span><br>
+                            <strong>Điện thoại:</strong> <span>0788878117</span><br>
+                            <strong>Email:</strong> <span>edumatch0102@gmail.com</span><br>
                         </p>
                     </div>
                 </div>
-
                 <div class="col-lg-3 col-md-6 d-flex">
                     <i class="bi bi-clock icon"></i>
                     <div>
@@ -254,12 +594,12 @@
                         </p>
                     </div>
                 </div>
-
                 <div class="col-lg-3 col-md-6">
                     <h4>Theo dõi chúng tôi</h4>
                     <div class="social-links d-flex">
                         <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61573150057127" class="facebook"><i
+                                class="bi bi-facebook"></i></a>
                         <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
                         <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
                     </div>
@@ -272,10 +612,6 @@
             <p>© <span>Copyright</span> <strong class="px-1 sitename">EDUMATCH</strong> <span>All Rights Reserved</span>
             </p>
             <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you've purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
                 Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a
                     href="https://themewagon.com">ThemeWagon</a>
             </div>
@@ -291,12 +627,16 @@
     <div id="preloader"></div>
 
     <!-- Vendor JS Files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/php-email-form/validate.js"></script>
     <script src="assets/vendor/aos/aos.js"></script>
     <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
     <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+
 
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
