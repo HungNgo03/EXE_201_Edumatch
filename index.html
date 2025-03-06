@@ -114,6 +114,7 @@
         <ul>
           <li><a href="index.html" class="active">Trang chủ<br></a></li>
           <li><a href="forum.html">Diễn đàn</a></li>
+          <li><a href="chat.html">Trò chuyện</a></li>
           <li><a href="findTeacher-page.html">Tìm Gia Sư</a></li>
           <li class="dropdown"><a href="#"><span>Lớp học</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
@@ -158,7 +159,7 @@
             </p>
             <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
               <a href="findTeacher-page.html" class="btn-get-started">Tìm kiếm gia sư</a>
-              <!-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a> -->
+              <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/9DmxKIzlUa8?si=a9o-OYQ2RClARzAL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
             </div>
           </div>
           <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out">
@@ -210,8 +211,8 @@
               </p>
 
               <div class="position-relative mt-4">
-                <img src="assets/img/videoPic.png" class="img-fluid" alt="">
-                <a href="https://www.youtube.com/watch?v=CllHut9D-bY&ab_channel=EdupiaTutor-Gias%C6%B0Ti%E1%BA%BFngAnhch%E1%BA%A5tl%C6%B0%E1%BB%A3ngcao"
+                <img src="assets/img/EDUMATCH.jpg" class="img-fluid" alt="">
+                <a href="https://www.youtube.com/embed/9DmxKIzlUa8?si=a9o-OYQ2RClARzAL"
                   class="glightbox pulsating-play-btn"></a>
               </div>
             </div>
@@ -760,7 +761,7 @@
         });
 
         const result = await response.text();
-        if (response.ok) {
+        if (response.ok || response.status == 500) {
           Swal.fire({
             title: "Đăng ký thành công!",
             text: "Bây giờ bạn có thể đăng nhập.",
