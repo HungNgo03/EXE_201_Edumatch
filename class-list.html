@@ -84,13 +84,17 @@
                         </div>
                     </a>
                 </div> -->
-                <div id="class-list" style="display: flex;"></div>
+                <div id="class-list" style="    display: flex;
+                    justify-content: space-evenly;
+                    flex-wrap: wrap;
+                    flex-direction: row;"></div>
             </div>
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Gọi API để lấy danh sách lớp
-                fetch("http://localhost:8080/class/getClassList/18")
+                const user = JSON.parse(localStorage.getItem("user")); 
+                fetch(`http://157.66.24.154:8080/class/getClassList/${user.userId}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === 200 && data.result) {
@@ -99,7 +103,7 @@
 
                             data.result.forEach(cls => {
                                 const cardHTML = `
-                                    <div class="card" style="    margin-right: 37px;">
+                                    <div class="card" style="    margin-bottom: 21px;">
                                         <a href="class-detail.html?class=${cls.className}" class="card-link">
                                             <div class="card-header" style="background-image: url('');">
                                                 <div class="card-overlay">

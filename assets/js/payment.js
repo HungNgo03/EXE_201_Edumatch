@@ -86,7 +86,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert("Không tìm thấy thông tin gia sư.");
                 return;
             }
-            const tutor = data.result;                            
+            const tutor = data.result;              
+            const imageUrl = tutor.image ? `assets/img/tutors/${tutor.image}` : 'assets/img/tutors/default.jpg';              
+            document.getElementById("imageTutor").src = imageUrl;
             document.getElementById("tutor-name").textContent = tutor.fullname;
             document.getElementById("tutor-email").textContent = tutor.email;
             // document.getElementById("tutor-phone").textContent = tutor.phoneNumber;

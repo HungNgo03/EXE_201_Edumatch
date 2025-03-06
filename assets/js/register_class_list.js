@@ -44,7 +44,6 @@ async function fetchClassList() {
         classListDiv.innerHTML = `<p style="color: red;">Không thể tải dữ liệu: ${error.message}</p>`;
     }
 }
-
 // Tạo HTML từ JSON và hiển thị dữ liệu
 function renderClassList(classData) {
     if (!classData || classData.length === 0 || classData === "Không có lớp học đăng ký") {
@@ -84,7 +83,7 @@ function renderClassList(classData) {
                                                 <!-- Chỉ hiển thị nút Cập nhật nếu là Tutor -->
                                                 <div style="display: flex;">
                                                     ${userRole === "Tutor" && item.status === "Pending" ? `
-                                                    <button type="button" class="btn btn-success  " onclick="updateStatus(${item.preferredSchedule})" data-toggle="modal" data-target="#updateModal">Duyệt</button>
+                                                    <button type="button" class="btn btn-success" onclick="updateStatus('${item.preferredSchedule}',${item.id})" data-toggle="modal" data-target="#updateModal">Duyệt</button>
                                                     <button type="button" class="btn btn-danger" style="margin-left: 10px;" onclick="rejectStatus(${item.id})">Từ chối</button>
                                                     ` : ""}
                                                     ${userRole === "Student" && item.paymentStatus === "Chưa hoàn thành" && item.status ==="Approved"? `
@@ -149,11 +148,7 @@ async function checkPayment(registerId) {
         alert("Lỗi kết nối khi thanh toán. Vui lòng thử lại!");
     }
 };
-function updateStatus(preferredSchedule) {
-    document.getElementById("newSchedule").value = preferredSchedule;
-    fetchTutorClasses();
-    $("#updateModal").modal("show");
-}
+
 async function getQr(id) {
     try {
         let response = await fetch(`http://157.66.24.154:8080/class/getPaymentQr/${id}`);
@@ -174,65 +169,92 @@ async function getQr(id) {
     }
 }
 // Hàm gọi API lấy danh sách lớp của Tutor
-function fetchTutorClasses() {
-    fetch(`/api/tutor/classes`)
-        .then(response => response.json())
-        .then(data => {
+ async function fetchTutorClasses() {
+    try {
+        // 🟢 Gọi API lấy danh sách lớp học
+        const response = await fetch(`http://localhost:8080/class/getClassList/${user.userId}`);
+        const data = await response.json();
+
+        if (data.status === 200) {
             const classSelect = document.getElementById("classSelect");
+            
+            // Xóa các option cũ (nếu có)
             classSelect.innerHTML = `<option value="">-- Chọn lớp --</option>`;
-            data.result.forEach(classItem => {
-                classSelect.innerHTML += `<option value="${classItem.id}">${classItem.subjectId} - Lớp ${classItem.grade}</option>`;
+
+            // 🟢 Thêm danh sách lớp vào thẻ <select>
+            data.result.forEach(cls => {
+                let option = document.createElement("option");
+                // option.value = cls.id;  // Giá trị của lớp học
+                option.textContent = cls.className;  // Tên hiển thị của lớp học
+                classSelect.appendChild(option);
             });
-            classSelect.innerHTML += `<option value="new">+ Tạo lớp mới</option>`;
-        })
-        .catch(error => console.error("Lỗi lấy danh sách lớp:", error));
-}
-
-function handleClassSelection() {
-    let form = document.getElementById("newClassForm");
-    let classSelect = document.getElementById("classSelect");
-
-    // Nếu chọn lớp có sẵn, ẩn form tạo lớp mới
-    if (classSelect.value !== "new") {
-        form.style.display = "none";
+        }
+    } catch (error) {
+        console.error("Lỗi khi lấy danh sách lớp học:", error);
     }
 }
-
+async function updateStatus(preferredSchedule,registerId) {    
+    document.getElementById("newSlot").value = preferredSchedule;
+    document.getElementById("registerId").value = registerId;
+    fetchTutorClasses();
+    // $("#updateModal").modal("show");
+}
 function showNewClassForm() {
     let form = document.getElementById("newClassForm");
-    form.style.display = "block";  // Luôn mở form khi nhấn nút
+    let selectClass = document.getElementById("classSelect");
+    let switchButton = document.getElementById("switchToExisting"); // Nút chọn lớp có sẵn
+    selectClass.value = "new";
+    selectClass.style.display = "none"; // Ẩn select
+    form.style.display = "block";  // Hiển thị form tạo lớp mới
+    switchButton.style.display = "inline-block"; // Hiện nút quay lại
+    isCreateNewClass = true;
 }
+
+function switchToExistingClass() {
+    let form = document.getElementById("newClassForm");
+    let selectClass = document.getElementById("classSelect");
+    let switchButton = document.getElementById("switchToExisting");
+
+    form.style.display = "none"; // Ẩn form tạo lớp mới
+    selectClass.style.display = "block"; // Hiện select để chọn lớp có sẵn
+    switchButton.style.display = "none"; // Ẩn nút quay lại
+
+    isCreateNewClass = false;
+}
+
 // Gửi yêu cầu cập nhật lớp học
 function submitUpdate() {
-    const classId = document.getElementById("classSelect").value;
-
-    if (classId === "new") {
+    
+    if (isCreateNewClass == true) {
+        console.log("create new");
+        
         // Tạo lớp mới trước
         const newClass = {
-            grade: document.getElementById("newGrade").value,
-            preferredSchedule: document.getElementById("newSchedule").value
+            startDate: document.getElementById("startDate").value,
+            preferedSchedule: document.getElementById("newSlot").value,
+            // registerId: document.getElementById("registerId").value
+            registerId: 31
         };
 
-        fetch(`/api/tutor/classes/create`, {
+        const response = fetch(`http://localhost:8080/class/createClass`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newClass)
-        })
-            .then(response => response.json())
-            .then(data => {
-                alert("Tạo lớp mới thành công!");
-                $("#updateModal").modal("hide");
-                location.reload();
-            })
-            .catch(error => console.error("Lỗi tạo lớp mới:", error));
+        }).catch(error => console.error("Lỗi tạo lớp mới:", error));
+        if (response.status === 200) {
+            console.log("tao lop ok");
+            
+        }
 
     } else {
+        console.log("class exist");
+        
         // Nếu chọn lớp đã có sẵn, chỉ cần cập nhật lớp cho đăng ký
-        updateClassRegistration(classId);
+        updateClassRegistration();
     }
 }
 // Hàm gửi API cập nhật trạng thái đăng ký lớp học
-function updateClassRegistration(classId) {
+function updateClassRegistration(classId,selectedRegistrationId) {
     fetch(`/api/registrations/update`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -246,5 +268,5 @@ function updateClassRegistration(classId) {
         })
         .catch(error => console.error("Lỗi cập nhật đăng ký:", error));
 }
-
+let isCreateNewClass = false;
 fetchClassList();
