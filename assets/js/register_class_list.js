@@ -236,14 +236,18 @@ function submitUpdate() {
             registerId: 31
         };
 
-        const response = fetch(`http://localhost:8080/class/createClass`, {
+        const response = fetch(`http://157.66.24.154:8080/class/createClass`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newClass)
         }).catch(error => console.error("Lỗi tạo lớp mới:", error));
         if (response.status === 200) {
             console.log("tao lop ok");
-            
+            Swal.fire({
+                title: "Tạo lớp thành công!",
+                icon: "success",
+                showConfirmButton: true
+            });
         }
 
     } else {
