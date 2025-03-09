@@ -232,8 +232,7 @@ function submitUpdate() {
         const newClass = {
             startDate: document.getElementById("startDate").value,
             preferedSchedule: document.getElementById("newSlot").value,
-            // registerId: document.getElementById("registerId").value
-            registerId: 31
+            registerId: document.getElementById("registerId").value
         };
 
         const response = fetch(`http://157.66.24.154:8080/class/createClass`, {
@@ -242,7 +241,6 @@ function submitUpdate() {
             body: JSON.stringify(newClass)
         }).catch(error => console.error("Lỗi tạo lớp mới:", error));
         if (response.status === 200) {
-            console.log("tao lop ok");
             Swal.fire({
                 title: "Tạo lớp thành công! ",
                 icon: "success",
