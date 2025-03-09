@@ -244,7 +244,7 @@ function submitUpdate() {
         if (response.status === 200) {
             console.log("tao lop ok");
             Swal.fire({
-                title: "Tạo lớp thành công!",
+                title: "Tạo lớp thành công! ",
                 icon: "success",
                 showConfirmButton: true
             });
