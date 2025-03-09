@@ -172,7 +172,7 @@ async function getQr(id) {
  async function fetchTutorClasses() {
     try {
         // 🟢 Gọi API lấy danh sách lớp học
-        const response = await fetch(`http://localhost:8080/class/getClassList/${user.userId}`);
+        const response = await fetch(`http://157.66.24.154:8080/class/getClassList/${user.userId}`);
         const data = await response.json();
 
         if (data.status === 200) {
