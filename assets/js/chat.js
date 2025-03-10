@@ -32,19 +32,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         stompClient.onConnect = function (frame) {
-            // Subscription cho tin nhắn private
             stompClient.subscribe("/user/" + username + "/queue/private", function (message) {
                 const msg = JSON.parse(message.body);
                 showMessage(msg);
                 if (username === "admin" && msg.sender !== username && msg.sender !== selectedReceiver) {
-                    // Tăng số tin nhắn chưa đọc từ user này (chỉ áp dụng cho Admin)
                     const count = unreadMessages.get(msg.sender) || 0;
                     unreadMessages.set(msg.sender, count + 1);
                     updateUserList(username);
                 }
             });
 
-            // Subscription cho tin nhắn công khai (JOIN/LEAVE)
             stompClient.subscribe("/topic/public", function (message) {
                 const msg = JSON.parse(message.body);
                 if (msg.type === "JOIN" || msg.type === "LEAVE") {
@@ -52,13 +49,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            // Subscription cho danh sách người online
             stompClient.subscribe("/topic/online", function (message) {
                 const onlineUsers = JSON.parse(message.body);
                 updateUserList(username, onlineUsers);
             });
 
-            // Gửi thông báo JOIN
             stompClient.publish({
                 destination: "/app/chat.addUser",
                 body: JSON.stringify({
@@ -96,13 +91,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 receiver: selectedReceiver,
                 type: "CHAT"
             };
-            showMessage(chatMessage); // Hiển thị tin nhắn gửi ngay
+            showMessage(chatMessage);
             stompClient.publish({
                 destination: "/app/chat.sendPrivateMessage/" + selectedReceiver,
                 body: JSON.stringify(chatMessage)
             });
             messageInput.value = "";
-            saveChattedUser(selectedReceiver);
             updateUserList(user.username);
         }
     }
@@ -140,7 +134,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function showMessage(message) {
         const user = JSON.parse(localStorage.getItem("user"));
 
-        // Chỉ hiển thị tin nhắn nếu liên quan đến người dùng hiện tại và receiver đã chọn
         if ((message.sender === user.username || message.receiver === user.username) &&
             (message.sender === selectedReceiver || message.receiver === selectedReceiver)) {
             const messageElement = document.createElement("div");
@@ -151,21 +144,20 @@ document.addEventListener("DOMContentLoaded", function () {
             messageArea.scrollTop = messageArea.scrollHeight;
         }
 
-        // Phát âm thanh thông báo khi Admin nhận tin nhắn từ User
         if (user.username === "admin" && message.receiver === "admin" && message.type === "CHAT") {
             playNotificationSound();
-            saveChattedUser(message.sender);
             updateUserList(user.username);
         }
     }
 
-    function saveChattedUser(username) {
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (username === user.username) return; // Không lưu chính mình
-        let chattedUsers = JSON.parse(localStorage.getItem("chattedUsers")) || [];
-        if (!chattedUsers.includes(username)) {
-            chattedUsers.push(username);
-            localStorage.setItem("chattedUsers", JSON.stringify(chattedUsers));
+    async function fetchChattedUsers(username) {
+        try {
+            const response = await fetch(`http://157.66.24.154:8080/chat/chatted-users?username=${username}`);
+            const users = await response.json();
+            return users;
+        } catch (error) {
+            console.error("Error fetching chatted users:", error);
+            return [];
         }
     }
 
@@ -174,39 +166,38 @@ document.addEventListener("DOMContentLoaded", function () {
         const user = JSON.parse(localStorage.getItem("user"));
 
         if (currentUser === "admin") {
-            // Admin: Hiển thị tất cả user đã từng chat (không bao gồm chính mình)
-            let chattedUsers = JSON.parse(localStorage.getItem("chattedUsers")) || [];
-            chattedUsers.forEach(userItem => {
-                if (userItem !== "admin") { // Loại bỏ admin khỏi danh sách
-                    const li = document.createElement("li");
-                    li.textContent = userItem;
-                    const unreadCount = unreadMessages.get(userItem) || 0;
-                    if (unreadCount > 0) {
-                        const badge = document.createElement("span");
-                        badge.classList.add("unread-badge");
-                        badge.textContent = unreadCount;
-                        li.appendChild(badge);
+            fetchChattedUsers(currentUser).then(chattedUsers => {
+                chattedUsers.forEach(userItem => {
+                    if (userItem !== "admin") {
+                        const li = document.createElement("li");
+                        li.textContent = userItem;
+                        const unreadCount = unreadMessages.get(userItem) || 0;
+                        if (unreadCount > 0) {
+                            const badge = document.createElement("span");
+                            badge.classList.add("unread-badge");
+                            badge.textContent = unreadCount;
+                            li.appendChild(badge);
+                        }
+                        if (onlineUsers.includes(userItem)) {
+                            li.classList.add("online");
+                        }
+                        li.addEventListener("click", function () {
+                            selectedReceiver = userItem;
+                            messageHeader.textContent = "Chat với " + userItem;
+                            userList.querySelectorAll("li").forEach(item => item.classList.remove("active"));
+                            li.classList.add("active");
+                            unreadMessages.set(userItem, 0);
+                            updateUserList(currentUser, onlineUsers);
+                            loadChatHistory(userItem);
+                        });
+                        userList.appendChild(li);
                     }
-                    if (onlineUsers.includes(userItem)) {
-                        li.classList.add("online");
-                    }
-                    li.addEventListener("click", function () {
-                        selectedReceiver = userItem;
-                        messageHeader.textContent = "Chat với " + userItem;
-                        userList.querySelectorAll("li").forEach(item => item.classList.remove("active"));
-                        li.classList.add("active");
-                        unreadMessages.set(userItem, 0); // Reset số tin nhắn chưa đọc
-                        updateUserList(currentUser, onlineUsers);
-                        loadChatHistory(userItem);
-                    });
-                    userList.appendChild(li);
-                }
+                });
             });
         } else {
-            // User: Chỉ hiển thị admin
             const li = document.createElement("li");
             li.textContent = "admin";
-            li.classList.add("online"); // Admin luôn hiển thị online
+            li.classList.add("online");
             li.addEventListener("click", function () {
                 selectedReceiver = "admin";
                 messageHeader.textContent = "Chat với Admin";
