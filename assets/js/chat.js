@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
         userList.innerHTML = "";
         const user = JSON.parse(localStorage.getItem("user"));
 
-        if (currentUser === "admin") {
+        if (currentUser === "admin" && userList.childElementCount === 0) { 
             fetchChattedUsers(currentUser).then(chattedUsers => {
                 chattedUsers.forEach(userItem => {
                     if (userItem !== "admin") {
