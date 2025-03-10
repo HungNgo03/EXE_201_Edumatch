@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const userList = document.getElementById("userList");
     const messageHeader = document.getElementById("messageHeader");
     let selectedReceiver = null;
-    let unreadMessages = new Map(); // Lưu số lượng tin nhắn chưa đọc từ mỗi user
+    let unreadMessages = new Map(); // Lưu số lượng tin nhắn chưa đọc từ mỗi user (dành cho Admin)
 
     joinChatBtn.addEventListener("click", function () {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         stompClient.onConnect = function (frame) {
+            // Subscription cho tin nhắn private
             stompClient.subscribe("/user/" + username + "/queue/private", function (message) {
                 const msg = JSON.parse(message.body);
                 showMessage(msg);
@@ -43,15 +44,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
+            // Subscription cho tin nhắn công khai (JOIN/LEAVE)
             stompClient.subscribe("/topic/public", function (message) {
-                showMessage(JSON.parse(message.body));
+                const msg = JSON.parse(message.body);
+                if (msg.type === "JOIN" || msg.type === "LEAVE") {
+                    updateUserList(username);
+                }
             });
 
+            // Subscription cho danh sách người online
             stompClient.subscribe("/topic/online", function (message) {
                 const onlineUsers = JSON.parse(message.body);
                 updateUserList(username, onlineUsers);
             });
 
+            // Gửi thông báo JOIN
             stompClient.publish({
                 destination: "/app/chat.addUser",
                 body: JSON.stringify({
@@ -132,8 +139,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showMessage(message) {
         const user = JSON.parse(localStorage.getItem("user"));
-        // Chỉ hiển thị tin nhắn nếu là từ người khác hoặc gửi đến người khác
-        if (message.sender !== user.username || message.receiver === user.username) {
+
+        // Chỉ hiển thị tin nhắn nếu liên quan đến người dùng hiện tại và receiver đã chọn
+        if ((message.sender === user.username || message.receiver === user.username) &&
+            (message.sender === selectedReceiver || message.receiver === selectedReceiver)) {
             const messageElement = document.createElement("div");
             messageElement.classList.add("message");
             messageElement.classList.add(message.sender === user.username ? "sent" : "received");
@@ -141,6 +150,8 @@ document.addEventListener("DOMContentLoaded", function () {
             messageArea.appendChild(messageElement);
             messageArea.scrollTop = messageArea.scrollHeight;
         }
+
+        // Phát âm thanh thông báo khi Admin nhận tin nhắn từ User
         if (user.username === "admin" && message.receiver === "admin" && message.type === "CHAT") {
             playNotificationSound();
             saveChattedUser(message.sender);
@@ -215,7 +226,7 @@ document.addEventListener("DOMContentLoaded", function () {
             messageArea.innerHTML = "";
             history.forEach(msg => showMessage(msg));
         } catch (error) {
-            // Xử lý lỗi âm thầm
+            console.error("Error loading chat history:", error);
         }
     }
 
