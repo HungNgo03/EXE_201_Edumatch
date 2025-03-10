@@ -186,32 +186,25 @@
                             tutors.forEach(tutor => {
                                 const tutorCard = document.createElement('div');
                                 tutorCard.classList.add('col-md-6');
-
-                                // Lấy ảnh từ API
-                                const imageUrl = tutor.image
-                                    ? `/users/tutor/image/${tutor.id}` // Gọi API để lấy ảnh dạng Base64
-                                    : 'assets/img/tutors/default.jpg';
-
+                                const imageUrl = tutor.image ? `assets/img/tutors/${tutor.image}` : 'assets/img/tutors/default.jpg';
                                 tutorCard.innerHTML = `
-        <div class="tutor-card d-flex align-items-center">
-            <a href="confirmBooking.html?tutorId=${tutor.id}" class="me-3">
-                <img src="${imageUrl}" alt="${tutor.fullname}" class="rounded-circle" width="80">
-            </a>
-            <div class="flex-grow-1">
-                <h5>
-                    <a href="confirmBooking.html?tutorId=${tutor.id}" class="tutor-link">
-                        ${tutor.fullname}
-                    </a>
-                </h5>
-                <p>Kinh nghiệm: ${tutor.experience} năm</p>
-                <p>Môn học: ${tutor.subjects.join(', ')}</p>
-            </div>
-        </div>
-    `;
-
+                        <div class="tutor-card d-flex align-items-center">
+                            <a href="confirmBooking.html?tutorId=${tutor.id}" class="me-3">
+                            <img src="${imageUrl}" alt="${tutor.fullname}" class="rounded-circle" width="80">
+                        </a>
+                            <div class="flex-grow-1">
+                                <h5>
+                                    <a href="confirmBooking.html?tutorId=${tutor.id}" class="tutor-link">
+                                        ${tutor.fullname}
+                                    </a>
+                                </h5>
+                                <p>Kinh nghiệm: ${tutor.experience} năm</p>
+                                <p>Môn học: ${tutor.subjects.join(', ')}</p>
+                            </div>
+                        </div>
+                    `;
                                 tutorContainer.appendChild(tutorCard);
                             });
-
 
                             // Hiển thị phân trang
                             displayPagination(totalPages);
