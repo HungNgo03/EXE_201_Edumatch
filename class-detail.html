@@ -103,7 +103,7 @@
             try {
                 const urlParams = new URLSearchParams(window.location.search);
                 const className = urlParams.get('class');
-                const response = await fetch(`http://localhost:8080/class/getClassDetail/${className}`);
+                const response = await fetch(`http://157.66.24.154:8080/class/getClassDetail/${className}`);
                 const data = await response.json();
 
                 if (data.status === 200) {
