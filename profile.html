@@ -1042,89 +1042,91 @@
         });
     });
 </script>
-<script>
-    const imgElement = document.getElementById("userImage");
-    imgElement.src = `http://157.66.24.154:8080/users/image/${localStorage.getItem("userID")}`;
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let cropper;
+            const userId = localStorage.getItem("userID");
+            const imgElement = document.getElementById("userImage");
 
-    document.getElementById("fileInput").addEventListener("change", function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById("userImage").src = e.target.result; // Hiển thị ảnh đã chọn
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+            // ✅ Lấy ảnh từ API dưới dạng Base64
+            fetch(`http://157.66.24.154:8080/users/image/${userId}`)
+                .then(response => response.json()) // API trả về JSON chứa dữ liệu ảnh
+                .then(data => {
+                    if (data.imageData) {
+                        imgElement.src = `data:image/jpeg;base64,${data.imageData}`;
+                    }
+                })
+                .catch(error => console.error("Lỗi khi lấy ảnh:", error));
 
-    document.addEventListener("DOMContentLoaded", function () {
-        let cropper;
-
-        // Khi chọn ảnh mới
-        document.getElementById("fileInput").addEventListener("change", function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById("userImage").src = e.target.result;
-                    if (cropper) cropper.destroy();
-                    cropper = new Cropper(document.getElementById("userImage"), {
-                        aspectRatio: 1,
-                        viewMode: 1
-                    });
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Khi nhấn nút "Lưu ảnh"
-        document.getElementById("saveButton").addEventListener("click", function () {
-            if (cropper) {
-                cropper.getCroppedCanvas().toBlob((blob) => {
-                    const formData = new FormData();
-                    formData.append("file", blob, "profile.jpg");
-                    const userId = localStorage.getItem("userID");
-                    fetch(`http://157.66.24.154:8080/users/update-image/${userId}`, {
-                        method: "PUT",
-                        body: formData
-                    })
-                        .then(response => response.text())
-                        .then(result => {
-                            Swal.fire({
-                                icon: "success",
-                                title: "Cập nhật thành công!",
-                                text: "Ảnh đại diện của bạn đã được lưu.",
-                                confirmButtonText: "OK"
-                            }).then(() => {
-                                location.reload();
-                            });
-                            console.log(result);
-                        })
-                        .catch(error => {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Lỗi!",
-                                text: "Có lỗi xảy ra khi tải ảnh lên. Vui lòng thử lại.",
-                                confirmButtonText: "OK"
-                            });
-                            console.error("Lỗi khi tải ảnh lên:", error);
+            // ✅ Khi chọn ảnh mới
+            document.getElementById("fileInput").addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imgElement.src = e.target.result;
+                        if (cropper) cropper.destroy();
+                        cropper = new Cropper(imgElement, {
+                            aspectRatio: 1,
+                            viewMode: 1
                         });
-                });
-            } else {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Chưa chọn ảnh!",
-                    text: "Vui lòng chọn ảnh trước khi lưu.",
-                    confirmButtonText: "OK"
-                });
-            }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // ✅ Khi nhấn nút "Lưu ảnh"
+            document.getElementById("saveButton").addEventListener("click", function () {
+                if (cropper) {
+                    cropper.getCroppedCanvas().toBlob((blob) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(blob);
+                        reader.onloadend = function () {
+                            const base64Image = reader.result.split(",")[1]; // Lấy dữ liệu Base64
+
+                            fetch(`http://157.66.24.154:8080/users/update-image/${userId}`, {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({ imageData: base64Image }) // Gửi Base64 lên server
+                            })
+                                .then(response => response.text())
+                                .then(result => {
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Cập nhật thành công!",
+                                        text: "Ảnh đại diện của bạn đã được lưu.",
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                    console.log(result);
+                                })
+                                .catch(error => {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Lỗi!",
+                                        text: "Có lỗi xảy ra khi tải ảnh lên. Vui lòng thử lại.",
+                                        confirmButtonText: "OK"
+                                    });
+                                    console.error("Lỗi khi tải ảnh lên:", error);
+                                });
+                        };
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Chưa chọn ảnh!",
+                        text: "Vui lòng chọn ảnh trước khi lưu.",
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
+
         });
+    </script>
 
-    });
-
-
-
-</script>
 <script>
     document.getElementById("editProfileBtn").addEventListener("click", async function() {
         const role = localStorage.getItem("role");
