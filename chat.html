@@ -30,19 +30,34 @@
             margin-bottom: 10px;
             color: #65676b;
         }
-        #onlineList, #chattedList {
+        #userList ul {
             list-style: none;
             padding: 0;
         }
-        #onlineList li, #chattedList li {
+        #userList li {
             padding: 10px;
             cursor: pointer;
             border-radius: 5px;
             margin-bottom: 5px;
+            position: relative;
         }
-        #onlineList li:hover, #onlineList li.active,
-        #chattedList li:hover, #chattedList li.active {
+        #userList li:hover, #userList li.active {
             background-color: #e4e6eb;
+        }
+        #userList li.online::after {
+            content: " ●";
+            color: green;
+        }
+        .unread-badge {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #ff4d4f;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
         }
         #chatArea {
             width: 70%;
@@ -118,23 +133,14 @@
             display: block;
             margin: 20px auto;
         }
-        #onlineList li::after {
-            content: " ●";
-            color: green;
-        }
-        #chattedList {
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
     <div class="container mt-5">
         <div id="chatContainer" class="d-none">
             <div id="userList">
-                <h5>Người dùng online</h5>
-                <ul id="onlineList"></ul>
-                <h5>Những người đã nhắn tin</h5>
-                <ul id="chattedList"></ul>
+                <h5>Danh sách người dùng</h5>
+                <ul></ul>
             </div>
             <div id="chatArea">
                 <div id="messageHeader">Chọn người để chat</div>
@@ -157,5 +163,4 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="assets/js/chat.js"></script>
 </body>
-
 </html>
