@@ -186,7 +186,7 @@
                             tutors.forEach(tutor => {
                                 const tutorCard = document.createElement('div');
                                 tutorCard.classList.add('col-md-6');
-                                const imageUrl = tutor.image ? `assets/img/tutors/${tutor.image}` : 'assets/img/tutors/default.jpg';
+                                const imageUrl = tutor.image ? `data:image/jpeg;base64,${tutor.image}` : 'assets/img/tutors/default.jpg';
                                 tutorCard.innerHTML = `
                         <div class="tutor-card d-flex align-items-center">
                             <a href="confirmBooking.html?tutorId=${tutor.id}" class="me-3">
