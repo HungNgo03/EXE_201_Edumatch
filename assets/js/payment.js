@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             const tutor = data.result;              
-            const imageUrl = tutor.image ? `assets/img/tutors/${tutor.image}` : 'assets/img/tutors/default.jpg';              
+            const imageUrl = tutor.image ? `data:image/jpeg;base64,${tutor.image}` : 'assets/img/tutors/default.jpg';              
             document.getElementById("imageTutor").src = imageUrl;
             document.getElementById("tutor-name").textContent = tutor.fullname;
             document.getElementById("tutor-email").textContent = tutor.email;
