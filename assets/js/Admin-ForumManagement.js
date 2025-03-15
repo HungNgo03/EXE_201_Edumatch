@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Post URL - replace with your actual Post base URL
-    const Post_BASE_URL = 'http://localhost:8080/Post'; // Adjust this to your actual Post URL
+    const Post_BASE_URL = 'http://157.66.24.154:8080/Post'; // Adjust this to your actual Post URL
     
     // Modal elements
     const confirmationModal = document.getElementById('confirmation-modal');
