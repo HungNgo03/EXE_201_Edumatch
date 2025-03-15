@@ -116,7 +116,7 @@ function renderUsers(usersToRender) {
 
   // Add event listeners to edit buttons
   document.querySelectorAll(".action-btn.edit-btn").forEach((btn) => {
-    btn.addEventListener("click", function() {
+    btn.addEventListener("click", function () {
       const tutorId = this.getAttribute("data-id");
       const status = this.getAttribute("data-status");
       openEditModal(tutorId, status);
@@ -172,7 +172,7 @@ function handleLogout() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   localStorage.removeItem('userData');
-  
+
   // Show logout success message
   Swal.fire({
     icon: 'success',
@@ -198,12 +198,43 @@ function openEditModal(tutorId, status) {
 function closeEditModal() {
   editUserModal.style.display = "none";
 }
+checkAdminAccess();
 
+// Hàm kiểm tra quyền Admin
+function checkAdminAccess() {
+  // Lấy thông tin người dùng từ localStorage
+  const userData = localStorage.getItem('user');
+
+  // Nếu không có thông tin đăng nhập, chuyển hướng về trang đăng nhập
+  if (!userData) {
+    window.location.href = 'index.html'; // Chuyển đến trang đăng nhập
+    return;
+  }
+
+  try {
+    const user = localStorage.getItem('role');
+    
+    // Kiểm tra xem người dùng có vai trò Admin không
+    if (!user || user !== 'Admin') {
+        // Nếu không phải Admin, chuyển hướng về trang chủ hoặc trang lỗi
+        window.location.href = 'unauthorized.html'; // hoặc trang chủ thông thường
+        return;
+    }
+
+    // Nếu là Admin, tiếp tục hiển thị trang
+    console.log('Admin access granted');
+
+  } catch (error) {
+    console.error('Error parsing user data:', error);
+    // Nếu có lỗi, chuyển hướng về trang đăng nhập
+    window.location.href = 'index.html';
+  }
+}
 // Update user status
 async function updateUser() {
   const tutorId = currentUserId;
   const newStatus = parseInt(editStatus.value);
-  
+
   try {
     const response = await fetch(`${API_BASE_URL}/Admin/tutors/${tutorId}`, {
       method: "PUT",
@@ -222,14 +253,14 @@ async function updateUser() {
         showConfirmButton: false,
         timer: 1500
       });
-      
+
       // Update the status in our local data
       const userIndex = users.findIndex((user) => user.id === parseInt(tutorId));
       if (userIndex !== -1) {
         users[userIndex].status = newStatus;
         users[userIndex].statusText = mapStatus(newStatus);
       }
-      
+
       renderUsers(users); // Re-render the table
       closeEditModal(); // Close the modal
     } else {

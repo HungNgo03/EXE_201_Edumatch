@@ -126,9 +126,9 @@ function renderUsers(usersToRender) {
 function filterUsers() {
   const searchTerm = searchInput.value.toLowerCase()
   const filteredUsers = users.filter(
-    (user) => 
-      user.username.toLowerCase().includes(searchTerm) || 
-      user.fullname.toLowerCase().includes(searchTerm) || 
+    (user) =>
+      user.username.toLowerCase().includes(searchTerm) ||
+      user.fullname.toLowerCase().includes(searchTerm) ||
       user.email.toLowerCase().includes(searchTerm)
   )
   renderUsers(filteredUsers)
@@ -182,7 +182,7 @@ function handleLogout() {
   localStorage.removeItem('token')
   localStorage.removeItem('user')
   localStorage.removeItem('userData')
-  
+
   // Show logout success message
   Swal.fire({
     icon: 'success',
@@ -199,16 +199,47 @@ function handleLogout() {
 // Open delete user modal
 function openDeleteModal(userId, userName) {
   if (!deleteUserModal) return
-  
+
   currentUserId = userId
-  
+
   if (deleteUserName) {
     deleteUserName.textContent = userName
   }
 
   deleteUserModal.classList.add("active")
 }
+checkAdminAccess();
 
+// Hàm kiểm tra quyền Admin
+function checkAdminAccess() {
+  // Lấy thông tin người dùng từ localStorage
+  const userData = localStorage.getItem('user');
+
+  // Nếu không có thông tin đăng nhập, chuyển hướng về trang đăng nhập
+  if (!userData) {
+    window.location.href = 'index.html'; // Chuyển đến trang đăng nhập
+    return;
+  }
+
+  try {
+    const user = localStorage.getItem('role');
+    
+    // Kiểm tra xem người dùng có vai trò Admin không
+    if (!user || user !== 'Admin') {
+        // Nếu không phải Admin, chuyển hướng về trang chủ hoặc trang lỗi
+        window.location.href = 'unauthorized.html'; // hoặc trang chủ thông thường
+        return;
+    }
+
+    // Nếu là Admin, tiếp tục hiển thị trang
+    console.log('Admin access granted');
+
+  } catch (error) {
+    console.error('Error parsing user data:', error);
+    // Nếu có lỗi, chuyển hướng về trang đăng nhập
+    window.location.href = 'index.html';
+  }
+}
 // Delete user
 async function deleteUser() {
   try {
@@ -216,14 +247,14 @@ async function deleteUser() {
     const response = await fetch(`${API_BASE_URL}/Admin/students/${currentUserId}`, {
       method: 'DELETE'
     })
-    
+
     const data = await response.json()
-    
+
     if (data.status === 200) {
       // Remove user from local array
       users = users.filter((user) => user.id !== currentUserId)
       renderUsers(users)
-      
+
       Swal.fire({
         icon: 'success',
         title: 'Thành công',
@@ -244,7 +275,7 @@ async function deleteUser() {
       text: 'Đã xảy ra lỗi khi kết nối với máy chủ'
     })
   }
-  
+
   if (deleteUserModal) {
     deleteUserModal.classList.remove("active")
   }
