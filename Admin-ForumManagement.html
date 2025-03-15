@@ -1,15 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Admin</title>
-    <link rel="stylesheet" href="assets/css/Admin-page.css">
+    <link rel="stylesheet" href="assets/css/Admin-TutorManagement.css">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- SweetAlert2 for notifications -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+<style>
+    /* Add these styles to your existing CSS file, if these styles don't exist already */
+
+/* Modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+    max-width: 80%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+.modal-body {
+    margin-bottom: 20px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #888;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.delete-btn {
+    color: #dc3545;
+}
+
+.delete-btn:hover {
+    color: #b02a37;
+}
+
+/* No data styling */
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Table styling for post content */
+.user-table td:nth-child(3) {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+</style>
 <body>
     <div class="container">
         <!-- Sidebar -->
@@ -21,18 +136,18 @@
                 <ul>
                     <li>
                         <a href="Admin-TutorManagement.html" class="nav-link">
-                            <i class="fas fa-chalkboard-teacher"></i>
+                            <i class="fas fa-home"></i>
                             <span>Quản lí Gia Sư</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link active">
-                            <i class="fas fa-user-graduate"></i>
-                            <span>Quản lí Học Sinh</span>
+                        <a href="Admin-Page.html" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Quản lí người dùng</span>
                         </a>
                     </li>
                     <li>
-                        <a href="Admin-ForumManagement.html" class="nav-link">
+                        <a href="#" class="nav-link active">
                             <i class="fas fa-cog"></i>
                             <span>Quản lí Diễn Đàn</span>
                         </a>
@@ -70,31 +185,31 @@
             <!-- Content Area -->
             <div class="content">
                 <div class="page-header">
-                    <h2>Quản lí Học Sinh</h2>
+                    <h2>Quản lý Diễn Đàn</h2>
                 </div>
-                
+
                 <div class="actions-bar">
                     <div class="search-container">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="search-input" placeholder="Tìm kiếm học sinh...">
+                        <input type="text" id="search-input" placeholder="Tìm kiếm bài viết...">
                     </div>
                 </div>
 
-                <!-- User Table -->
+                <!-- Posts Table -->
                 <div class="table-container">
                     <table class="user-table">
                         <thead>
                             <tr>
-                                <th>Tên người dùng</th>
-                                <th>Họ và Tên</th>
-                                <th>Email</th>
-                                <th>Số điện thoại</th>
-                                <th>Vai trò</th>
-                                <th>Thời gian tạo</th>
+                                <th>ID</th>
+                                <th>Tiêu đề</th>
+                                <th>Nội dung</th>
+                                <th>Người đăng</th>
+                                <th>Ngày đăng</th>
+                                <th>Đánh giá</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody id="user-table-body">
+                        <tbody id="posts-table-body">
                             <!-- Table rows will be populated by JavaScript -->
                         </tbody>
                     </table>
@@ -103,25 +218,25 @@
         </main>
     </div>
 
-    <!-- Delete User Modal -->
-    <div class="modal" id="delete-user-modal">
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmation-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Xóa học sinh</h3>
-                <button class="close-btn" id="delete-close-btn">&times;</button>
+                <h3>Xác nhận xóa</h3>
+                <button class="close-btn" id="confirm-close-btn">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Bạn có chắc chắn muốn xóa học sinh <strong id="delete-user-name"></strong>?</p>
-                <p class="warning-text">Hành động này không thể hoàn tác.</p>
+                <p>Bạn có chắc chắn muốn xóa bài viết này không?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="delete-cancel-btn">Hủy</button>
+                <button type="button" class="btn btn-secondary" id="cancel-delete-btn">Hủy</button>
                 <button type="button" class="btn btn-danger" id="confirm-delete-btn">Xóa</button>
             </div>
         </div>
     </div>
 
-    <script src="assets/js/Admin-Page.js"></script>
+    <script src="assets/js/Admin-ForumManagement.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-</html>
 
+</html>
