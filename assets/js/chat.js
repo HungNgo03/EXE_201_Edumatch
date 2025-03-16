@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const userList = document.getElementById("userList");
     const messageHeader = document.getElementById("messageHeader");
     let selectedReceiver = null;
-    let unreadMessages = new Map(); // Lưu số lượng tin nhắn chưa đọc từ mỗi user (dành cho Admin)
+    let selectedReceiverFullname = null;
+    let unreadMessages = new Map();
 
     joinChatBtn.addEventListener("click", function () {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -18,11 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         connect(user.username);
-        playNotificationSound();
         chatContainer.classList.remove("d-none");
         joinChatBtn.classList.add("d-none");
         leaveChatBtn.classList.remove("d-none");
-        refreshUserList(user.username); // Làm mới danh sách khi tham gia
+        refreshUserList(user.username);
     });
 
     function connect(username) {
@@ -34,24 +34,24 @@ document.addEventListener("DOMContentLoaded", function () {
         stompClient.onConnect = function (frame) {
             stompClient.subscribe("/user/" + username + "/queue/private", function (message) {
                 const msg = JSON.parse(message.body);
-                showMessage(msg);
-                if (username === "admin" && msg.sender !== username && msg.sender !== selectedReceiver) {
+                showMessage(msg, username === msg.receiver);
+                if (msg.sender !== username && msg.sender !== selectedReceiver) {
                     const count = unreadMessages.get(msg.sender) || 0;
                     unreadMessages.set(msg.sender, count + 1);
-                    updateUserItem(msg.sender); // Cập nhật chỉ mục của người gửi
+                    updateUserItem(msg.sender);
                 }
             });
 
             stompClient.subscribe("/topic/public", function (message) {
                 const msg = JSON.parse(message.body);
                 if (msg.type === "JOIN" || msg.type === "LEAVE") {
-                    refreshUserList(username); // Làm mới danh sách khi có người join/leave
+                    refreshUserList(username);
                 }
             });
 
             stompClient.subscribe("/topic/online", function (message) {
                 const onlineUsers = JSON.parse(message.body);
-                refreshUserList(username, onlineUsers); // Làm mới danh sách với trạng thái online
+                refreshUserList(username, onlineUsers);
             });
 
             stompClient.publish({
@@ -91,13 +91,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 receiver: selectedReceiver,
                 type: "CHAT"
             };
-            showMessage(chatMessage);
+            showMessage(chatMessage, false);
             stompClient.publish({
                 destination: "/app/chat.sendPrivateMessage/" + selectedReceiver,
                 body: JSON.stringify(chatMessage)
             });
             messageInput.value = "";
-            updateUserItem(selectedReceiver); // Cập nhật mục người nhận
+            updateUserItem(selectedReceiver);
         }
     }
 
@@ -127,11 +127,12 @@ document.addEventListener("DOMContentLoaded", function () {
         messageArea.innerHTML = "";
         userList.innerHTML = "";
         selectedReceiver = null;
+        selectedReceiverFullname = null;
         messageHeader.textContent = "Chọn người để chat";
         unreadMessages.clear();
     }
 
-    function showMessage(message) {
+    function showMessage(message, playSound = false) {
         const user = JSON.parse(localStorage.getItem("user"));
 
         if ((message.sender === user.username || message.receiver === user.username) &&
@@ -139,14 +140,16 @@ document.addEventListener("DOMContentLoaded", function () {
             const messageElement = document.createElement("div");
             messageElement.classList.add("message");
             messageElement.classList.add(message.sender === user.username ? "sent" : "received");
+            if (message.receiver === user.username && message.sender !== user.username) {
+                messageElement.classList.add("unread");
+            }
             messageElement.innerHTML = `<div class="message-content">${message.content}</div>`;
             messageArea.appendChild(messageElement);
             messageArea.scrollTop = messageArea.scrollHeight;
-        }
 
-        if (user.username === "admin" && message.receiver === "admin" && message.type === "CHAT") {
-            playNotificationSound();
-            updateUserItem(message.sender); // Cập nhật mục người gửi nếu là admin
+            if (playSound) {
+                playNotificationSound();
+            }
         }
     }
 
@@ -154,68 +157,68 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             const response = await fetch(`http://157.66.24.154:8080/chat/chatted-users?username=${username}`);
             const users = await response.json();
-            console.log("Fetched Users:", users); // Kiểm tra dữ liệu
-            return users;
+            // Loại bỏ trùng lặp ở phía client (dự phòng)
+            const uniqueUsers = [];
+            const seenUsernames = new Set();
+            for (const user of users) {
+                if (!seenUsernames.has(user.username)) {
+                    seenUsernames.add(user.username);
+                    uniqueUsers.push(user);
+                }
+            }
+            return uniqueUsers;
         } catch (error) {
             console.error("Error fetching chatted users:", error);
             return [];
         }
     }
 
-    // Làm mới toàn bộ danh sách người dùng
-    async function refreshUserList(currentUser, onlineUsers = []) {
-        userList.innerHTML = ""; // Xóa danh sách cũ
-        const user = JSON.parse(localStorage.getItem("user"));
-
-        if (currentUser === "admin") {
-            const chattedUsers = await fetchChattedUsers(currentUser);
-            chattedUsers.forEach(userItem => {
-                if (userItem !== "admin") {
-                    const li = createUserItem(userItem, onlineUsers);
-                    userList.appendChild(li);
-                }
-            });
-        } else {
-            const li = createUserItem("admin", onlineUsers);
-            userList.appendChild(li);
-        }
+    async function refreshUserList(username, onlineUsers = []) {
+        const userListUl = userList.querySelector("ul");
+        userListUl.innerHTML = "";
+        const users = await fetchChattedUsers(username);
+        users.forEach(user => {
+            const li = createUserItem(user, onlineUsers);
+            userListUl.appendChild(li);
+        });
     }
 
-    // Tạo một mục người dùng
-    function createUserItem(userItem, onlineUsers) {
+    function createUserItem(user, onlineUsers) {
         const li = document.createElement("li");
-        li.textContent = userItem;
-        const unreadCount = unreadMessages.get(userItem) || 0;
+        li.textContent = user.fullname;
+        li.dataset.username = user.username;
+        const unreadCount = unreadMessages.get(user.username) || 0;
         if (unreadCount > 0) {
             const badge = document.createElement("span");
             badge.classList.add("unread-badge");
             badge.textContent = unreadCount;
             li.appendChild(badge);
         }
-        if (onlineUsers.includes(userItem)) {
+        if (onlineUsers.includes(user.username)) {
             li.classList.add("online");
         }
-        if (userItem === selectedReceiver) {
+        if (user.username === selectedReceiver) {
             li.classList.add("active");
         }
         li.addEventListener("click", function () {
-            selectedReceiver = userItem;
-            messageHeader.textContent = "Chat với " + userItem;
+            selectedReceiver = user.username;
+            selectedReceiverFullname = user.fullname;
+            messageHeader.textContent = "Chat với " + user.fullname;
             userList.querySelectorAll("li").forEach(item => item.classList.remove("active"));
             li.classList.add("active");
-            unreadMessages.set(userItem, 0); // Xóa số tin nhắn chưa đọc
-            updateUserItem(userItem); // Cập nhật chỉ mục này
-            loadChatHistory(userItem);
+            unreadMessages.set(user.username, 0);
+            updateUserItem(user.username);
+            loadChatHistory(user.username);
+            messageArea.querySelectorAll(".message.unread").forEach(msg => msg.classList.remove("unread"));
         });
         return li;
     }
 
-    // Cập nhật một mục người dùng cụ thể
-    function updateUserItem(userItem) {
+    function updateUserItem(username) {
         const items = userList.querySelectorAll("li");
         items.forEach(li => {
-            if (li.textContent.startsWith(userItem)) {
-                const unreadCount = unreadMessages.get(userItem) || 0;
+            if (li.dataset.username === username) {
+                const unreadCount = unreadMessages.get(username) || 0;
                 const badge = li.querySelector(".unread-badge");
                 if (unreadCount > 0) {
                     if (!badge) {
@@ -239,7 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch(`http://157.66.24.154:8080/chat/history?sender=${user.username}&receiver=${receiver}`);
             const history = await response.json();
             messageArea.innerHTML = "";
-            history.forEach(msg => showMessage(msg));
+            history.forEach(msg => showMessage(msg, false));
         } catch (error) {
             console.error("Error loading chat history:", error);
         }
