@@ -308,7 +308,6 @@
                   <div class="post-content">${post.content}</div>
                   <div class="post-rating">Số sao đánh giá: ${post.rating}</div>
                   <div class="post-created-at">Ngày tạo bài viết: ${post.createdAt}</div>
-                  <div class="post-updated-at">Ngày cập nhật bài viết: ${post.updatedAt}</div>
                   <div class="post-actions">
                       <button><i class="fas fa-thumbs-up"></i> Like</button>
                       <button><i class="fas fa-comment"></i> Comment</button>
@@ -763,7 +762,7 @@
           loginModal.show();
           return;
         }
-
+//
         const userID = user.userId;
 
         // Gửi request đến backend
